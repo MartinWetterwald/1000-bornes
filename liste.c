@@ -3,7 +3,7 @@
 *                                                *
 * Réalisé par Nacim Messadi et Martin Wetterwald *
 *                                                *
-*               FICHIER :                        *
+*               FICHIER : liste.c                *
 * DESCRIPTION : Fonctions gérant la couche des   *
 * listes chainées.                               *
 *                                                *

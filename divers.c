@@ -3,9 +3,14 @@
 *                                                *
 * Réalisé par Nacim Messadi et Martin Wetterwald *
 *                                                *
-*               FICHIER :                        *
-* DESCRIPTION :                                  *
-*                                                *
+*               FICHIER : divers.c               *
+* DESCRIPTION : Fonctions diverses, c'est-à-dire *
+* pouvant être appelées n'importe où dans le     *
+* code, et ne rentrant dans aucune catégorie.    *
+* Grosso modo ce sont des fonctions externes qui *
+* peuvent être utiles dans de nombreux           *
+* programmes et qui ne sont pas spécifiques au   *
+* jeu des mille bornes.                          *
 *************************************************/
 
 #include <stdio.h>

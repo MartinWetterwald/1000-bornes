@@ -3,9 +3,9 @@
 *                                                *
 * Réalisé par Nacim Messadi et Martin Wetterwald *
 *                                                *
-*               FICHIER :                        *
+*               FICHIER : joueurs.c              *
 * DESCRIPTION : Fonctions gérant la couche       *
-* des joueurs                                    *
+* des joueurs.                                   *
 *                                                *
 *************************************************/
 

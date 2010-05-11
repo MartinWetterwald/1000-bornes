@@ -3,8 +3,12 @@
 *                                                *
 * Réalisé par Nacim Messadi et Martin Wetterwald *
 *                                                *
-*               FICHIER :                        *
-* DESCRIPTION :                                  *
+*               FICHIER : cartes.c               *
+* DESCRIPTION : Ceci correspond à la couche      *
+* « carte » du programme. Toutes les fonctions   *
+* définies ici permettent d'effectuer un certain *
+* nombre d'opérations sur des cartes et des      *
+* decks de cartes.                               *
 *                                                *
 *************************************************/
 

@@ -3,8 +3,7 @@
 *                                                *
 * Réalisé par Nacim Messadi et Martin Wetterwald *
 *                                                *
-*               FICHIER :                        *
-* DESCRIPTION :                                  *
+*               FICHIER : liste.h                *
 *                                                *
 *************************************************/
 

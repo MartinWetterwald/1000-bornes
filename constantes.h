@@ -3,8 +3,9 @@
 *                                                *
 * Réalisé par Nacim Messadi et Martin Wetterwald *
 *                                                *
-*               FICHIER :                        *
-* DESCRIPTION : constantes.h                     *
+*               FICHIER : constantes.h           *
+* DESCRIPTION : Définit en un seul endroit       *
+* toutes les constantes du jeu.                  *
 *                                                *
 *************************************************/
 

@@ -3,8 +3,10 @@
 *                                                *
 * Réalisé par Nacim Messadi et Martin Wetterwald *
 *                                                *
-*               FICHIER :                        *
-* DESCRIPTION :                                  *
+*               FICHIER : fichiers.c             *
+* DESCRIPTION : Dès que le programme doit        *
+* utiliser un fichier (lecture ou écriture),     *
+* cela passe par les fonctions définies ici.     *
 *                                                *
 *************************************************/
 
