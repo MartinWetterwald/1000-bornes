@@ -15,6 +15,7 @@
 #include "divers.h"
 #include "joueur.h"
 #include "menu.h"
+#include "jeu.h"
 
 
 int main()

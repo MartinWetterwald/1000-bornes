@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "constantes.h"
 #include "divers.h"
 #include "menu.h"
