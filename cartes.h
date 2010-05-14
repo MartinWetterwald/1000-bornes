@@ -25,6 +25,7 @@ void cartes_deck_add(Tdeck* deck, int carte_type, int carte_nb);
 void cartes_deck_init(Tdeck* deck);
 void cartes_deck_afficher(Tdeck* deck);
 Tcarte* cartes_changer_deck(Tdeck* deck_source, Tcarte* carte_source, Tdeck* deck_cible);
+void cartes_type2francais(int val);
 void cartes_distribuer(Tdeck* deck, Tdeck* deck_joueur1, Tdeck* deck_joueur2, int nb);
 int cartes_char2int(char* chaine);
 int cartes_verifier_validite(int carte);

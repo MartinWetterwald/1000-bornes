@@ -187,6 +187,21 @@ Tmaillon* liste_maillon_pos2point(Tliste* maListe, int num)
     return NULL;
 }
 
+Tmaillon* liste_rechercher_maillon(Tliste* maListe, int val)
+{
+    Tmaillon* parcours;
+    if(maListe != NULL && maListe -> premier != NULL)
+    {
+        parcours = maListe -> premier;
+        while(parcours != NULL && parcours -> valeur != val)
+        {
+            parcours = parcours -> suivant;
+        }
+        return parcours;
+    }
+    return NULL;
+}
+
 int liste_maillon_substituer(Tliste* maListe, Tmaillon* maillon1, Tmaillon* maillon2)
 {
     int success = 0;

@@ -29,6 +29,7 @@ void liste_remplir_fictif(Tliste* maListe, int max);
 void liste_afficher(Tliste* maListe);
 int liste_compter_valeur(Tliste* maListe, int val);
 Tmaillon* liste_maillon_pos2point(Tliste* maListe, int num);
+Tmaillon* liste_rechercher_maillon(Tliste* maListe, int val);
 int liste_maillon_substituer(Tliste* maListe, Tmaillon* maillon1, Tmaillon* maillon2);
 void liste_melanger(Tliste* maListe, int min, int max);
 void liste_vider(Tliste* maListe);

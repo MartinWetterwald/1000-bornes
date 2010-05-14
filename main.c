@@ -13,7 +13,6 @@
 #include <time.h>
 #include "constantes.h"
 #include "divers.h"
-#include "joueur.h"
 #include "menu.h"
 #include "jeu.h"
 
@@ -22,8 +21,10 @@ int main()
 {
     srand(time(NULL));
     Tdeck* deckPrincipal = liste_init(); //Ceci crée un deck de cartes vides, deck qui sera le tas principal où piocher des cartes.
-    Tjoueur* Joueur1 = joueur_init(0);
-    Tjoueur* Joueur2 = joueur_init(1); //Le joueur 2 sera un ordinateur.
+    Tjoueur* joueur1 = joueur_init(0);
+    Tjoueur* joueur2 = joueur_init(0); //Le joueur 2 sera un ordinateur.
+    Tjoueur* joueur_selectionne = NULL;
+    Tjoueur* autre_joueur = NULL;
 
     int menu1_choix = -1, difficulte_ordinateur = -1;
     char nomFichier[TAILLE_MAX_NOM_FICHIER];
@@ -35,7 +36,7 @@ int main()
         menu_principal(&menu1_choix);
         switch(menu1_choix)
         {
-            /* Menu principal - choix1 = Nouvelle partie */
+            /* Menu principal - choix n°1 = Nouvelle partie */
             case 1:
                 difficulte_ordinateur = -1;
                 while(difficulte_ordinateur == -1)
@@ -69,25 +70,8 @@ int main()
 
                 if(difficulte_ordinateur != 0)
                 {
-                    menu_demander_nom_joueur(Joueur1 -> nom);
-                    cartes_deck_init(deckPrincipal);
-                    cartes_distribuer(deckPrincipal, Joueur1 -> deck, Joueur2 -> deck, CARTES_MAIN);
-
-
-
-
-                    printf("Le jeu a été mélangé et les cartes ont été distribuées.\n");
-
-                    printf("\nContenu du deck principal :\n");
-                    cartes_deck_afficher(deckPrincipal);
-
-                    printf("\nJoueur 1 :\n");
-                    joueur_afficher(Joueur1);
-
-                    printf("\nJoueur 2 :\n");
-                    joueur_afficher(Joueur2);
-
-                    printf("\n\nPARTIE TERMINÉE !\n");
+                    jeu_init(deckPrincipal, joueur1, joueur2, &joueur_selectionne, &autre_joueur);
+                    jeu(deckPrincipal, &joueur_selectionne, &autre_joueur);
                 }
             break;
 
@@ -134,8 +118,5 @@ int main()
     else
         printf("Une erreur est survenue lors de l'enregistrement de la partie.\n");*/
 
-    liste_detruire(&deckPrincipal);
-    /*liste_detruire(&deckJoueur1);
-    liste_detruire(&deckJoueur2);*/
     return 0;
 }

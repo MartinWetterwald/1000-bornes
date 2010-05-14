@@ -15,6 +15,10 @@ void afficher_logo();
 void menu_principal(int* choix);
 
 void menu_nouvelle_partie(int* choix);
+
+void menu_demander_choix_carte(int* choix_carte);
+void menu_demander_choix_carte_jeter(int* choix_carte);
+
 void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX]);
 
 void menu_charger_partie(char* choix);

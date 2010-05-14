@@ -106,57 +106,57 @@ void cartes_deck_afficher(Tdeck* deck)
 
 
     /* Affichage des résultats */
-    printf("Ce deck contient %d cartes :\n", deck -> taille);
+    printf("%d cartes en main :\n", deck -> taille);
 
     /* Affichage des obstacles */
     printf("- %d obstacles\n", nb_obstacles);
     if(nb_panne_essence >= 1)
-        printf("  -> %d x 'panne d'essence'\n", nb_panne_essence);
+        printf("  -> %d x 'panne d'essence' (code %d)\n", nb_panne_essence, PANNE_ESSENCE);
     if(nb_creve >= 1)
-        printf("  -> %d x 'crevé'\n", nb_creve);
+        printf("  -> %d x 'crevé' (code %d)\n", nb_creve, CREVE);
     if(nb_accident >= 1)
-        printf("  -> %d x 'accident'\n", nb_accident);
+        printf("  -> %d x 'accident' (code %d)\n", nb_accident, ACCIDENT);
     if(nb_limite_vitesse >= 1)
-        printf("  -> %d x 'limite de vitesse'\n", nb_limite_vitesse);
+        printf("  -> %d x 'limite de vitesse' (code %d)\n", nb_limite_vitesse, LIMITE_VITESSE);
     if(nb_stop >= 1)
-        printf("  -> %d x 'stop'\n", nb_stop);
+        printf("  -> %d x 'stop' (code %d)\n", nb_stop, STOP);
 
     /* Affichage des parades */
     printf("\n- %d parades\n", nb_parades);
     if(nb_essence >= 1)
-        printf("  -> %d x 'essence'\n", nb_essence);
+        printf("  -> %d x 'essence' (code %d)\n", nb_essence, ESSENCE);
     if(nb_roue_de_secours >= 1)
-        printf("  -> %d x 'roue de secours'\n", nb_roue_de_secours);
+        printf("  -> %d x 'roue de secours' (code %d)\n", nb_roue_de_secours, ROUE_DE_SECOURS);
     if(nb_reparations >= 1)
-        printf("  -> %d x 'réparations'\n", nb_reparations);
+        printf("  -> %d x 'réparations' (code %d)\n", nb_reparations, REPARATIONS);
     if(nb_fin_limite_vitesse >= 1)
-        printf("  -> %d x 'fin de limite de vitesse'\n", nb_fin_limite_vitesse);
+        printf("  -> %d x 'fin de limite de vitesse' (code %d)\n", nb_fin_limite_vitesse, FIN_LIMITE_VITESSE);
     if(nb_roulez >= 1)
-        printf("  -> %d x 'roulez'\n", nb_roulez);
+        printf("  -> %d x 'roulez' (code %d)\n", nb_roulez, ROULEZ);
 
     /* Affichage des bottes */
     printf("\n- %d bottes\n", nb_bottes);
     if(nb_citerne >= 1)
-        printf("  -> %d x 'citerne'\n", nb_citerne);
+        printf("  -> %d x 'citerne' (code %d)\n", nb_citerne, CITERNE);
     if(nb_increvable >= 1)
-        printf("  -> %d x 'increvable'\n", nb_increvable);
+        printf("  -> %d x 'increvable' (code %d)\n", nb_increvable, INCREVABLE);
     if(nb_as_du_volant >= 1)
-        printf("  -> %d x 'as du volant'\n", nb_as_du_volant);
+        printf("  -> %d x 'as du volant' (code %d)\n", nb_as_du_volant, AS_DU_VOLANT);
     if(nb_prioritaire >= 1)
-        printf("  -> %d x 'prioritaire'\n", nb_prioritaire);
+        printf("  -> %d x 'prioritaire' (code %d)\n", nb_prioritaire, PRIORITAIRE);
 
     /* Affichage des bornes */
     printf("\n- %d bornes\n", nb_bornes);
     if(nb_bornes25 >= 1)
-        printf("  -> %d x '25 bornes'\n", nb_bornes25);
+        printf("  -> %d x '25 bornes' (code %d)\n", nb_bornes25, BORNES25);
     if(nb_bornes50 >= 1)
-        printf("  -> %d x '50 bornes'\n", nb_bornes50);
+        printf("  -> %d x '50 bornes' (code %d)\n", nb_bornes50, BORNES50);
     if(nb_bornes75 >= 1)
-        printf("  -> %d x '75 bornes'\n", nb_bornes75);
+        printf("  -> %d x '75 bornes' (code %d)\n", nb_bornes75, BORNES75);
     if(nb_bornes100 >= 1)
-        printf("  -> %d x '100 bornes'\n", nb_bornes100);
+        printf("  -> %d x '100 bornes' (code %d)\n", nb_bornes100, BORNES100);
     if(nb_bornes200 >= 1)
-        printf("  -> %d x '200 bornes'\n", nb_bornes200);
+        printf("  -> %d x '200 bornes' (code %d)\n", nb_bornes200, BORNES200);
 }
 
 /* Cette fonction change une carte de deck :
@@ -172,6 +172,96 @@ Tcarte* cartes_changer_deck(Tdeck* deck_source, Tcarte* carte_source, Tdeck* dec
     }
 
     return nouvelle_carte;
+}
+
+/* Cette fonction affiche le nom d'une carte à partir de son type numérique */
+void cartes_type2francais(int val)
+{
+    switch(val)
+    {
+        //Obstacles
+        case PANNE_ESSENCE:
+            printf("Panne d'essence");
+        break;
+
+        case CREVE:
+            printf("Crevé");
+        break;
+
+        case ACCIDENT:
+            printf("Accident");
+        break;
+
+        case LIMITE_VITESSE:
+            printf("Limite de vitesse");
+        break;
+
+        case STOP:
+            printf("Stop (feu rouge)");
+        break;
+
+        //Parades
+        case ESSENCE:
+            printf("Essence");
+        break;
+
+        case ROUE_DE_SECOURS:
+            printf("Roue de secours");
+        break;
+
+        case REPARATIONS:
+            printf("Réparations");
+        break;
+
+        case FIN_LIMITE_VITESSE:
+            printf("Fin de limitation de vitesse");
+        break;
+
+        case ROULEZ:
+            printf("Roulez (feu vert)");
+        break;
+
+        //Bottes
+        case CITERNE:
+            printf("Citerne");
+        break;
+
+        case INCREVABLE:
+            printf("Increvable");
+        break;
+
+        case AS_DU_VOLANT:
+            printf("As du volant");
+        break;
+
+        case PRIORITAIRE:
+            printf("Véhicule prioritaire");
+        break;
+
+        //Bornes
+        case BORNES25:
+            printf("25 bornes");
+        break;
+
+        case BORNES50:
+            printf("50 bornes");
+        break;
+
+        case BORNES75:
+            printf("75 bornes");
+        break;
+
+        case BORNES100:
+            printf("100 bornes");
+        break;
+
+        case BORNES200:
+            printf("200 bornes");
+        break;
+
+        default:
+            printf("Erreur : cette carte n'existe pas.");
+    }
 }
 
 /* Cette fonction distribue les cartes en début de partie */
