@@ -134,6 +134,11 @@ int coup_autorise(char* raison_refus, char* raison_refus2, Tjoueur* joueur_selec
         //Panne d'essence
         if(carte_type == PANNE_ESSENCE)
         {
+            if(autre_joueur -> est_creve || autre_joueur -> a_accident)
+            {
+                sprintf(raison_refus, "Vous voulez jouer une carte 'Panne d'essence', alors que votre adversaire a les pneus crevés ou a un accident...\n");
+                return 0;
+            }
             if(autre_joueur -> en_panne_dessence)
             {
                 sprintf(raison_refus, "Vous voulez jouer une carte 'Panne d'essence', alors que votre adversaire est déjà en panne d'essence...\n");
@@ -149,6 +154,11 @@ int coup_autorise(char* raison_refus, char* raison_refus2, Tjoueur* joueur_selec
         //Crevé
         if(carte_type == CREVE)
         {
+            if(autre_joueur -> en_panne_dessence || autre_joueur -> a_accident)
+            {
+                sprintf(raison_refus, "Vous voulez jouer une carte 'Crevé', alors que votre adversaire est en panne d'essence ou a un accident...\n");
+                return 0;
+            }
             if(autre_joueur -> est_creve)
             {
                 sprintf(raison_refus, "Vous voulez jouer une carte 'Crevé', alors que votre adversaire a déjà les pneus crevées...\n");
@@ -164,6 +174,11 @@ int coup_autorise(char* raison_refus, char* raison_refus2, Tjoueur* joueur_selec
         //Accident
         if(carte_type == ACCIDENT)
         {
+            if(autre_joueur -> en_panne_dessence || autre_joueur -> est_creve)
+            {
+                sprintf(raison_refus, "Vous voulez jouer une carte 'Accident', alors que votre adversaire est en panne d'essence ou a les pneus crevés...\n");
+                return 0;
+            }
             if(autre_joueur -> a_accident)
             {
                 sprintf(raison_refus, "Vous voulez jouer une carte 'Accident', alors que votre adversaire a déjà un accident...\n");
@@ -270,17 +285,17 @@ int coup_autorise(char* raison_refus, char* raison_refus2, Tjoueur* joueur_selec
             return 0;
         }
 
-        if(joueur_selectionne -> est_limite_par_vitesse && carte_type >= BORNES75)
-        {
-            sprintf(raison_refus, "Vous voulez jouer une carte de distance supérieure à 50 bornes pour avancer alors que votre vitesse est limitée à 50 bornes/h...\n");
-            sprintf(raison_refus2, "Vous devez d'abord jouer une carte 'Fin de limitation de vitesse' si vous voulez jouer des cartes de distance supérieures à 50 bornes. !\n");
-            return 0;
-        }
-
         if(joueur_selectionne -> est_arrete)
         {
             sprintf(raison_refus, "Vous voulez jouer une carte de distance alors que vous êtes à l'arrêt (feu rouge)...\n");
             sprintf(raison_refus2, "Vous devez d'abord jouer une carte 'Roulez' (feu vert) !\n");
+            return 0;
+        }
+
+        if(joueur_selectionne -> est_limite_par_vitesse && carte_type >= BORNES75)
+        {
+            sprintf(raison_refus, "Vous voulez jouer une carte de distance supérieure à 50 bornes pour avancer alors que votre vitesse est limitée à 50 bornes/h...\n");
+            sprintf(raison_refus2, "Vous devez d'abord jouer une carte 'Fin de limitation de vitesse' si vous voulez jouer des cartes de distance supérieures à 50 bornes. !\n");
             return 0;
         }
 
