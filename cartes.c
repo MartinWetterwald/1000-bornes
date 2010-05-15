@@ -260,7 +260,7 @@ void cartes_type2francais(int val)
         break;
 
         default:
-            printf("Erreur : cette carte n'existe pas.");
+            printf("Il n'y a plus de carte dans le deck !");
     }
 }
 

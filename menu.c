@@ -15,7 +15,7 @@
 #include "constantes.h"
 #include "divers.h"
 #include "menu.h"
-
+#include "jeu.h"
 
 
 void afficher_logo()
@@ -111,7 +111,7 @@ void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX])
 void menu_demander_choix_carte(int* choix_carte)
 {
     printf("Entrez le code de la carte à jouer.\n");
-    printf("Si vous ne souhaitez pas jouer de carte, vous pouvez :\n");
+    printf("Si vous ne souhaitez (ou ne pouvez) pas jouer de carte, vous pouvez :\n");
     printf("- arrêter la partie sans enregistrer (code %d) ;\n", ARRETER_PARTIE);
     printf("- arrêter la partie et l'enregister (code %d) ;\n", ENREGISTRER);
     printf("- Ne rien jouer et simplement passer votre tour (code %d).\n", PASSER_SON_TOUR);
@@ -127,6 +127,36 @@ void menu_demander_choix_carte_jeter(int* choix_carte)
     printf("Vous pouvez aussi entrer le code %d si vous avez changé d'avis et que vous ne souhaitez plus passer votre tour.\n", ANNULER_PASSER_SON_TOUR);
     printf("Votre choix ? ");
     *choix_carte = lireLong();
+}
+
+void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur, int obstacle, int botte, char* raison_refus, char* raison_refus2)
+{
+    int choix_coup_fourre = 0;
+
+    printf("\n'%s', votre adversaire '%s' vient de jouer une carte '", (*autre_joueur) -> nom, (*joueur_selectionne) -> nom);
+    cartes_type2francais(obstacle);
+    printf("' mais vous avez dans votre jeu la carte 'botte' '");
+    cartes_type2francais(botte);
+    printf("'.\n");
+
+
+    printf("Vous avez la possibilité de déclarer « coup fourré », ");
+    printf("ainsi l'attaque de votre adversaire '%s' sera annulée et votre carte botte sera activée.\n", (*joueur_selectionne) -> nom);
+    printf("Vous aurez donc cinq cartes dans votre main, piocherez deux fois et ce sera toujours à vous de jouer.\n");
+    printf("Ceci est intéressant car vous gagnez %d points supplémentaires par coup fourré en fin de partie.", POINTS_PAR_COUP_FOURRE);
+
+    while(choix_coup_fourre != 1 && choix_coup_fourre != 2)
+    {
+        printf("\n\n");
+        printf("1) Déclarer « coup fourré » ;\n");
+        printf("2) Faire semblant que vous n'avez rien vu.\n");
+        printf("Votre choix ? ");
+
+        choix_coup_fourre = lireLong();
+    }
+
+    if(choix_coup_fourre == 1)
+        coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
 }
 
 void menu_nouvelle_partie(int* choix)

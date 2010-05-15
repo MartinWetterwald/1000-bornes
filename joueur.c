@@ -60,7 +60,6 @@ Tcarte* joueur_possede_carte(Tjoueur* monJoueur, int carte_type)
     //Vérifier que ce type de carte existe
     if(cartes_verifier_validite(carte_type))
     {
-        printf("Type existe\n");
         //Vérifier qu'au moins un exemplaire se trouve dans son jeu et le récupérer (adresse)
         carte = liste_rechercher_maillon(monJoueur -> deck, carte_type);
         return carte;
@@ -87,30 +86,46 @@ void joueur_afficher(Tjoueur* monJoueur)
 
 
         printf("\nIl a parcouru %d bornes.\n", monJoueur -> cumul_bornes);
-        printf("\nIl a joué %d cartes 'botte'.\n", monJoueur -> nb_bottes_jouees);
-        printf("\nIl a joué %d coups fourres.\n", monJoueur -> nb_coups_fourres_joues);
-        printf("\nIl a joué %d cartes '200 bornes'.\n", monJoueur -> nb_200bornes_jouees);
+        printf("Il a joué %d cartes 'botte'.\n", monJoueur -> nb_bottes_jouees);
+        printf("Il a joué %d coups fourres.\n", monJoueur -> nb_coups_fourres_joues);
+        printf("Il a joué %d cartes '200 bornes'.\n", monJoueur -> nb_200bornes_jouees);
         if(monJoueur -> couronnement)
-            printf("\nIl a effectué un couronnement.\n");
+            printf("Il a effectué un couronnement.\n");
         else
-            printf("\nIl n'a pas effectué de couronnement.\n");
+            printf("Il n'a pas effectué de couronnement.\n");
+
+        printf("\nSes immunités (cartes 'botte' activées) : \n");
+        if(monJoueur -> increvable)
+            printf("- Il est increvable.\n");
+
+        if(monJoueur -> citerne)
+            printf("- C'est un camion citerne (il ne peut plus avoir de panne d'essence).\n");
+
+        if(monJoueur -> as_du_volant)
+            printf("- C'est un as du volant (il ne peut plus avoir d'accident).\n");
+
+        if(monJoueur -> prioritaire)
+            printf("- C'est un véhicule prioritaire (il ne peut pas être arrêté et sa vitesse ne peut pas être limitée).\n");
 
 
-        printf("\nSes handicaps : \n");
+
+
+
+        printf("\n\nSes handicaps : \n");
         if(monJoueur -> est_creve)
             printf("- Il a les pneus crevés.\n");
 
         if(monJoueur -> a_accident)
-            printf("Il a un accident.\n");
+            printf("- Il a un accident.\n");
 
         if(monJoueur -> en_panne_dessence)
-            printf("Il n'a plus d'essence.\n");
+            printf("- Il n'a plus d'essence.\n");
 
         if(monJoueur -> est_limite_par_vitesse)
-            printf("Sa vitesse est limitée.\n");
+            printf("- Sa vitesse est limitée.\n");
 
         if(monJoueur -> est_arrete)
-            printf("Il est à l'arrêt.\n");
+            printf("- Il est à l'arrêt.\n");
     }
 }
 

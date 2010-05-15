@@ -13,7 +13,7 @@
 #define CONSTANTES_H_INCLUDED
 
 /* Jeu */
-#define BORNES_MAX 700
+#define BORNES_MAX 1000
 
 /* Erreurs */
 #define ERREUR_CARTE_PAS_DANS_MAIN -2
@@ -30,8 +30,9 @@
 #define POINTS_SI_CAPOT 500
 
 
-/* Joueurs */
-#define NOM_TAILLE_MAX 50
+/* Chaines de caractères */
+#define NOM_TAILLE_MAX 50 //Ceci correspond à la taille maximum pour le nom d'un joueur
+#define TAILLE_MAX_REFUS 200 //Taille maximum du refus signifié par la fonction 'coup_autorise' de jeu.c
 
 
 /* Fichiers */
@@ -66,7 +67,7 @@
 #define FIN_LIMITE_VITESSE  13
 #define ROULEZ              14
 
-//Botes
+//Bottes
 #define CITERNE             20
 #define INCREVABLE          21
 #define AS_DU_VOLANT        22
