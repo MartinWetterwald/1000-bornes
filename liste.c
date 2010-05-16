@@ -270,7 +270,7 @@ int liste_maillon_substituer(Tliste* maListe, Tmaillon* maillon1, Tmaillon* mail
                 maillon2 -> suivant = maillon1;
 
             if(maillon1 != precedent2)
-                precedent2 -> suivant = maillon1; //Ça ça marche
+                precedent2 -> suivant = maillon1;
 
             maillon1 -> suivant = fin;
 
@@ -337,6 +337,23 @@ void liste_melanger(Tliste* maListe, int min, int max)
             i++;
         }
     }
+}
+
+/* Cette fonction tire au sort un maillon dans une liste chainée et sort sa valeur. */
+int liste_maillon_valeur_aleatoire(Tliste* maListe)
+{
+    int maillon_num = 0;
+    Tmaillon* maillon = NULL;
+    if(maListe != NULL && (maListe -> taille) > 0)
+    {
+        maillon_num = (rand() % ((maListe -> taille - 1) + 1)) + 1;
+
+        //On récupère l'adresse du maillon fraichement choisi.
+        maillon = liste_maillon_pos2point(maListe, maillon_num);
+
+        return maillon -> valeur;
+    }
+    return -1;
 }
 
 void liste_vider(Tliste* maListe)

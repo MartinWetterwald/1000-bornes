@@ -18,13 +18,15 @@ void afficher_logo();
 
 void menu_principal(int* choix);
 
-void menu_nouvelle_partie(int* choix);
+void menu_difficulte_ordinateur(int* choix);
 
 void menu_demander_choix_carte(int* choix_carte);
-void menu_demander_choix_carte_jeter(int* choix_carte);
+void menu_demander_choix_carte_jeter(int* choix_carte, int nb_coups_possibles);
 void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur, int obstacle, int botte, char* raison_refus, char* raison_refus2);
 
+void menu_demander_ordinateur(int* choix);
 void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX]);
+void demander_appuyez_sur_une_touche_pour_continuer();
 
 void menu_charger_partie(char* choix);
 void menu_enregistrer_partie(char* choix);

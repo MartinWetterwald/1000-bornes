@@ -16,6 +16,8 @@ La couche « joueur » requiert la couche inférieure : cartes */
 
 typedef struct Tjoueur {
     int est_ordinateur; //Pour distinguer un joueur ordinateur d'un autre
+    int difficulte_ordinateur;
+
     char nom[NOM_TAILLE_MAX];
     Tdeck* deck;
 
@@ -25,8 +27,6 @@ typedef struct Tjoueur {
     int nb_coups_fourres_joues;
     int nb_200bornes_jouees;
     int couronnement;
-
-    int carte_precedemment_jouee;
 
     /* État du joueur */
     int est_creve;
@@ -42,9 +42,10 @@ typedef struct Tjoueur {
 
 } Tjoueur, *Tptjoueur;
 
-Tjoueur* joueur_init(int est_ordinateur);
+Tjoueur* joueur_init(int est_ordinateur, int difficulte, int num_joueur);
 Tcarte* joueur_possede_carte(Tjoueur* monJoueur, int carte_type);
 void joueur_afficher(Tjoueur* monJoueur);
+void joueur_afficher_infos_utiles(Tjoueur* monJoueur);
 int joueur_compter_les_points(Tjoueur* joueur, int cumul_bornes_autre_joueur);
 void joueur_detruire(Tptjoueur* joueur);
 

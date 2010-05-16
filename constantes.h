@@ -16,28 +16,51 @@
 #define BORNES_MAX 1000
 
 /* Erreurs */
-#define ERREUR_CARTE_PAS_DANS_MAIN -2
-#define ERREUR_COUP_NON_PERMIS -3
+#define ERREUR_CARTE_PAS_DANS_MAIN  -2
+#define ERREUR_COUP_NON_PERMIS      -3
+
+/* Joueurs */
+
+#define HUMAIN      0
+#define ORDINATEUR  1
+
+/* Difficulté de l'ordinateur */
+#define DEBUTANT    1
+#define COURSE      2
+#define AGRESSIF    3
+#define DEFENSIF    4
+#define EXPERT      5
+
 
 
 /* Points */
-#define POINTS_PAR_BOTTE 100
-#define POINTS_TOUS_LES_BOTTES 300
-#define POINTS_PAR_COUP_FOURRE 300
-#define POINTS_SI_BORNES_MAX_EFFECTUEES 400
-#define POINTS_COURONNEMENT 300
-#define POINTS_SI_AUCUNE_CARTE_200BORNES_JOUEE 300
-#define POINTS_SI_CAPOT 500
+#define POINTS_PAR_BOTTE                        100
+#define POINTS_TOUS_LES_BOTTES                  300
+#define POINTS_PAR_COUP_FOURRE                  300
+#define POINTS_SI_BORNES_MAX_EFFECTUEES         400
+#define POINTS_COURONNEMENT                     300
+#define POINTS_SI_AUCUNE_CARTE_200BORNES_JOUEE  300
+#define POINTS_SI_CAPOT                         500
 
 
 /* Chaines de caractères */
-#define NOM_TAILLE_MAX 50 //Ceci correspond à la taille maximum pour le nom d'un joueur
-#define TAILLE_MAX_REFUS 200 //Taille maximum du refus signifié par la fonction 'coup_autorise' de jeu.c
+#define NOM_TAILLE_MAX      50 //Ceci correspond à la taille maximum pour le nom d'un joueur
+#define TAILLE_MAX_REFUS    200 //Taille maximum du refus signifié par la fonction 'coup_autorise' de jeu.c
 
 
 /* Fichiers */
-#define TAILLE_MAX_LIGNE 10000
-#define TAILLE_MAX_NOM_FICHIER 50
+#define TAILLE_MAX_LIGNE        10000
+#define TAILLE_MAX_NOM_FICHIER  50
+
+
+
+/* Pauses (sleep) */
+#define PAUSE_DEBUT_PARTIE                      0
+#define PAUSE_APRES_PIOCHAGE                    0
+#define PAUSE_APRES_AFFICHER_ETAT               0
+#define PAUSE_APRES_AFFICHER_MAIN_JOUEUR        0
+#define PAUSE_APRES_AFFICHER_COUPS_POSSIBLES    0
+#define PAUSE_APRES_AVOIR_JOUE                  5
 
 
 /* Cartes */
@@ -81,9 +104,9 @@
 #define BORNES200           200
 
 //Autres choix possibles (qui ne sont pas des cartes)
-#define ARRETER_PARTIE      0
-#define PASSER_SON_TOUR     6
-#define ENREGISTRER         7
+#define ARRETER_PARTIE              0
+#define PASSER_SON_TOUR             6
+#define ENREGISTRER                 7
 #define ANNULER_PASSER_SON_TOUR     8
 
 

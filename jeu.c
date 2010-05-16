@@ -14,14 +14,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "constantes.h"
 #include "divers.h"
 #include "menu.h"
 #include "jeu.h"
+#include "ia.h"
 
 Tjoueur* qui_commence(Tjoueur* joueur1, Tjoueur* joueur2)
 {
-    Tjoueur* joueur_qui_commence;
+    Tjoueur* joueur_qui_commence = NULL;
     int qui_commence;
 
     qui_commence = (rand() % 2) + 1;
@@ -45,7 +47,7 @@ void jeu_init(Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2, Tptjoueur* joueur
 
     cartes_deck_init(deck);
     cartes_distribuer(deck, joueur1 -> deck, joueur2 -> deck, CARTES_MAIN);
-    printf("\nLe jeu a été mélangé et les cartes ont été distribuées.\n");
+    printf("\nLe jeu a été mélangé et les cartes ont été distribuées. ");
 
     //On choisit aléatoirement si l'ordinateur va commencer ou le joueur.
     *joueur_selectionne = qui_commence(joueur1, joueur2);
@@ -56,6 +58,7 @@ void jeu_init(Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2, Tptjoueur* joueur
         *autre_joueur = joueur1;
 
     printf("Le tirage au sort a décidé que '%s' commence la partie.\n", (*joueur_selectionne) -> nom);
+    demander_appuyez_sur_une_touche_pour_continuer();
 }
 
 //Cette fonction sert à inverser le joueur qui va devoir jouer.
@@ -315,6 +318,36 @@ int coup_autorise(char* raison_refus, char* raison_refus2, Tjoueur* joueur_selec
     return 1;
 }
 
+
+//Cette fonction retourne un nouveau deck de cartes, qui contient les cartes jouables.
+//Elle est utilisée, afin de simplifier la tâche des joueurs et des ordinateurs.
+//Du coup pour un ordinateur on n'aura plus qu'à lui faire choisir parmi les coups qu'il a le droit de jouer.
+Tdeck* lister_coups_possibles(Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
+{
+    char raison_refus[TAILLE_MAX_REFUS] = "";
+    char raison_refus2[TAILLE_MAX_REFUS] = "";
+    int coup_est_autorise = 0;
+    Tdeck* coupsPossibles = liste_init();
+    Tcarte* carte_courante = NULL;
+
+
+    //Pour chaque carte contenue dans le deck de l'ordinateur, on va la faire passer dans la fonction
+    //coup_autorise. Si cette fonction renvoie 1, on copie la carte dans le nouveau deck des coups autorisés.
+    if(((*joueur_selectionne) -> deck) != NULL)
+    {
+        carte_courante = ((*joueur_selectionne) -> deck) -> premier;
+        while(carte_courante != NULL)
+        {
+            coup_est_autorise = coup_autorise(raison_refus, raison_refus2, *joueur_selectionne, *autre_joueur, carte_courante -> valeur);
+            if(coup_est_autorise)
+                liste_maillon_inserer_tete(coupsPossibles, carte_courante -> valeur);
+
+            carte_courante = carte_courante -> suivant;
+        }
+    }
+    return coupsPossibles;
+}
+
 //Cette fonction est appelée s'il y a coup fourré.
 void coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur, int obstacle, int botte, char* raison_refus, char* raison_refus2)
 {
@@ -374,10 +407,6 @@ int jouer(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur,  
 
                 //Supprimer la carte du deck
                 liste_maillon_supprimer((*joueur_selectionne) -> deck, carte_a_jouer);
-
-                /* On sauvegarde le type de carte que le joueur vient de jouer.
-                Ceci va nous être utile pour la fonction coup_autorise. */
-                (*joueur_selectionne) -> carte_precedemment_jouee = carte_type;
 
                 return 1;
             }
@@ -503,7 +532,7 @@ void consequences_coup(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* au
 }
 
 //Cette fonction est la fonction globale qui gère une partie (reprise en cours ou nouvellement commencée).
-//Le paramètre a_qui_le_tour est un pointeur vers un joueur. IL désigne quel joueur va jouer.
+//Grâce aux paramètres joueur_selectionne et autre_joueur, on sait à qui c'est de jouer.
 void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
 {
     int partie_est_terminee = partie_terminee(deck, *joueur_selectionne, *autre_joueur);
@@ -517,8 +546,12 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
     Tjoueur* gagnant = NULL;
     Tcarte* carte_piochee = NULL;
 
+    Tdeck* les_coups_possibles = NULL;
+
     while(!partie_est_terminee && choix_carte != ARRETER_PARTIE && choix_carte != ENREGISTRER)
     {
+        choix_carte = -1;
+        choix_jeter = -1;
         printf("\nIl reste %d cartes dans le deck principal.\n", deck -> taille);
 
         printf("\nC'est à '%s' de jouer.\n", (*joueur_selectionne) -> nom);
@@ -528,138 +561,228 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
             //On fait piocher une carte au joueur
             carte_piochee = cartes_changer_deck(deck, deck -> premier, (*joueur_selectionne) -> deck);
 
-            printf("\n'%s' vient de piocher une carte '", (*joueur_selectionne) -> nom);
-            cartes_type2francais(carte_piochee -> valeur); //On affiche le nom de la carte en français
-            printf("'.\n\n");
+            //On affiche la carte que le joueur vient de piocher que si ça n'est pas un ordinateur
+            if(!((*joueur_selectionne) -> est_ordinateur))
+            {
+                printf("'%s' vient de piocher une carte '", (*joueur_selectionne) -> nom);
+                cartes_type2francais(carte_piochee -> valeur); //On affiche le nom de la carte en français
+                printf("'.\n");
+                demander_appuyez_sur_une_touche_pour_continuer();
+            }
+            else
+            {
+                printf("'%s' vient de piocher une carte.\n", (*joueur_selectionne) -> nom);
+            }
         }
 
-        joueur_afficher(*joueur_selectionne);
-
-        //Affiche la main du joueur
-        //cartes_deck_afficher((*joueur_selectionne) -> deck);
-
-        printf("\n");
-
-        //Demande au joueur de choisir une carte à jouer
-        resultat_jouer = -1;
-        while(resultat_jouer != 1)
+        //On n'affiche les infos que si le joueur n'est pas un ordinateur.
+        if(!((*joueur_selectionne) -> est_ordinateur))
         {
-            menu_demander_choix_carte(&choix_carte);
+            printf("\n\nÉTAT DE VOTRE ADVERSAIRE :");
+            joueur_afficher_infos_utiles(*autre_joueur);
 
-            if(choix_carte != ARRETER_PARTIE && choix_carte != ENREGISTRER)
+            printf("\n\nVOTRE ÉTAT :");
+            joueur_afficher_infos_utiles(*joueur_selectionne);
+            demander_appuyez_sur_une_touche_pour_continuer();
+
+            //Affiche la main du joueur
+            printf("\n\nVOTRE MAIN :\n");
+            printf("Vous avez %d cartes en main : \n", ((*joueur_selectionne) -> deck) -> taille);
+            cartes_deck_afficher((*joueur_selectionne) -> deck);
+
+            printf("\n");
+            demander_appuyez_sur_une_touche_pour_continuer();
+
+            les_coups_possibles = lister_coups_possibles(joueur_selectionne, autre_joueur);
+            printf("Voici les coups possibles pour ce tour : \n");
+            printf("Il y a %d coups possibles :\n", les_coups_possibles -> taille);
+            cartes_deck_afficher(les_coups_possibles);
+
+            printf("\n");
+            demander_appuyez_sur_une_touche_pour_continuer();
+        }
+
+        //Demande au joueur de choisir une carte à jouer (si c'est un humain seulement)
+        if(!((*joueur_selectionne) -> est_ordinateur))
+        {
+            resultat_jouer = -1;
+
+            //S'il n'est pas possible de jouer une carte, on force l'utilisateur à en jeter une.
+            if((les_coups_possibles -> taille) == 0)
+                choix_carte = PASSER_SON_TOUR;
+
+            while(resultat_jouer != 1)
             {
-                if(choix_carte != PASSER_SON_TOUR)
-                {
-                    //Appel de la fonction jouer
-                    resultat_jouer = jouer(deck, joueur_selectionne, autre_joueur, choix_carte, 0, raison_refus, raison_refus2);
-                    switch(resultat_jouer)
-                    {
-                        case ERREUR_COUP_NON_PERMIS:
-                            printf("\nCe coup n'est pas permis ! Voici une explication : \n\n");
-                            if(strlen(raison_refus) > 0)
-                            {
-                                printf("%s", raison_refus);
+                if((les_coups_possibles -> taille) > 0)
+                    menu_demander_choix_carte(&choix_carte);
 
-                                if(strlen(raison_refus2) > 0)
-                                    printf("%s", raison_refus2);
-                            }
-
-                            sprintf(raison_refus, "");
-                            sprintf(raison_refus2, "");
-
-                            printf("\n\nVeuillez choisir une autre carte.\n\n");
-                        break;
-
-                        case ERREUR_CARTE_PAS_DANS_MAIN:
-                            printf("\nErreur, carte invalide. Soit ce type de carte n'existe pas, soit vous n'avez pas de carte de ce type dans votre main.\n");
-                            printf("Merci de choisir une carte valide.\n\n");
-                        break;
-                    }
-                }
-                else
-                {
-                    resultat_jouer_passer_tour = -1;
-                    while(resultat_jouer_passer_tour != 1)
-                    {
-                        menu_demander_choix_carte_jeter(&choix_jeter);
-                        if(choix_jeter != ANNULER_PASSER_SON_TOUR)
-                        {
-                            resultat_jouer_passer_tour = jouer(deck, joueur_selectionne, autre_joueur, choix_jeter, 1, raison_refus, raison_refus2);
-                            if(resultat_jouer_passer_tour == ERREUR_CARTE_PAS_DANS_MAIN)
-                            {
-                                printf("\nErreur, carte invalide. Soit ce type de carte n'existe pas, soit vous n'avez pas de carte de ce type dans votre main.\n");
-                                printf("Merci de choisir une carte valide.\n\n");
-                            }
-                        }
-                        else
-                            resultat_jouer_passer_tour = 1;
-                    }
-                    if(choix_jeter != ANNULER_PASSER_SON_TOUR)
-                    {
-                        printf("'%s' passe son tour.\n", (*joueur_selectionne) -> nom);
-                        resultat_jouer = 1;
-                        //cartes_deck_afficher((*joueur_selectionne) -> deck);
-                    }
-                    else
-                    {
-                        printf("\nVous avez changé d'avis et ne souhaitez plus passer votre tour.\n");
-                        printf("Vous allez être réinvité à sélectionner la carte que vous désirez jouer.\n\n");
-                    }
-                }
-                if(choix_jeter != ANNULER_PASSER_SON_TOUR && resultat_jouer == 1)
+                if(choix_carte != ARRETER_PARTIE && choix_carte != ENREGISTRER)
                 {
                     if(choix_carte != PASSER_SON_TOUR)
                     {
-                        printf("\n'%s' vient de jouer une carte '", (*joueur_selectionne) -> nom);
-                        cartes_type2francais(choix_carte);
-                        printf("'.\n");
-                    }
+                        //Appel de la fonction jouer
+                        resultat_jouer = jouer(deck, joueur_selectionne, autre_joueur, choix_carte, 0, raison_refus, raison_refus2);
+                        switch(resultat_jouer)
+                        {
+                            case ERREUR_COUP_NON_PERMIS:
+                                printf("\nCe coup n'est pas permis ! Voici une explication : \n\n");
+                                if(strlen(raison_refus) > 0)
+                                {
+                                    printf("%s", raison_refus);
 
-                    //« Y a-t-il coup fourré ? »
-                    if(     choix_carte == PANNE_ESSENCE &&
-                            (*autre_joueur) -> en_panne_dessence &&
-                            joueur_possede_carte(*autre_joueur, CITERNE) != NULL)
-                    {
-                        menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, PANNE_ESSENCE, CITERNE, raison_refus, raison_refus2);
-                    }
-                    else if(choix_carte == CREVE &&
-                            (*autre_joueur) -> est_creve &&
-                            joueur_possede_carte(*autre_joueur, INCREVABLE) != NULL)
-                    {
-                        menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, CREVE, INCREVABLE, raison_refus, raison_refus2);
-                    }
-                    else if(choix_carte == ACCIDENT &&
-                            (*autre_joueur) -> a_accident &&
-                            joueur_possede_carte(*autre_joueur, AS_DU_VOLANT) != NULL)
-                    {
-                        menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, ACCIDENT, AS_DU_VOLANT, raison_refus, raison_refus2);
-                    }
-                    else if(choix_carte == LIMITE_VITESSE &&
-                            (*autre_joueur) -> est_limite_par_vitesse &&
-                            joueur_possede_carte(*autre_joueur, PRIORITAIRE) != NULL)
-                    {
-                        menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, LIMITE_VITESSE, PRIORITAIRE, raison_refus, raison_refus2);
-                    }
-                    else if(choix_carte == STOP &&
-                            (*autre_joueur) -> est_arrete &&
-                            joueur_possede_carte(*autre_joueur, PRIORITAIRE) != NULL)
-                    {
-                        menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, STOP, PRIORITAIRE, raison_refus, raison_refus2);
-                    }
+                                    if(strlen(raison_refus2) > 0)
+                                        printf("%s", raison_refus2);
+                                }
 
-                    /* Si le joueur vient de jouter une carte 'botte', il a le droit de rejouer
-                    Il ne faut donc pas switcher les joueurs dans ce cas */
-                    if(choix_carte >= CITERNE && choix_carte <= PRIORITAIRE)
-                        printf("Vous venez de jouer une carte 'botte', c'est donc encore une fois à vous de jouer !\n");
+                                sprintf(raison_refus, "");
+                                sprintf(raison_refus2, "");
+
+                                printf("\n\nVeuillez choisir une autre carte.\n\n");
+                            break;
+
+                            case ERREUR_CARTE_PAS_DANS_MAIN:
+                                printf("\nErreur, carte invalide. Soit ce type de carte n'existe pas, soit vous n'avez pas de carte de ce type dans votre main.\n");
+                                printf("Merci de choisir une carte valide.\n\n");
+                            break;
+                        }
+                    }
                     else
                     {
-                        switch_tour(&joueur_selectionne, &autre_joueur);
-                        partie_est_terminee = partie_terminee(deck, *joueur_selectionne, *autre_joueur);
+                        resultat_jouer_passer_tour = -1;
+                        while(resultat_jouer_passer_tour != 1)
+                        {
+                            menu_demander_choix_carte_jeter(&choix_jeter, les_coups_possibles -> taille);
+                            if(choix_jeter != ANNULER_PASSER_SON_TOUR)
+                            {
+                                resultat_jouer_passer_tour = jouer(deck, joueur_selectionne, autre_joueur, choix_jeter, 1, raison_refus, raison_refus2);
+                                if(resultat_jouer_passer_tour == ERREUR_CARTE_PAS_DANS_MAIN)
+                                {
+                                    printf("\nErreur, carte invalide. Soit ce type de carte n'existe pas, soit vous n'avez pas de carte de ce type dans votre main.\n");
+                                    printf("Merci de choisir une carte valide.\n\n");
+                                }
+                            }
+                            else
+                                resultat_jouer_passer_tour = 1;
+                        }
+                        if(choix_jeter != ANNULER_PASSER_SON_TOUR)
+                        {
+                            printf("'%s' passe son tour et jette une carte.\n", (*joueur_selectionne) -> nom);
+                            resultat_jouer = 1;
+                            //cartes_deck_afficher((*joueur_selectionne) -> deck);
+                        }
+                        else if((les_coups_possibles -> taille) > 0)
+                        {
+                            choix_jeter = -1;
+                            printf("\nVous avez changé d'avis et ne souhaitez plus passer votre tour.\n");
+                            printf("Vous allez être réinvité à sélectionner la carte que vous désirez jouer.\n\n");
+                        }
                     }
                 }
+                else
+                    resultat_jouer = 1;
+            }
+        }
+        //C'est un ordinateur, on demande à l'IA de jouer
+        else
+        {
+            switch((*joueur_selectionne) -> difficulte_ordinateur)
+            {
+                case DEBUTANT:
+                    ia_debutant(*joueur_selectionne, *autre_joueur, &choix_carte, &choix_jeter);
+                break;
+
+                case COURSE:
+                    ia_course(*joueur_selectionne, *autre_joueur, &choix_carte, &choix_jeter);
+                break;
+
+                case AGRESSIF:
+                    ia_agressif(*joueur_selectionne, *autre_joueur, &choix_carte, &choix_jeter);
+                break;
+
+                case DEFENSIF:
+                    ia_defensif(*joueur_selectionne, *autre_joueur, &choix_carte, &choix_jeter);
+                break;
+
+                case EXPERT:
+                    ia_expert(*joueur_selectionne, *autre_joueur, &choix_carte, &choix_jeter);
+                break;
+
+                default:
+                    printf("Erreur, la difficulté de l'IA est invalide (jeu.c).");
+                    exit(0);
+            }
+
+            /* Le choix de la carte a été fait par l'ordinateur. On joue sa carte. */
+            if(choix_carte == PASSER_SON_TOUR)
+            {
+                resultat_jouer = jouer(deck, joueur_selectionne, autre_joueur, choix_jeter, 1, raison_refus, raison_refus2);
+                printf("'%s' passe son tour et jette une carte.\n", (*joueur_selectionne) -> nom);
+                demander_appuyez_sur_une_touche_pour_continuer();
             }
             else
-                resultat_jouer = 1;
+                resultat_jouer = jouer(deck, joueur_selectionne, autre_joueur, choix_carte, 0, raison_refus, raison_refus2);
+
+            if(resultat_jouer != 1)
+            {
+                printf("Erreur : l'ordinateur a choisi une carte qui n'est pas valide.\n");
+                printf("Code de l'erreur : %d.", resultat_jouer);
+                exit(0);
+            }
+        }
+
+
+        if(     choix_carte != ENREGISTRER && choix_carte != ARRETER_PARTIE
+                && choix_jeter != ANNULER_PASSER_SON_TOUR && resultat_jouer == 1)
+        {
+            if(choix_carte != PASSER_SON_TOUR)
+            {
+                printf("\n'%s' vient de jouer une carte '", (*joueur_selectionne) -> nom);
+                cartes_type2francais(choix_carte);
+                printf("'.\n");
+                demander_appuyez_sur_une_touche_pour_continuer();
+            }
+
+            //« Y a-t-il coup fourré ? »
+            if(     choix_carte == PANNE_ESSENCE &&
+                    (*autre_joueur) -> en_panne_dessence &&
+                    joueur_possede_carte(*autre_joueur, CITERNE) != NULL)
+            {
+                menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, PANNE_ESSENCE, CITERNE, raison_refus, raison_refus2);
+            }
+            else if(choix_carte == CREVE &&
+                    (*autre_joueur) -> est_creve &&
+                    joueur_possede_carte(*autre_joueur, INCREVABLE) != NULL)
+            {
+                menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, CREVE, INCREVABLE, raison_refus, raison_refus2);
+            }
+            else if(choix_carte == ACCIDENT &&
+                (*autre_joueur) -> a_accident &&
+                    joueur_possede_carte(*autre_joueur, AS_DU_VOLANT) != NULL)
+            {
+                menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, ACCIDENT, AS_DU_VOLANT, raison_refus, raison_refus2);
+            }
+            else if(choix_carte == LIMITE_VITESSE &&
+                    (*autre_joueur) -> est_limite_par_vitesse &&
+                joueur_possede_carte(*autre_joueur, PRIORITAIRE) != NULL)
+            {
+                menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, LIMITE_VITESSE, PRIORITAIRE, raison_refus, raison_refus2);
+            }
+            else if(choix_carte == STOP &&
+                    (*autre_joueur) -> est_arrete &&
+                    joueur_possede_carte(*autre_joueur, PRIORITAIRE) != NULL)
+            {
+                menu_demander_coup_fourre(deck, joueur_selectionne, autre_joueur, STOP, PRIORITAIRE, raison_refus, raison_refus2);
+            }
+
+            /* Si le joueur vient de jouter une carte 'botte', il a le droit de rejouer
+            Il ne faut donc pas switcher les joueurs dans ce cas */
+            if(choix_carte >= CITERNE && choix_carte <= PRIORITAIRE)
+                printf("\n'%s' vient de jouer une carte 'botte', c'est donc encore une fois à lui de jouer !\n", (*joueur_selectionne) -> nom);
+            else
+            {
+                switch_tour(&joueur_selectionne, &autre_joueur);
+                partie_est_terminee = partie_terminee(deck, *joueur_selectionne, *autre_joueur);
+            }
         }
     }
 
@@ -688,6 +811,6 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
 
     joueur_detruire(joueur_selectionne);
     joueur_detruire(autre_joueur);
-    *joueur_selectionne = joueur_init(0);
-    *autre_joueur = joueur_init(0);
+    *joueur_selectionne = NULL;
+    *autre_joueur = NULL;
 }

@@ -17,15 +17,21 @@
 #include "joueur.h"
 
 //Cette fonction initialise un joueur vide.
-Tjoueur* joueur_init(int est_ordinateur)
+Tjoueur* joueur_init(int est_ordinateur, int difficulte, int num_joueur)
 {
-    char nom_ordinateur[NOM_TAILLE_MAX] = "Ordinateur";
-
+    char nom_ordinateur[NOM_TAILLE_MAX];
     Tjoueur* monJoueur = malloc(sizeof(Tjoueur));
+
+    sprintf(nom_ordinateur, "Ordinateur %d", num_joueur);
+
+
     monJoueur -> est_ordinateur = est_ordinateur;
 
     if(est_ordinateur)
+    {
         strcpy(monJoueur -> nom, nom_ordinateur);
+        monJoueur -> difficulte_ordinateur = difficulte;
+    }
 
     monJoueur -> deck = liste_init(); //On crée un deck vide et on l'attribut au joueur.
 
@@ -34,8 +40,6 @@ Tjoueur* joueur_init(int est_ordinateur)
     monJoueur -> nb_coups_fourres_joues = 0;
     monJoueur -> nb_200bornes_jouees = 0;
     monJoueur -> couronnement = 0;
-
-    monJoueur -> carte_precedemment_jouee = 0;
 
     /* Handicaps */
     monJoueur -> est_creve = 0;
@@ -67,7 +71,7 @@ Tcarte* joueur_possede_carte(Tjoueur* monJoueur, int carte_type)
     return NULL;
 }
 
-//Cette fonction affiche toutes les infos sur un joueur.
+//Cette fonction affiche toutes les infos sur un joueur (pour débugage uniquement).
 void joueur_afficher(Tjoueur* monJoueur)
 {
     //S'il y a quelque chose à faire
@@ -82,6 +86,7 @@ void joueur_afficher(Tjoueur* monJoueur)
         printf("\nNom du joueur : %s\n", monJoueur -> nom);
 
         printf("Voici un récapitulatif des cartes de '%s'\n", monJoueur -> nom);
+        printf("%d cartes en main :\n", (monJoueur -> deck) -> taille);
         cartes_deck_afficher(monJoueur -> deck);
 
 
@@ -112,6 +117,46 @@ void joueur_afficher(Tjoueur* monJoueur)
 
 
         printf("\n\nSes handicaps : \n");
+        if(monJoueur -> est_creve)
+            printf("- Il a les pneus crevés.\n");
+
+        if(monJoueur -> a_accident)
+            printf("- Il a un accident.\n");
+
+        if(monJoueur -> en_panne_dessence)
+            printf("- Il n'a plus d'essence.\n");
+
+        if(monJoueur -> est_limite_par_vitesse)
+            printf("- Sa vitesse est limitée.\n");
+
+        if(monJoueur -> est_arrete)
+            printf("- Il est à l'arrêt.\n");
+    }
+}
+
+//Cette fonction affiche les infos utiles sur un joueur.
+void joueur_afficher_infos_utiles(Tjoueur* monJoueur)
+{
+    //S'il y a quelque chose à faire
+    if(monJoueur != NULL)
+    {
+        printf("\n'%s' a parcouru %d bornes.\n", monJoueur -> nom, monJoueur -> cumul_bornes);
+
+        printf("\nLes immunités de '%s' (cartes 'botte' activées) sont : \n", monJoueur -> nom);
+        if(monJoueur -> increvable)
+            printf("- Il est increvable.\n");
+
+        if(monJoueur -> citerne)
+            printf("- C'est un camion citerne (il ne peut plus avoir de panne d'essence).\n");
+
+        if(monJoueur -> as_du_volant)
+            printf("- C'est un as du volant (il ne peut plus avoir d'accident).\n");
+
+        if(monJoueur -> prioritaire)
+            printf("- C'est un véhicule prioritaire (il ne peut pas être arrêté et sa vitesse ne peut pas être limitée).\n");
+
+
+        printf("\n\nLes handicaps de '%s' sont : \n", monJoueur -> nom);
         if(monJoueur -> est_creve)
             printf("- Il a les pneus crevés.\n");
 

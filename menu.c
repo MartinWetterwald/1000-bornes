@@ -98,8 +98,21 @@ void menu_principal(int* choix)
     printf("Votre choix : ");
 
     *choix = lireLong();
-    printf("Choix : %d", *choix);
     printf("\n\n\n");
+}
+
+void menu_demander_ordinateur(int* choix)
+{
+    printf("Vous avez choisi de lancer une nouvelle partie.\n\n");
+    printf("Choisissez le mode de jeu : \n");
+    printf("1) Humain VS Ordinateur\n");
+    printf("2) Humain VS Humain\n");
+    printf("3) Ordinateur VS Ordinateur\n");
+    printf("0) Annuler et revenir au menu principal\n");
+    printf("Votre choix : ");
+
+    *choix = lireLong();
+    printf("\n");
 }
 
 void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX])
@@ -108,23 +121,38 @@ void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX])
     lire(nom, NOM_TAILLE_MAX);
 }
 
+void demander_appuyez_sur_une_touche_pour_continuer()
+{
+    char kikoo[NOM_TAILLE_MAX];
+    printf("Appuyez sur 'entrée' pour continuer...\n");
+    lire(kikoo, NOM_TAILLE_MAX);
+}
+
 void menu_demander_choix_carte(int* choix_carte)
 {
     printf("Entrez le code de la carte à jouer.\n");
     printf("Si vous ne souhaitez (ou ne pouvez) pas jouer de carte, vous pouvez :\n");
+    printf("- ne rien jouer et simplement passer votre tour (code %d) ;\n", PASSER_SON_TOUR);
     printf("- arrêter la partie sans enregistrer (code %d) ;\n", ARRETER_PARTIE);
-    printf("- arrêter la partie et l'enregister (code %d) ;\n", ENREGISTRER);
-    printf("- Ne rien jouer et simplement passer votre tour (code %d).\n", PASSER_SON_TOUR);
+    printf("- arrêter la partie et l'enregister (code %d).\n", ENREGISTRER);
+
     printf("Votre choix ? ");
 
     *choix_carte = lireLong();
 }
 
-void menu_demander_choix_carte_jeter(int* choix_carte)
+void menu_demander_choix_carte_jeter(int* choix_carte, int nb_coups_possibles)
 {
-    printf("\nMême si vous passez votre tour, vous êtes obligé d'enlever une carte de votre main.\n");
+    if(nb_coups_possibles > 0)
+        printf("\nMême si vous passez votre tour, vous êtes obligé d'enlever une carte de votre main.\n");
+    else
+        printf("\nVous êtes obligé de passer votre tour car vous ne pouvez jouer aucune carte de votre main.\n");
+
     printf("Entrez le code de la carte à jeter. ");
-    printf("Vous pouvez aussi entrer le code %d si vous avez changé d'avis et que vous ne souhaitez plus passer votre tour.\n", ANNULER_PASSER_SON_TOUR);
+
+    if(nb_coups_possibles > 0)
+        printf("Vous pouvez aussi entrer le code %d si vous avez changé d'avis et que vous ne souhaitez plus passer votre tour.\n", ANNULER_PASSER_SON_TOUR);
+
     printf("Votre choix ? ");
     *choix_carte = lireLong();
 }
@@ -132,43 +160,93 @@ void menu_demander_choix_carte_jeter(int* choix_carte)
 void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur, int obstacle, int botte, char* raison_refus, char* raison_refus2)
 {
     int choix_coup_fourre = 0;
+    int tirage_au_sort = 0;
 
-    printf("\n'%s', votre adversaire '%s' vient de jouer une carte '", (*autre_joueur) -> nom, (*joueur_selectionne) -> nom);
-    cartes_type2francais(obstacle);
-    printf("' mais vous avez dans votre jeu la carte 'botte' '");
-    cartes_type2francais(botte);
-    printf("'.\n");
-
-
-    printf("Vous avez la possibilité de déclarer « coup fourré », ");
-    printf("ainsi l'attaque de votre adversaire '%s' sera annulée et votre carte botte sera activée.\n", (*joueur_selectionne) -> nom);
-    printf("Vous aurez donc cinq cartes dans votre main, piocherez deux fois et ce sera toujours à vous de jouer.\n");
-    printf("Ceci est intéressant car vous gagnez %d points supplémentaires par coup fourré en fin de partie.", POINTS_PAR_COUP_FOURRE);
-
-    while(choix_coup_fourre != 1 && choix_coup_fourre != 2)
+    if((*autre_joueur) -> est_ordinateur)
     {
-        printf("\n\n");
-        printf("1) Déclarer « coup fourré » ;\n");
-        printf("2) Faire semblant que vous n'avez rien vu.\n");
-        printf("Votre choix ? ");
+        //Le mode débutant ne voit jamais les coups fourrés.
+        //Le mode course a 25% de chances de les voir.
+        //Le mode agressif a 50% de chances de les voir.
+        //Le mode défensif a 75% de chances de les voir.
+        //Le mode expert a 100% de chances de les voir.
 
-        choix_coup_fourre = lireLong();
+        tirage_au_sort = (rand() % 101) + 100; //On tire au sort un nombre entre 0 et 100
+
+        switch((*autre_joueur) -> difficulte_ordinateur)
+        {
+            case DEBUTANT:
+                //Le mode débutant ne voit jamais les coups fourrés.
+            break;
+
+            case COURSE:
+                //Le mode course a 25% de chances de les voir.
+                if(tirage_au_sort <= 25)
+                    coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+            break;
+
+            case AGRESSIF:
+                //Le mode agressif a 50% de chances de les voir.
+                if(tirage_au_sort <= 50)
+                    coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+            break;
+
+            case DEFENSIF:
+                //Le mode défensif a 75% de chances de les voir.
+                if(tirage_au_sort <= 75)
+                    coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+            break;
+
+            case EXPERT:
+                //Le mode expert a 100% de chances de les voir.
+                coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+            break;
+
+            default:
+                printf("Erreur, la difficulté de l'IA est invalide (menu.c).");
+                exit(0);
+        }
     }
+    else
+    {
+        //Si c'est un humain, on n'a pas trop le choix, on lui demande s'il veut dire « coup fourré » ou pas.
+        //Tout le monde répondra toujours « oui » à cette question, mais bon...
 
-    if(choix_coup_fourre == 1)
-        coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+        printf("\n'%s', votre adversaire '%s' vient de jouer une carte '", (*autre_joueur) -> nom, (*joueur_selectionne) -> nom);
+        cartes_type2francais(obstacle);
+        printf("' mais vous avez dans votre jeu la carte 'botte' '");
+        cartes_type2francais(botte);
+        printf("'.\n");
+
+        printf("Vous avez la possibilité de déclarer « coup fourré », ");
+        printf("ainsi l'attaque de votre adversaire '%s' sera annulée et votre carte botte sera activée.\n", (*joueur_selectionne) -> nom);
+        printf("Vous aurez donc cinq cartes dans votre main, piocherez deux fois et ce sera toujours à vous de jouer.\n");
+        printf("Ceci est intéressant car vous gagnez %d points supplémentaires par coup fourré en fin de partie.", POINTS_PAR_COUP_FOURRE);
+
+        while(choix_coup_fourre != 1 && choix_coup_fourre != 2)
+        {
+            printf("\n\n");
+            printf("1) Déclarer « coup fourré » ;\n");
+            printf("2) Faire semblant que vous n'avez rien vu.\n");
+            printf("Votre choix ? ");
+
+            choix_coup_fourre = lireLong();
+        }
+
+        if(choix_coup_fourre == 1)
+            coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+    }
 }
 
-void menu_nouvelle_partie(int* choix)
+void menu_difficulte_ordinateur(int* choix)
 {
-    printf("Vous avez choisi de lancer une nouvelle partie.\n\n");
+    printf("Vous avez choisi de jouer contre l'ordinateur.\n\n");
     printf("Choisissez le niveau de difficulté de l'ordinateur :\n");
     printf("1) Mode débutant\n");
     printf("2) Mode course\n");
     printf("3) Mode agressif\n");
     printf("4) Mode défensif\n");
     printf("5) Mode expert\n");
-    printf("0) Annuler et revenir au menu principal\n");
+    printf("0) Annuler et revenir au menu prédécent\n");
     printf("Votre choix : ");
     *choix = lireLong();
 }
