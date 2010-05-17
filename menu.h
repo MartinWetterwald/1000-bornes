@@ -26,7 +26,7 @@ void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjo
 
 void menu_quitter_etes_vous_sur(int* choix);
 void menu_demander_ordinateur(int* choix);
-void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX]);
+void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX], int joueur_num);
 void demander_appuyez_sur_une_touche_pour_continuer();
 
 void menu_charger_partie(char* choix);

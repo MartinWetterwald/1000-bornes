@@ -12,8 +12,10 @@
 #ifndef CONSTANTES_H_INCLUDED
 #define CONSTANTES_H_INCLUDED
 
+#define DEBUG_IA   1
+
 /* Jeu */
-#define BORNES_MAX 1000
+#define BORNES_MAX 700
 
 /* Erreurs */
 #define ERREUR_CARTE_PAS_DANS_MAIN  -2
@@ -25,11 +27,12 @@
 #define ORDINATEUR  1
 
 /* Difficulté de l'ordinateur */
-#define DEBUTANT    1
-#define COURSE      2
-#define AGRESSIF    3
-#define DEFENSIF    4
-#define EXPERT      5
+#define ARCHI_DEBUTANT  1
+#define DEBUTANT        2
+#define COURSE          3
+#define AGRESSIF        4
+#define DEFENSIF        5
+#define EXPERT          6
 
 
 

@@ -174,6 +174,7 @@ void joueur_afficher_infos_utiles(Tjoueur* monJoueur)
     }
 }
 
+/* Cette fonction comptabilise les points qu'a effectués un joueur */
 int joueur_compter_les_points(Tjoueur* joueur, int cumul_bornes_autre_joueur)
 {
     int points = 0;
@@ -235,6 +236,7 @@ int joueur_compter_les_points(Tjoueur* joueur, int cumul_bornes_autre_joueur)
     return points;
 }
 
+//Cette fonction libère la mémoire attribuée pour le stockage du joueur.
 void joueur_detruire(Tptjoueur* joueur)
 {
     //Si on a quelque chose à faire

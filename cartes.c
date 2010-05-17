@@ -330,6 +330,11 @@ int carte_aleatoire(Tdeck* deck)
     return liste_maillon_valeur_aleatoire(deck);
 }
 
+void deck_vider(Tdeck* deck)
+{
+    liste_vider(deck);
+}
+
 void deck_detruire(Tptdeck* deck)
 {
     liste_detruire(deck);

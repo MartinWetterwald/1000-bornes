@@ -39,6 +39,7 @@ void cartes_distribuer(Tdeck* deck, Tdeck* deck_joueur1, Tdeck* deck_joueur2, in
 int cartes_char2int(char* chaine);
 int cartes_verifier_validite(int carte);
 int carte_aleatoire(Tdeck* deck);
+void deck_vider(Tdeck* deck);
 void deck_detruire(Tptdeck* deck);
 
 #endif // CARTES_H_INCLUDED

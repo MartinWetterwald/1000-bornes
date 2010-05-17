@@ -52,6 +52,9 @@ int main()
                                 menu_difficulte_ordinateur(&difficulte_ordinateur);
                                 switch(difficulte_ordinateur)
                                 {
+                                    case ARCHI_DEBUTANT:
+                                    break;
+
                                     case DEBUTANT:
                                     break;
 
@@ -92,6 +95,9 @@ int main()
                                 menu_difficulte_ordinateur(&difficulte_ordinateur);
                                 switch(difficulte_ordinateur)
                                 {
+                                    case ARCHI_DEBUTANT:
+                                    break;
+
                                     case DEBUTANT:
                                     break;
 

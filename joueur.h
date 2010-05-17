@@ -16,7 +16,7 @@ La couche « joueur » requiert la couche inférieure : cartes */
 
 typedef struct Tjoueur {
     int est_ordinateur; //Pour distinguer un joueur ordinateur d'un autre
-    int difficulte_ordinateur;
+    int difficulte_ordinateur; //Si le joueur est humain, cette variable est remplie mais on ne s'en servira pas.
 
     char nom[NOM_TAILLE_MAX];
     Tdeck* deck;

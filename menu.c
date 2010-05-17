@@ -126,9 +126,9 @@ void menu_demander_ordinateur(int* choix)
     printf("\n");
 }
 
-void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX])
+void menu_demander_nom_joueur(char nom[NOM_TAILLE_MAX], int joueur_num)
 {
-    printf("Veuillez saisir votre nom (joueur humain) : ");
+    printf("Veuillez saisir votre nom (joueur humain n° %d) : ", joueur_num);
     lire(nom, NOM_TAILLE_MAX);
 }
 
@@ -175,35 +175,42 @@ void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjo
 
     if((*autre_joueur) -> est_ordinateur)
     {
-        //Le mode débutant ne voit jamais les coups fourrés.
-        //Le mode course a 25% de chances de les voir.
-        //Le mode agressif a 50% de chances de les voir.
-        //Le mode défensif a 75% de chances de les voir.
+        //Le mode archi-débutant ne voit jamais les coups fourrés.
+        //Le mode débutant a 20% de chances de les voir.
+        //Le mode course a 40% de chances de les voir.
+        //Le mode agressif a 60% de chances de les voir.
+        //Le mode défensif a 80% de chances de les voir.
         //Le mode expert a 100% de chances de les voir.
 
         tirage_au_sort = (rand() % 101) + 100; //On tire au sort un nombre entre 0 et 100
 
         switch((*autre_joueur) -> difficulte_ordinateur)
         {
+            case ARCHI_DEBUTANT:
+                //Le mode archi-débutant ne voit jamais les coups fourrés.
+            break;
+
             case DEBUTANT:
-                //Le mode débutant ne voit jamais les coups fourrés.
+                //Le mode débutant a 20% de chances de les voir.
+                if(tirage_au_sort <= 20)
+                    coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
             break;
 
             case COURSE:
-                //Le mode course a 25% de chances de les voir.
-                if(tirage_au_sort <= 25)
+                //Le mode course a 40% de chances de les voir.
+                if(tirage_au_sort <= 40)
                     coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
             break;
 
             case AGRESSIF:
-                //Le mode agressif a 50% de chances de les voir.
-                if(tirage_au_sort <= 50)
+                //Le mode agressif a 60% de chances de les voir.
+                if(tirage_au_sort <= 60)
                     coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
             break;
 
             case DEFENSIF:
-                //Le mode défensif a 75% de chances de les voir.
-                if(tirage_au_sort <= 75)
+                //Le mode défensif a 80% de chances de les voir.
+                if(tirage_au_sort <= 80)
                     coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
             break;
 
@@ -252,11 +259,12 @@ void menu_difficulte_ordinateur(int* choix)
 {
     printf("Vous avez choisi de jouer contre l'ordinateur.\n\n");
     printf("Choisissez le niveau de difficulté de l'ordinateur :\n");
-    printf("1) Mode débutant\n");
-    printf("2) Mode course\n");
-    printf("3) Mode agressif\n");
-    printf("4) Mode défensif\n");
-    printf("5) Mode expert\n");
+    printf("1) Mode archi-débutant\n");
+    printf("2) Mode débutant\n");
+    printf("3) Mode course\n");
+    printf("4) Mode agressif\n");
+    printf("5) Mode défensif\n");
+    printf("6) Mode expert\n");
     printf("0) Annuler et revenir au menu prédécent\n");
     printf("Votre choix : ");
     *choix = lireLong();

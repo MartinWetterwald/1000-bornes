@@ -16,6 +16,7 @@
 ia requiert la couche jeu */
 #include "jeu.h"
 
+void ia_archi_debutant(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter);
 void ia_debutant(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter);
 void ia_course(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter);
 void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter);

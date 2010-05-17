@@ -40,16 +40,16 @@ Tjoueur* qui_commence(Tjoueur* joueur1, Tjoueur* joueur2)
 void jeu_init(Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
 {
     if(!joueur1 -> est_ordinateur)
-        menu_demander_nom_joueur(joueur1 -> nom);
+        menu_demander_nom_joueur(joueur1 -> nom, 1);
 
     if(!joueur2 -> est_ordinateur)
-        menu_demander_nom_joueur(joueur2 -> nom);
+        menu_demander_nom_joueur(joueur2 -> nom, 2);
 
     cartes_deck_init(deck);
     cartes_distribuer(deck, joueur1 -> deck, joueur2 -> deck, CARTES_MAIN);
     printf("\nLe jeu a été mélangé et les cartes ont été distribuées. ");
 
-    //On choisit aléatoirement si l'ordinateur va commencer ou le joueur.
+    //On choisit aléatoirement lequel des deux joueurs va commencer.
     *joueur_selectionne = qui_commence(joueur1, joueur2);
 
     if(*joueur_selectionne == joueur1)
@@ -95,7 +95,7 @@ Tjoueur* detecter_gagnant(Tjoueur* joueur1, Tjoueur* joueur2)
 int partie_terminee(Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2)
 {
     return (
-            ( (joueur1 -> deck) -> taille == 0 && (joueur2 -> deck) -> taille == 0 ) ||
+            deck -> taille == 0 ||
             joueur1 -> cumul_bornes >= BORNES_MAX ||
             joueur2 -> cumul_bornes >= BORNES_MAX
             );
@@ -692,6 +692,10 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
         {
             switch((*joueur_selectionne) -> difficulte_ordinateur)
             {
+                case ARCHI_DEBUTANT:
+                    ia_archi_debutant(*joueur_selectionne, *autre_joueur, &choix_carte, &choix_jeter);
+                break;
+
                 case DEBUTANT:
                     ia_debutant(*joueur_selectionne, *autre_joueur, &choix_carte, &choix_jeter);
                 break;
@@ -721,7 +725,7 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
             if(choix_carte == PASSER_SON_TOUR)
             {
                 resultat_jouer = jouer(deck, joueur_selectionne, autre_joueur, choix_jeter, 1, raison_refus, raison_refus2);
-                printf("'%s' passe son tour et jette une carte.\n", (*joueur_selectionne) -> nom);
+                printf("\n'%s' passe son tour et jette une carte.\n", (*joueur_selectionne) -> nom);
                 demander_appuyez_sur_une_touche_pour_continuer();
             }
             else
@@ -730,11 +734,11 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
             if(resultat_jouer != 1)
             {
                 printf("Erreur : l'ordinateur a choisi une carte qui n'est pas valide.\n");
-                printf("Code de l'erreur : %d.", resultat_jouer);
+                printf("Code de l'erreur : %d. ", resultat_jouer);
                 printf("L'ordinateur avait essayé de jouer : '");
                 cartes_type2francais(choix_carte);
                 printf(" %d", choix_carte);
-                printf("'");
+                printf("'.\n");
                 exit(0);
             }
         }
@@ -788,10 +792,9 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
             if(choix_carte >= CITERNE && choix_carte <= PRIORITAIRE)
                 printf("\n'%s' vient de jouer une carte 'botte', c'est donc encore une fois à lui de jouer !\n", (*joueur_selectionne) -> nom);
             else
-            {
                 switch_tour(&joueur_selectionne, &autre_joueur);
-                partie_est_terminee = partie_terminee(deck, *joueur_selectionne, *autre_joueur);
-            }
+
+            partie_est_terminee = partie_terminee(deck, *joueur_selectionne, *autre_joueur);
         }
     }
 
@@ -816,7 +819,7 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
     }
 
     //Nettoyage de fin de partie.
-    liste_vider(deck);
+    deck_vider(deck);
 
     joueur_detruire(joueur_selectionne);
     joueur_detruire(autre_joueur);
