@@ -49,6 +49,13 @@ void ia_course(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choi
 
     int nb_obstacles, nb_parades, nb_bottes, nb_bornes;
 
+    int nb_possible_panne_essence, nb_possible_creve, nb_possible_accident, nb_possible_limite_vitesse, nb_possible_stop;
+    int nb_possible_essence, nb_possible_roue_de_secours, nb_possible_reparations, nb_possible_fin_limite_vitesse, nb_possible_roulez;
+    int nb_possible_citerne, nb_possible_increvable, nb_possible_as_du_volant, nb_possible_prioritaire;
+    int nb_possible_bornes25, nb_possible_bornes50, nb_possible_bornes75, nb_possible_bornes100, nb_possible_bornes200;
+
+    int nb_possible_obstacles, nb_possible_parades, nb_possible_bottes, nb_possible_bornes;
+
     Tdeck* coupsPossibles = lister_coups_possibles(&ordinateur, &humain);
 
     /* Comptabilisation du nombre de chaque type de cartes que possède l'ordinateur */
@@ -62,6 +69,17 @@ void ia_course(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choi
         &nb_obstacles, &nb_parades, &nb_bottes, &nb_bornes
     );
 
+    /* Comptabilisation du nombre de chaque type de cartes que peut jouer l'ordinateur*/
+    cartes_deck_compter_sorte
+    (
+        coupsPossibles,
+        &nb_possible_panne_essence, &nb_possible_creve, &nb_possible_accident, &nb_possible_limite_vitesse, &nb_possible_stop,
+        &nb_possible_essence, &nb_possible_roue_de_secours, &nb_possible_reparations, &nb_possible_fin_limite_vitesse, &nb_possible_roulez,
+        &nb_possible_citerne, &nb_possible_increvable, &nb_possible_as_du_volant, &nb_possible_prioritaire,
+        &nb_possible_bornes25, &nb_possible_bornes50, &nb_possible_bornes75, &nb_possible_bornes100, &nb_possible_bornes200,
+        &nb_possible_obstacles, &nb_possible_parades, &nb_possible_bottes, &nb_possible_bornes
+    );
+
 
 
 
@@ -71,17 +89,51 @@ void ia_course(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choi
         *choix_carte = PASSER_SON_TOUR;
 
         //Si l'IA course doit jeter une carte, elle va faire en sorte de ne pas jeter de carte borne.
-
-        //*choix_jeter = ????;
+        if ((ordinateur -> deck) -> taille == nb_bornes)
+        {
+            if(nb_bornes25 > 0)
+                *choix_jeter = BORNES25;
+            else if (nb_bornes50 > 0)
+                *choix_jeter = BORNES50;
+            else if (nb_bornes75 > 0)
+                *choix_jeter = BORNES75;
+            else if (nb_bornes100 > 0)
+                *choix_jeter = BORNES100;
+            else if (nb_bornes200 > 0)
+                *choix_jeter = BORNES200;
+        }
+        else
+        {
+            *choix_jeter = carte_aleatoire(ordinateur -> deck);
+            while(  *choix_jeter == BORNES25 || *choix_jeter == BORNES50 || *choix_jeter == BORNES75 ||
+                    *choix_jeter == BORNES100 || *choix_jeter == BORNES200
+            )
+                *choix_jeter = carte_aleatoire(ordinateur -> deck);
+        }
     }
 
     //Si l'ordinateur peut jouer une carte, on lui en fait jouer une.
     else
     {
         *choix_jeter = -1;
-
         //Faire des calculs pour choisir la carte à jouer parmi les cartes de la liste chainée 'coupsPossibles'.
-        //*choix_jouer = ????;
+
+        if (nb_possible_bornes > 0)
+        {
+            if(nb_possible_bornes200 > 0)
+                *choix_carte = BORNES200;
+            else if (nb_possible_bornes100 > 0)
+                *choix_carte = BORNES100;
+            else if (nb_possible_bornes75 > 0)
+                *choix_carte = BORNES75;
+            else if (nb_possible_bornes50 > 0)
+                *choix_carte = BORNES50;
+            else if (nb_possible_bornes25 > 0)
+                *choix_carte = BORNES25;
+        }
+
+        else
+            *choix_carte = carte_aleatoire(coupsPossibles);
     }
 }
 

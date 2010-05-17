@@ -182,34 +182,55 @@ int joueur_compter_les_points(Tjoueur* joueur, int cumul_bornes_autre_joueur)
     {
         /* Chaque joueur reçoit autant de points que le nombre de bornes qu'il a parcourues */
         points += (joueur -> cumul_bornes);
+        printf("- %d points car %d bornes parcourues\n", joueur -> cumul_bornes, joueur -> cumul_bornes);
 
         /* Points par carte botte jouée */
         points += (joueur -> nb_bottes_jouees) * POINTS_PAR_BOTTE;
+        if(joueur -> nb_bottes_jouees > 0)
+            printf("- %d points supplémentaires par cartes 'botte' jouées (%d jouées) => soit un total de %d points !\n", POINTS_PAR_BOTTE, joueur -> nb_bottes_jouees, (joueur -> nb_bottes_jouees) * POINTS_PAR_BOTTE);
 
         /* Bonus additionnel si toutes les cartes botte ont été jouées par le même joueur */
         if((joueur -> nb_bottes_jouees) == NB_BOTTES)
+        {
             points += POINTS_TOUS_LES_BOTTES;
+            printf("- %d points supplémentaires car vous avez joué les %d cartes 'botte' du jeu !\n", POINTS_PAR_BOTTE, NB_BOTTES);
+        }
 
         /* Points par coup fourré */
         points += (joueur -> nb_coups_fourres_joues) * POINTS_PAR_COUP_FOURRE;
+        if(joueur -> nb_coups_fourres_joues > 0)
+            printf("- %d points supplémentaires par coup fouré (%d effectués) => soit un total de %d points !\n", POINTS_PAR_COUP_FOURRE, joueur -> nb_coups_fourres_joues, (joueur -> nb_coups_fourres_joues) * POINTS_PAR_COUP_FOURRE);
 
         /* Points si le joueur a effectué BORNES_MAX bornes */
         if((joueur -> cumul_bornes) == BORNES_MAX)
+        {
             points += POINTS_SI_BORNES_MAX_EFFECTUEES;
+            printf("- %d points supplémentaires pour avoir parcouru le maximum de %d bornes !\n", POINTS_SI_BORNES_MAX_EFFECTUEES, BORNES_MAX);
+        }
 
         /* Points si le joueur effectue un couronnement
         (la dernière carte qu'il joue fait monter son total à BORNES_MAX bornes). */
         if(joueur -> couronnement)
+        {
             points += POINTS_COURONNEMENT;
+            printf("- %d points supplémentaires pour avoir effectué un couronnement (atteindre %d bornes alors qu'on ne peut plus piocher de cartes) !\n", POINTS_COURONNEMENT, BORNES_MAX);
+        }
 
         /* Points si la manche est complétée sans que le joueur ait utilisé de carte 200 bornes */
         if((joueur -> cumul_bornes) == BORNES_MAX && (joueur -> nb_200bornes_jouees) == 0)
+        {
             points += POINTS_SI_AUCUNE_CARTE_200BORNES_JOUEE;
+            printf("- %d points supplémentaires pour avoir parcouru %d bornes sans avoir joué une seule carte '200 bornes' !\n", POINTS_SI_AUCUNE_CARTE_200BORNES_JOUEE, BORNES_MAX);
+        }
 
         /* Points si un capot est effectué
         (atteinte de BORNES_MAX par un joueur, alors que l'autre joueur est toujours à 0 borne) */
         if((joueur -> cumul_bornes) == BORNES_MAX && cumul_bornes_autre_joueur == 0)
+        {
             points += POINTS_SI_CAPOT;
+            printf("- %d points supplémentaires pour avoir effectué un capot (parcourir un total de %d bornes alors que l'autre joueur n'a pas du tout avancé) !\n", POINTS_SI_CAPOT, BORNES_MAX);
+        }
+        printf("TOTAL : %d points.\n", points);
     }
     return points;
 }

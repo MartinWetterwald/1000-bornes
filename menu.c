@@ -101,6 +101,17 @@ void menu_principal(int* choix)
     printf("\n\n\n");
 }
 
+void menu_quitter_etes_vous_sur(int* choix)
+{
+    printf("Vous êtes sur le point de quitter. Êtes-vous sûr ?\n");
+    printf("1) Non\n");
+    printf("2) Oui\n");
+    printf("Votre choix : ");
+
+    *choix = lireLong();
+    printf("\n");
+}
+
 void menu_demander_ordinateur(int* choix)
 {
     printf("Vous avez choisi de lancer une nouvelle partie.\n\n");

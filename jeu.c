@@ -72,10 +72,16 @@ void switch_tour(Tptjoueur** joueur_selectionne, Tptjoueur** autre_joueur)
 
 Tjoueur* detecter_gagnant(Tjoueur* joueur1, Tjoueur* joueur2)
 {
-    int points_joueur1 = joueur_compter_les_points(joueur1, joueur2 -> cumul_bornes);
-    int points_joueur2 = joueur_compter_les_points(joueur2, joueur1 -> cumul_bornes);
+    int points_joueur1;
+    int points_joueur2;
 
-    printf("'%s' a effectué un total de %d points.\n", joueur1 -> nom, points_joueur1);
+    printf("Détail des points de '%s' : \n", joueur1 -> nom);
+    points_joueur1 = joueur_compter_les_points(joueur1, joueur2 -> cumul_bornes);
+
+    printf("\nDétail des points de '%s' : \n", joueur2 -> nom);
+    points_joueur2 = joueur_compter_les_points(joueur2, joueur1 -> cumul_bornes);
+
+    printf("\n'%s' a effectué un total de %d points.\n", joueur1 -> nom, points_joueur1);
     printf("'%s' a effectué un total de %d points.\n", joueur2 -> nom, points_joueur2);
 
     if(points_joueur1 > points_joueur2)
@@ -356,7 +362,7 @@ void coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_jo
     ( (*autre_joueur) -> nb_coups_fourres_joues )++;
 
     printf("\n\nCOUP FOURRÉ !\n");
-    printf("Vous venez de jouer une carte '");
+    printf("'%s', vous venez de jouer une carte '", (*joueur_selectionne) -> nom);
     cartes_type2francais(obstacle);
     printf("', mais '%s' détient la carte botte '", (*autre_joueur) -> nom);
     cartes_type2francais(botte);
@@ -599,7 +605,6 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
             cartes_deck_afficher(les_coups_possibles);
 
             printf("\n");
-            demander_appuyez_sur_une_touche_pour_continuer();
         }
 
         //Demande au joueur de choisir une carte à jouer (si c'est un humain seulement)
@@ -726,6 +731,10 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
             {
                 printf("Erreur : l'ordinateur a choisi une carte qui n'est pas valide.\n");
                 printf("Code de l'erreur : %d.", resultat_jouer);
+                printf("L'ordinateur avait essayé de jouer : '");
+                cartes_type2francais(choix_carte);
+                printf(" %d", choix_carte);
+                printf("'");
                 exit(0);
             }
         }
