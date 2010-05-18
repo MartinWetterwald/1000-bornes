@@ -318,7 +318,6 @@ void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
             {
                 if(DEBUG_IA) printf("[IA AGRESSIF] Cool ! Je vais pouvoir jouer un obstacle de la mort ! :D\n");
                 *choix_carte = carte_aleatoire(coupsPossibles);
-                //Ça déconne ci-dessous
                 while(*choix_carte != PANNE_ESSENCE && *choix_carte != CREVE && *choix_carte != ACCIDENT)
                     *choix_carte = carte_aleatoire(coupsPossibles);
             }
@@ -371,28 +370,77 @@ void ia_defensif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
         &nb_possible_bornes25, &nb_possible_bornes50, &nb_possible_bornes75, &nb_possible_bornes100, &nb_possible_bornes200,
         &nb_possible_obstacles, &nb_possible_parades, &nb_possible_bottes, &nb_possible_bornes
     );
-
-
-
+    if(DEBUG_IA) cartes_deck_afficher(coupsPossibles);
 
     //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
-    if( (coupsPossibles -> taille) == 0)
+    if(coupsPossibles -> taille == 0)
     {
         *choix_carte = PASSER_SON_TOUR;
+        if(DEBUG_IA) printf("[IA DÉFENSIF] Je suis obligé de passer mon tour car je ne peux rien jouer.\n");
 
-
-        //Faire des calculs pour choisir la carte à jeter parmi les cartes de l'ordinateur.
-        //Ses cartes se trouvent dans la liste chainée 'ordinateur -> deck'.
-        //*choix_jeter = ????;
+        //Si l'IA est obligée de jeter une carte 'botte' ou 'parade', elle le fait.
+        //Le moins intéressant des deux est la parade. C'est donc la première chose à balancer.
+        if ((ordinateur -> deck) -> taille == nb_bottes + nb_parades)
+        {
+            if(DEBUG_IA) printf("[IA DÉFENSIF] Je n'ai que des cartes bottes/parades confondues dans ma main, je suis obligé d'en jeter une. :'(\n");
+            if(nb_parades > 0)
+            {
+                if(DEBUG_IA) printf("[IA DÉFENSIF] Je me débarasse d'une parade, car c'est bien moins intéressant qu'une carte 'botte'.\n");
+                *choix_jeter = carte_aleatoire(ordinateur -> deck);
+                while(*choix_jeter < ESSENCE || *choix_jeter > ROULEZ)
+                    *choix_jeter = carte_aleatoire(ordinateur -> deck);
+            }
+            else
+            {
+                //Ce cas n'arrivera jamais, car une carte botte est toujours jouable. On n'aura donc jamais à en jeter. =)
+                if(DEBUG_IA) printf("[IA DÉFENSIF] Je n'ai pas de carte 'parade' à balancer. Je suis contraint de jeter une super carte 'BOTTE' de la mort. :'(\n");
+                *choix_jeter = carte_aleatoire(ordinateur -> deck);
+            }
+        }
+        //Si l'IA défensif doit jeter une carte et qu'elle peut en jeter une autre qu'un (botte/parade confondus),
+        //elle va le faire et ne pas choisir ces types de cartes.
+        else
+        {
+            if(DEBUG_IA) printf("[IA DÉFENSIF] Je ne suis pas obligé de jeter une carte botte/parade. Je vais donc en jeter une autre, peu importe laquelle !\n");
+            *choix_jeter = carte_aleatoire(ordinateur -> deck);
+            while( (*choix_jeter >= ESSENCE && *choix_jeter <= ROULEZ) || (*choix_jeter >= CITERNE && *choix_jeter <= PRIORITAIRE) )
+                *choix_jeter = carte_aleatoire(ordinateur -> deck);
+        }
     }
 
     //Si l'ordinateur peut jouer une carte, on lui en fait jouer une.
     else
     {
+        if(DEBUG_IA) printf("[IA DÉFENSIF] Je peux jouer une carte ! Je vais donc bien évidemment saisir cette opportunité.\n");
         *choix_jeter = -1;
+        //S'il peut jouer au moins un botte/parade, on le force à en jouer un. Il faut choisir ce qu'il va jouer.
+        if (nb_possible_parades + nb_possible_bottes > 0)
+        {
+            if(DEBUG_IA) printf("[IA DÉFENSIF] Ah, au moins une carte botte/parade confondues se trouve dans les cartes que j'ai le droit de jouer. Tant mieux, je vais pouvoir en jouer une !\n");
 
-        //Faire des calculs pour choisir la carte à jouer parmi les cartes de la liste chainée 'coupsPossibles'.
-        //*choix_jouer = ????;
+            //S'il a une carte 'botte' dans sa main, on lui fait jouer tout de suite (tant pis, on ne favorise pas le déclenchement de coups fourrés, mais bon).
+            if(nb_possible_bottes > 0)
+            {
+                if(DEBUG_IA) printf("[IA DÉFENSIF] Cool ! Je peux jouer une carte 'BOTTE' ! :D\n");
+                *choix_carte = carte_aleatoire(coupsPossibles);
+                while(*choix_carte < CITERNE || *choix_carte > PRIORITAIRE)
+                    *choix_carte = carte_aleatoire(coupsPossibles);
+            }
+            //Sinon, c'est qu'on va lui faire jouer une parade.
+            else
+            {
+                if(DEBUG_IA) printf("[IA DÉFENSIF] Dommage, je n'ai pas de carte 'botte', mais je vais jouer une PARADE. :)\n");
+                *choix_carte = carte_aleatoire(coupsPossibles);
+                while(*choix_carte < ESSENCE || *choix_carte > ROULEZ);
+                    *choix_carte = carte_aleatoire(coupsPossibles);
+            }
+        }
+        //S'il ne peut jouer aucun botte/parade, on le fait choisir une carte de façon aléatoire, parmi celles qu'il peut jouer
+        else
+        {
+            if(DEBUG_IA) printf("[IA DÉFENSIF] Je ne peux jouer ni 'botte' ni 'parade'. Je vais donc jouer n'importe quoi. :'(\n");
+            *choix_carte = carte_aleatoire(coupsPossibles);
+        }
     }
 }
 
@@ -436,14 +484,14 @@ void ia_expert(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choi
         &nb_possible_obstacles, &nb_possible_parades, &nb_possible_bottes, &nb_possible_bornes
     );
 
+    printf("Cette IA n'est pas encore implémentée.\n");
+    *choix_carte = ARRETER_PARTIE;
+
     //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
     if( (coupsPossibles -> taille) == 0)
     {
         *choix_carte = PASSER_SON_TOUR;
-
-
-        //Faire des calculs pour choisir la carte à jeter parmi les cartes de l'ordinateur.
-        //Ses cartes se trouvent dans la liste chainée 'ordinateur -> deck'.
+        //Sélection parmi ordinateur -> deck
         //*choix_jeter = ????;
     }
 
@@ -451,8 +499,7 @@ void ia_expert(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choi
     else
     {
         *choix_jeter = -1;
-
-        //Faire des calculs pour choisir la carte à jouer parmi les cartes de la liste chainée 'coupsPossibles'.
+        //Sélection parmi coupsPossibles
         //*choix_jouer = ????;
     }
 }

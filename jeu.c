@@ -726,6 +726,12 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
             {
                 resultat_jouer = jouer(deck, joueur_selectionne, autre_joueur, choix_jeter, 1, raison_refus, raison_refus2);
                 printf("\n'%s' passe son tour et jette une carte.\n", (*joueur_selectionne) -> nom);
+                if(DEBUG_IA)
+                {
+                    printf("La carte qu'il vient de jeter est : '");
+                    cartes_type2francais(choix_jeter);
+                    printf("'.\n");
+                }
                 demander_appuyez_sur_une_touche_pour_continuer();
             }
             else

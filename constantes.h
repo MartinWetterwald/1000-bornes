@@ -15,14 +15,13 @@
 #define DEBUG_IA   1
 
 /* Jeu */
-#define BORNES_MAX 700
+#define BORNES_MAX 1000
 
 /* Erreurs */
 #define ERREUR_CARTE_PAS_DANS_MAIN  -2
 #define ERREUR_COUP_NON_PERMIS      -3
 
 /* Joueurs */
-
 #define HUMAIN      0
 #define ORDINATEUR  1
 
@@ -33,7 +32,6 @@
 #define AGRESSIF        4
 #define DEFENSIF        5
 #define EXPERT          6
-
 
 
 /* Points */
@@ -49,21 +47,9 @@
 /* Chaines de caractères */
 #define NOM_TAILLE_MAX      50 //Ceci correspond à la taille maximum pour le nom d'un joueur
 #define TAILLE_MAX_REFUS    200 //Taille maximum du refus signifié par la fonction 'coup_autorise' de jeu.c
-
-
-/* Fichiers */
 #define TAILLE_MAX_LIGNE        10000
 #define TAILLE_MAX_NOM_FICHIER  50
-
-
-
-/* Pauses (sleep) */
-#define PAUSE_DEBUT_PARTIE                      0
-#define PAUSE_APRES_PIOCHAGE                    0
-#define PAUSE_APRES_AFFICHER_ETAT               0
-#define PAUSE_APRES_AFFICHER_MAIN_JOUEUR        0
-#define PAUSE_APRES_AFFICHER_COUPS_POSSIBLES    0
-#define PAUSE_APRES_AVOIR_JOUE                  5
+#define CARTE_NOM_MAX       30
 
 
 /* Cartes */
@@ -75,7 +61,6 @@
 #define MELANGER_MIN        1000
 #define MELANGER_MAX        10000
 
-#define CARTE_NOM_MAX       30
 
 
 /* Définition des cartes */
