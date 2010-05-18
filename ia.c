@@ -243,30 +243,32 @@ void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
         &nb_possible_obstacles, &nb_possible_parades, &nb_possible_bottes, &nb_possible_bornes
     );
 
+    if(DEBUG_IA) cartes_deck_afficher(coupsPossibles);
+
     //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
     if(coupsPossibles -> taille == 0)
     {
         *choix_carte = PASSER_SON_TOUR;
-        if(DEBUG_IA) printf("IA : Je suis obligé de passer mon tour car je ne peux rien jouer.\n");
+        if(DEBUG_IA) printf("[IA AGRESSIF] Je suis obligé de passer mon tour car je ne peux rien jouer.\n");
 
         //Si l'IA est obligée de jeter une carte obstacle car elle n'a que des cartes obstacles dans sa main, on établit une priorité.
         //L'obstacle le moins intéressant est la limite de vitesse, suivi du feu rouge (stop). Les autres obstocles sont équivalents et sont à jeter en dernier recours.
         if ((ordinateur -> deck) -> taille == nb_obstacles)
         {
-            if(DEBUG_IA) printf("IA : Je n'ai que des cartes obstacle dans ma main, je suis obligé d'en jeter une. :'(\n");
+            if(DEBUG_IA) printf("[IA AGRESSIF] Je n'ai que des cartes obstacle dans ma main, je suis obligé d'en jeter une. :'(\n");
             if(nb_limite_vitesse > 0)
             {
-                if(DEBUG_IA) printf("IA : Je me débarasse de la carte 'limite de vitesse' car c'est l'obstacle le moins intéressant.\n");
+                if(DEBUG_IA) printf("[IA AGRESSIF] Je me débarasse de la carte 'limite de vitesse' car c'est l'obstacle le moins intéressant.\n");
                 *choix_jeter = LIMITE_VITESSE;
             }
             else if(nb_stop > 0)
             {
-                if(DEBUG_IA) printf("IA : Je me débarrasse de la carte 'stop', car je n'ai pas de carte 'limite de vitesse à jeter' et c'est donc le deuxième obstacle le moins intéressant.\n");
+                if(DEBUG_IA) printf("[IA AGRESSIF] Je me débarrasse de la carte 'stop', car je n'ai pas de carte 'limite de vitesse à jeter' et c'est donc le deuxième obstacle le moins intéressant.\n");
                 *choix_jeter = STOP;
             }
             else
             {
-                if(DEBUG_IA) printf("IA : Je n'ai ni de 'limite de vitesse', ni de 'stop' à jeter. Je suis contraint de jeter une super carte obstacle de la mort. :'(\n");
+                if(DEBUG_IA) printf("[IA AGRESSIF] Je n'ai ni de 'limite de vitesse', ni de 'stop' à jeter. Je suis contraint de jeter une super carte obstacle de la mort. :'(\n");
                 *choix_jeter = carte_aleatoire(ordinateur -> deck);
             }
         }
@@ -274,7 +276,7 @@ void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
         //elle va le faire et ne pas choisir l'obstacle.
         else
         {
-            if(DEBUG_IA) printf("IA : Je ne suis pas obligé de jeter une carte obstacle. Je vais donc en jeter une autre, peu importe laquelle !\n");
+            if(DEBUG_IA) printf("[IA AGRESSIF] Je ne suis pas obligé de jeter une carte obstacle. Je vais donc en jeter une autre, peu importe laquelle !\n");
             *choix_jeter = carte_aleatoire(ordinateur -> deck);
             while(  *choix_jeter == PANNE_ESSENCE || *choix_jeter == CREVE || *choix_jeter == ACCIDENT ||
                     *choix_jeter == LIMITE_VITESSE || *choix_jeter == STOP
@@ -286,28 +288,35 @@ void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
     //Si l'ordinateur peut jouer une carte, on lui en fait jouer une.
     else
     {
-        if(DEBUG_IA) printf("IA : Je peux jouer une carte ! Je vais donc bien évidemment saisir cette opportunité.\n");
+        if(DEBUG_IA) printf("[IA AGRESSIF] Je peux jouer une carte ! Je vais donc bien évidemment saisir cette opportunité.\n");
         *choix_jeter = -1;
         //S'il peut jouer au moins un obstacle, on le force à en jouer un. Il faut choisir lequel il va jouer.
         if (nb_possible_obstacles > 0)
         {
-            if(DEBUG_IA) printf("IA : Ah, au moins une carte obstacle se trouve dans les cartes que j'ai le droit de jouer. Tant mieux, je vais pouvoir jouer un obstacle !\n");
-            //S'il est obligé de jouer une carte limite de vitesse, il la joue.
-            if(nb_possible_limite_vitesse > 0 && nb_possible_limite_vitesse == nb_possible_obstacles)
+            if(DEBUG_IA) printf("[IA AGRESSIF] Ah, au moins une carte obstacle se trouve dans les cartes que j'ai le droit de jouer. Tant mieux, je vais pouvoir jouer un obstacle !\n");
+            //Si les seules cartes 'obstacle' qu'il peut jouer sont des stops et/ou des limites de vitesses
+            if(nb_possible_limite_vitesse + nb_possible_stop == nb_possible_obstacles)
             {
-                if(DEBUG_IA) printf("IA : Je suis obligé de jouer l'obstacle le plus pourri : 'limite de vitesse'. :'(\n");
-                *choix_carte = LIMITE_VITESSE;
-            }
-            //S'il est obligé de jouer une carte stop, il la joue.
-            else if(nb_possible_stop > 0 && nb_possible_stop == nb_possible_obstacles)
-            {
-                if(DEBUG_IA) printf("IA : Je suis obligé de jouer l'obstacle le deuxième le plus pourri : 'stop'. :'(\n");
-                *choix_carte = STOP;
+                if(DEBUG_IA) printf("[IA AGRESSIF] Merde, je vais être obligé de choisir entre les deux obstacles les plus pourris. Si je peux, je jouerai le stop, sinon la limite de vitesse :'(\n");
+
+                //S'il est obligé de jouer une carte 'limite de vitesse', il la joue.
+                if(nb_possible_limite_vitesse > 0 && nb_possible_limite_vitesse == nb_possible_obstacles)
+                {
+                    if(DEBUG_IA) printf("[IA AGRESSIF] Je suis obligé de jouer l'obstacle le plus pourri : 'limite de vitesse'. :'(\n");
+                    *choix_carte = LIMITE_VITESSE;
+                }
+                //S'il n'est pas obligé de jouer une carte 'limite de vitesse' mais qu'il n'a que le choix entre 'limite de vitesse' et 'stop', il va préférer 'stop'.
+                else
+                {
+                    if(DEBUG_IA) printf("[IA AGRESSIF] Je ne suis pas obligé de jouer 'limite de vitesse', je vais jouer 'stop' le deuxième obstacle le plus pourri. :'(\n");
+                    *choix_carte = STOP;
+                }
+
             }
             //S'il n'est pas contraint de jouer une carte stop ou une carte limite de vitesse, on lui fait jouer un autre obstacle que ces deux-là !
             else
             {
-                if(DEBUG_IA) printf("IA : Cool ! Je vais pouvoir jouer un obstacle de la mort ! :D\n");
+                if(DEBUG_IA) printf("[IA AGRESSIF] Cool ! Je vais pouvoir jouer un obstacle de la mort ! :D\n");
                 *choix_carte = carte_aleatoire(coupsPossibles);
                 //Ça déconne ci-dessous
                 while(*choix_carte != PANNE_ESSENCE && *choix_carte != CREVE && *choix_carte != ACCIDENT)
@@ -317,7 +326,7 @@ void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
         //S'il ne peut jouer aucun obstacle, on le fait choisir une carte de façon aléatoire, parmi celles qu'il peut jouer
         else
         {
-            if(DEBUG_IA) printf("Je ne peux jouer aucun obstacle. Je vais donc jouer n'importe quoi. :'(\n");
+            if(DEBUG_IA) printf("[IA AGRESSIF] Je ne peux jouer aucun obstacle. Je vais donc jouer n'importe quoi. :'(\n");
             *choix_carte = carte_aleatoire(coupsPossibles);
         }
     }
