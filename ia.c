@@ -431,7 +431,7 @@ void ia_defensif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
             {
                 if(DEBUG_IA) printf("[IA DÉFENSIF] Dommage, je n'ai pas de carte 'botte', mais je vais jouer une PARADE. :)\n");
                 *choix_carte = carte_aleatoire(coupsPossibles);
-                while(*choix_carte < ESSENCE || *choix_carte > ROULEZ);
+                while(*choix_carte < ESSENCE || *choix_carte > ROULEZ)
                     *choix_carte = carte_aleatoire(coupsPossibles);
             }
         }

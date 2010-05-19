@@ -18,7 +18,7 @@ void afficher_logo();
 
 void menu_principal(int* choix);
 
-void menu_difficulte_ordinateur(int* choix);
+void menu_difficulte_ordinateur(int* choix, int num_joueur);
 
 void menu_demander_choix_carte(int* choix_carte);
 void menu_demander_choix_carte_jeter(int* choix_carte, int nb_coups_possibles);

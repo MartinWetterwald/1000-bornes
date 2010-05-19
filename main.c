@@ -26,7 +26,7 @@ int main()
     Tjoueur* joueur_selectionne = NULL;
     Tjoueur* autre_joueur = NULL;
 
-    int menu1_choix = -1, jouer_contre_ordinateur = -1, difficulte_ordinateur = -1;
+    int menu1_choix = -1, jouer_contre_ordinateur = -1, difficulte_ordinateur1 = -1, difficulte_ordinateur2 = -1;
     char nomFichier[TAILLE_MAX_NOM_FICHIER];
 
     afficher_logo();
@@ -46,84 +46,28 @@ int main()
                     switch(jouer_contre_ordinateur)
                     {
                         case 1:
-                            difficulte_ordinateur = -1;
-                            while(difficulte_ordinateur == -1)
-                            {
-                                menu_difficulte_ordinateur(&difficulte_ordinateur);
-                                switch(difficulte_ordinateur)
-                                {
-                                    case ARCHI_DEBUTANT:
-                                    break;
+                            //On demande la difficulté de l'ordinateur
+                            choisir_difficulte_ordinateur(&jouer_contre_ordinateur, &difficulte_ordinateur2, 2);
 
-                                    case DEBUTANT:
-                                    break;
-
-                                    case COURSE:
-                                    break;
-
-                                    case AGRESSIF:
-                                    break;
-
-                                    case DEFENSIF:
-                                    break;
-
-                                    case EXPERT:
-                                    break;
-
-                                    case 0:
-                                        jouer_contre_ordinateur = -1;
-                                    break;
-
-                                    default:
-                                        printf("\nChoix incorrect. Recommencez.\n");
-                                        difficulte_ordinateur = -1;
-                                }
-                            }
-                            joueur1 = joueur_init(HUMAIN, difficulte_ordinateur, 1);
-                            joueur2 = joueur_init(ORDINATEUR, difficulte_ordinateur, 2);
+                            //On initialise les joueurs
+                            joueur1 = joueur_init(HUMAIN, PAS_DE_DIFFICULTE, 1);
+                            joueur2 = joueur_init(ORDINATEUR, difficulte_ordinateur2, 2);
                         break;
 
                         case 2:
-                            joueur1 = joueur_init(HUMAIN, difficulte_ordinateur, 1);
-                            joueur2 = joueur_init(HUMAIN, difficulte_ordinateur, 2);
+                            joueur1 = joueur_init(HUMAIN, PAS_DE_DIFFICULTE, 1);
+                            joueur2 = joueur_init(HUMAIN, PAS_DE_DIFFICULTE, 2);
                         break;
 
                         case 3:
-                            difficulte_ordinateur = -1;
-                            while(difficulte_ordinateur == -1)
-                            {
-                                menu_difficulte_ordinateur(&difficulte_ordinateur);
-                                switch(difficulte_ordinateur)
-                                {
-                                    case ARCHI_DEBUTANT:
-                                    break;
+                            /* On demande la difficulté de chaque ordinateur */
+                            choisir_difficulte_ordinateur(&jouer_contre_ordinateur, &difficulte_ordinateur1, 1);
+                            if(difficulte_ordinateur1 != ARRETER_PARTIE)
+                                choisir_difficulte_ordinateur(&jouer_contre_ordinateur, &difficulte_ordinateur2, 2);
 
-                                    case DEBUTANT:
-                                    break;
-
-                                    case COURSE:
-                                    break;
-
-                                    case AGRESSIF:
-                                    break;
-
-                                    case DEFENSIF:
-                                    break;
-
-                                    case EXPERT:
-                                    break;
-
-                                    case 0:
-                                        jouer_contre_ordinateur = -1;
-                                    break;
-
-                                    default:
-                                        printf("\nChoix incorrect. Recommencez.\n");
-                                        difficulte_ordinateur = -1;
-                                }
-                            }
-                            joueur1 = joueur_init(ORDINATEUR, difficulte_ordinateur, 1);
-                            joueur2 = joueur_init(ORDINATEUR, difficulte_ordinateur, 2);
+                            /* On initialise les deux joueurs */
+                            joueur1 = joueur_init(ORDINATEUR, difficulte_ordinateur1, 1);
+                            joueur2 = joueur_init(ORDINATEUR, difficulte_ordinateur2, 2);
                         break;
 
                         case 0:
@@ -135,7 +79,7 @@ int main()
                     }
                 }
 
-                if(jouer_contre_ordinateur != 0 && difficulte_ordinateur != 0)
+                if(jouer_contre_ordinateur != ARRETER_PARTIE && difficulte_ordinateur1 != ARRETER_PARTIE && difficulte_ordinateur2 != ARRETER_PARTIE)
                 {
                     jeu_init(deckPrincipal, joueur1, joueur2, &joueur_selectionne, &autre_joueur);
                     jeu(deckPrincipal, &joueur_selectionne, &autre_joueur);

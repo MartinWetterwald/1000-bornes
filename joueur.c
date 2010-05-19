@@ -71,6 +71,43 @@ Tcarte* joueur_possede_carte(Tjoueur* monJoueur, int carte_type)
     return NULL;
 }
 
+void choisir_difficulte_ordinateur(int* jouer_contre_ordinateur, int* difficulte_ordinateur, int num_joueur)
+{
+    *difficulte_ordinateur = -1;
+    while(*difficulte_ordinateur == -1)
+    {
+        menu_difficulte_ordinateur(difficulte_ordinateur, num_joueur);
+        switch(*difficulte_ordinateur)
+        {
+            case ARCHI_DEBUTANT:
+            break;
+
+            case DEBUTANT:
+            break;
+
+            case COURSE:
+            break;
+
+            case AGRESSIF:
+            break;
+
+            case DEFENSIF:
+            break;
+
+            case EXPERT:
+            break;
+
+            case ARRETER_PARTIE:
+                *jouer_contre_ordinateur = -1;
+            break;
+
+            default:
+                printf("\nChoix incorrect. Recommencez.\n");
+                *difficulte_ordinateur = -1;
+        }
+    }
+}
+
 //Cette fonction affiche toutes les infos sur un joueur (pour débugage uniquement).
 void joueur_afficher(Tjoueur* monJoueur)
 {

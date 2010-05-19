@@ -26,12 +26,13 @@
 #define ORDINATEUR  1
 
 /* Difficulté de l'ordinateur */
-#define ARCHI_DEBUTANT  1
-#define DEBUTANT        2
-#define COURSE          3
-#define AGRESSIF        4
-#define DEFENSIF        5
-#define EXPERT          6
+#define PAS_DE_DIFFICULTE   -1
+#define ARCHI_DEBUTANT      1
+#define DEBUTANT            2
+#define COURSE              3
+#define AGRESSIF            4
+#define DEFENSIF            5
+#define EXPERT              6
 
 
 /* Points */

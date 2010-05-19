@@ -44,6 +44,7 @@ typedef struct Tjoueur {
 
 Tjoueur* joueur_init(int est_ordinateur, int difficulte, int num_joueur);
 Tcarte* joueur_possede_carte(Tjoueur* monJoueur, int carte_type);
+void choisir_difficulte_ordinateur(int* jouer_contre_ordinateur, int* difficulte_ordinateur, int num_joueur);
 void joueur_afficher(Tjoueur* monJoueur);
 void joueur_afficher_infos_utiles(Tjoueur* monJoueur);
 int joueur_compter_les_points(Tjoueur* joueur, int cumul_bornes_autre_joueur);

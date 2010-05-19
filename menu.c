@@ -255,10 +255,9 @@ void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjo
     }
 }
 
-void menu_difficulte_ordinateur(int* choix)
+void menu_difficulte_ordinateur(int* choix, int num_joueur)
 {
-    printf("Vous avez choisi de jouer contre l'ordinateur.\n\n");
-    printf("Choisissez le niveau de difficulté de l'ordinateur :\n");
+    printf("Choisissez le niveau de difficulté de l'ordinateur n° %d :\n", num_joueur);
     printf("1) Mode archi-débutant\n");
     printf("2) Mode débutant\n");
     printf("3) Mode course\n");
@@ -268,6 +267,7 @@ void menu_difficulte_ordinateur(int* choix)
     printf("0) Annuler et revenir au menu prédécent\n");
     printf("Votre choix : ");
     *choix = lireLong();
+    printf("\n");
 }
 
 void menu_charger_partie(char* choix)
