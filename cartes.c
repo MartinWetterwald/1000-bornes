@@ -295,19 +295,15 @@ void cartes_type2francais(int val)
 }
 
 /* Cette fonction distribue les cartes en début de partie */
-void cartes_distribuer(Tptdeck deck, Tptdeck deck_joueur1, Tptdeck deck_joueur2, int nb)
+void cartes_distribuer(Tptdeck deck, Tptdeck deck_joueur, int nb)
 {
     int i;
     //Si on a quelque chose à faire
-    if(deck != NULL && deck -> premier != NULL && deck_joueur1 != NULL && deck_joueur2 != NULL)
+    if(deck != NULL && deck -> premier != NULL && deck_joueur != NULL)
     {
-        /* Distribution des cartes pour le joueur1 */
+        /* Distribution des cartes */
         for(i = 1; i <= nb; i++)
-            cartes_changer_deck(deck, deck -> premier, deck_joueur1);
-
-        /* Distribution des cartes pour le joueur2 */
-        for(i = 1; i <= nb; i++)
-            cartes_changer_deck(deck, deck -> premier, deck_joueur2);
+            cartes_changer_deck(deck, deck -> premier, deck_joueur);
     }
 }
 

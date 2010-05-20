@@ -24,7 +24,7 @@
 Tptpartie partie_init()
 {
     Tptpartie partie = malloc(sizeof(Tpartie));
-    partie -> deck = NULL;
+    partie -> deck = liste_init(); //Ceci crée un deck de cartes vides, deck qui sera le tas principal où piocher des cartes.
     partie -> joueur_selectionne = NULL;
     partie -> autre_joueur = NULL;
     return partie;
@@ -46,7 +46,7 @@ Tptjoueur qui_commence(Tptjoueur joueur1, Tptjoueur joueur2)
 }
 
 //Fonction appelée en cas de nouvelle partie
-void jeu_init(Tptpartie partie, Tptdeck deck, Tptjoueur joueur1, Tptjoueur joueur2)
+void jeu_init(Tptpartie partie, Tptjoueur joueur1, Tptjoueur joueur2)
 {
     Tptjoueur joueur_selectionne;
     Tptjoueur autre_joueur;
@@ -57,8 +57,9 @@ void jeu_init(Tptpartie partie, Tptdeck deck, Tptjoueur joueur1, Tptjoueur joueu
     if(!joueur2 -> est_ordinateur)
         menu_demander_nom_joueur(joueur2 -> nom, 2);
 
-    cartes_deck_init(deck);
-    cartes_distribuer(deck, joueur1 -> deck, joueur2 -> deck, CARTES_MAIN);
+    cartes_deck_init(partie -> deck);
+    cartes_distribuer(partie -> deck, joueur1 -> deck, CARTES_MAIN);
+    cartes_distribuer(partie -> deck, joueur2 -> deck, CARTES_MAIN);
     printf("\nLe jeu a été mélangé et les cartes ont été distribuées. ");
 
     //On choisit aléatoirement lequel des deux joueurs va commencer.
@@ -69,7 +70,6 @@ void jeu_init(Tptpartie partie, Tptdeck deck, Tptjoueur joueur1, Tptjoueur joueu
     else
         autre_joueur = joueur1;
 
-    partie -> deck = deck;
     partie -> joueur_selectionne = joueur_selectionne;
     partie -> autre_joueur = autre_joueur;
 

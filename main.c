@@ -20,7 +20,6 @@
 int main()
 {
     srand(time(NULL));
-    Tptdeck deckPrincipal = liste_init(); //Ceci crée un deck de cartes vides, deck qui sera le tas principal où piocher des cartes.
     Tptpartie partie = partie_init();
     Tptjoueur joueur1 = NULL;
     Tptjoueur joueur2 = NULL;
@@ -80,7 +79,7 @@ int main()
 
                 if(jouer_contre_ordinateur != ARRETER_PARTIE && difficulte_ordinateur1 != ARRETER_PARTIE && difficulte_ordinateur2 != ARRETER_PARTIE)
                 {
-                    jeu_init(partie, deckPrincipal, joueur1, joueur2);
+                    jeu_init(partie, joueur1, joueur2);
                     jeu(partie);
                 }
             break;

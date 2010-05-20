@@ -23,7 +23,7 @@ typedef struct Tpartie
 
 Tptpartie partie_init();
 Tptjoueur qui_commence(Tptjoueur joueur1, Tptjoueur joueur2);
-void jeu_init(Tptpartie partie, Tptdeck deck, Tptjoueur joueur1, Tptjoueur joueur2);
+void jeu_init(Tptpartie partie, Tptjoueur joueur1, Tptjoueur joueur2);
 void switch_tour(Tptpartie partie);
 Tptjoueur detecter_gagnant(Tptjoueur joueur1, Tptjoueur joueur2);
 int partie_terminee(Tptpartie);

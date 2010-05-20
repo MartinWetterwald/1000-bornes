@@ -38,7 +38,7 @@ void cartes_deck_compter_sorte
 void cartes_deck_afficher(Tptdeck deck);
 Tptcarte cartes_changer_deck(Tptdeck deck_source, Tptcarte carte_source, Tptdeck deck_cible);
 void cartes_type2francais(int val);
-void cartes_distribuer(Tptdeck deck, Tptdeck deck_joueur1, Tptdeck deck_joueur2, int nb);
+void cartes_distribuer(Tptdeck deck, Tptdeck deck_joueur, int nb);
 int cartes_char2int(char* chaine);
 int cartes_verifier_validite(int carte);
 int carte_aleatoire(Tptdeck deck);
