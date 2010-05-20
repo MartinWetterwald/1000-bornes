@@ -15,50 +15,121 @@
 #include <string.h>
 #include "constantes.h"
 #include "divers.h"
-#include "joueur.h"
+#include "fichiers.h"
 
-/* Cette fonction permet d'enregistrer une partie pour pouvoir la reprendre plus tard. */
-int enregistrer_partie(const char* nomFichier, Tptdeck deckPrincipal, Tptdeck deckJoueur1, Tptdeck deckJoueur2)
+int enregistrer_deck(FILE* fichier, Tptdeck deck)
 {
-    FILE* fichier = NULL;
-    fichier = fopen(nomFichier, "w+");
-
-    Tptcarte parcours;
-
-    if(fichier != NULL && deckPrincipal != NULL && deckPrincipal -> premier != NULL && deckJoueur1 != NULL && deckJoueur1 -> premier != NULL && deckJoueur2 != NULL && deckJoueur2 -> premier != NULL)
+    if(fichier != NULL && deck != NULL)
     {
-        /* Parcours du deck principal et écriture dans le fichier */
-        parcours = deckPrincipal -> premier;
-        while(parcours != NULL)
+        Tptcarte carte = deck -> premier;
+        while(carte != NULL)
         {
-            fprintf(fichier, "%d ", parcours -> valeur);
-            parcours = parcours -> suivant;
+            fprintf(fichier, "%d ", carte -> valeur);
+            carte = carte -> suivant;
         }
-        fprintf(fichier, "\n");
-
-        /* Parcours du deck du joueur 1 et écriture dans le fichier */
-        parcours = deckJoueur1 -> premier;
-        while(parcours != NULL)
-        {
-            fprintf(fichier, "%d ", parcours -> valeur);
-            parcours = parcours -> suivant;
-        }
-        fprintf(fichier, "\n");
-
-        /* Parcours du joueur 2 et écriture dans le fichier */
-        parcours = deckJoueur2 -> premier;
-        while(parcours != NULL)
-        {
-            fprintf(fichier, "%d ", parcours -> valeur);
-            parcours = parcours -> suivant;
-        }
-        fprintf(fichier, "\n");
-        fclose(fichier);
+        fprintf(fichier, "\n\n");
         return 1;
     }
     else
         return 0;
 }
+
+int enregistrer_joueur(FILE* fichier, Tptjoueur joueur)
+{
+    int success = 1;
+
+    if(fichier != NULL && joueur != NULL)
+    {
+        //Écriture de toutes les infos du joueur. On met le nom du joueur sur une ligne à part, sinon ça serait trop compliqué
+        //à gérer lors du chargement, si son nom contient des espaces.
+
+        fprintf(fichier, "%s\n%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+            joueur -> nom,
+            joueur -> est_ordinateur,
+            joueur -> difficulte_ordinateur,
+
+            joueur -> cumul_bornes,
+            joueur -> nb_bottes_jouees,
+            joueur -> nb_coups_fourres_joues,
+            joueur -> nb_200bornes_jouees,
+            joueur -> couronnement,
+
+            joueur -> est_creve,
+            joueur -> a_accident,
+            joueur -> en_panne_dessence,
+            joueur -> est_limite_par_vitesse,
+            joueur -> est_arrete,
+
+            joueur -> increvable,
+            joueur -> citerne,
+            joueur -> as_du_volant,
+            joueur -> prioritaire
+        );
+
+        /* Parcours du deck du joueur et écriture dans le fichier */
+        success = success && enregistrer_deck(fichier, joueur -> deck);
+    }
+    else
+        success = 0;
+
+    return success;
+}
+
+/* Cette fonction permet d'enregistrer une partie pour pouvoir la reprendre plus tard. */
+int enregistrer_partie(const char* nomFichier, Tptpartie partie)
+{
+    FILE* fichier = NULL;
+    fichier = fopen(nomFichier, "w+");
+    int success = 1;
+
+    if(
+            fichier != NULL &&
+            partie != NULL &&
+            partie -> deck != NULL &&
+            partie -> joueur_selectionne != NULL &&
+            partie -> joueur_selectionne -> deck != NULL &&
+            partie -> autre_joueur != NULL &&
+            partie -> autre_joueur -> deck != NULL
+    )
+    {
+        /* Parcours du deck principal et écriture dans le fichier */
+        success = success && enregistrer_deck(fichier, partie -> deck);
+
+        if(success)
+        {
+            /* Écriture des infos du joueur1 */
+            success = success && enregistrer_joueur(fichier, partie -> joueur_selectionne);
+
+            if(success)
+            {
+                /* Écriture des infos du joueur2 */
+                success = success && enregistrer_joueur(fichier, partie -> autre_joueur);
+            }
+        }
+    }
+    else
+        success = 0;
+
+    fclose(fichier);
+    return success;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Lecture d'un deck dans un fichier et remplissage de la liste chainée. */
 int charger_deck(FILE* fichier, Tptdeck deck)

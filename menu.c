@@ -139,9 +139,12 @@ void demander_appuyez_sur_une_touche_pour_continuer()
     lire(kikoo, NOM_TAILLE_MAX);
 }
 
-void menu_demander_choix_carte(int* choix_carte)
+void menu_demander_choix_carte(int* choix_carte, int nb_coups_possibles)
 {
-    printf("Entrez le code de la carte à jouer.\n");
+    if(nb_coups_possibles > 0)
+        printf("Entrez le code de la carte à jouer.\n");
+    else
+        printf("Vous ne pouvez jouer aucun coup et êtes obligé de passer votre tour.\n");
     printf("Si vous ne souhaitez (ou ne pouvez) pas jouer de carte, vous pouvez :\n");
     printf("- ne rien jouer et simplement passer votre tour (code %d) ;\n", PASSER_SON_TOUR);
     printf("- arrêter la partie sans enregistrer (code %d) ;\n", ARRETER_PARTIE);
@@ -152,18 +155,11 @@ void menu_demander_choix_carte(int* choix_carte)
     *choix_carte = lireLong();
 }
 
-void menu_demander_choix_carte_jeter(int* choix_carte, int nb_coups_possibles)
+void menu_demander_choix_carte_jeter(int* choix_carte)
 {
-    if(nb_coups_possibles > 0)
-        printf("\nMême si vous passez votre tour, vous êtes obligé d'enlever une carte de votre main.\n");
-    else
-        printf("\nVous êtes obligé de passer votre tour car vous ne pouvez jouer aucune carte de votre main.\n");
-
+    printf("\nVous passez votre tour, mais vous devez avant vous débarasser d'une carte.\n");
     printf("Entrez le code de la carte à jeter. ");
-
-    if(nb_coups_possibles > 0)
-        printf("Vous pouvez aussi entrer le code %d si vous avez changé d'avis et que vous ne souhaitez plus passer votre tour.\n", ANNULER_PASSER_SON_TOUR);
-
+    printf("Vous pouvez aussi entrer le code %d si vous avez changé d'avis et que vous ne souhaitez plus passer votre tour.\n", ANNULER_PASSER_SON_TOUR);
     printf("Votre choix ? ");
     *choix_carte = lireLong();
 }
@@ -279,5 +275,6 @@ void menu_charger_partie(char* choix)
 
 void menu_enregistrer_partie(char* choix)
 {
-    printf("Le menu d'enregistrement de partie est encore en construction. :p");
+    printf("Entrez le nom du fichier dans lequel vous souhaitez sauvegarder la partie : ");
+    lire(choix, TAILLE_MAX_NOM_FICHIER);
 }

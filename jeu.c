@@ -20,6 +20,7 @@
 #include "menu.h"
 #include "jeu.h"
 #include "ia.h"
+#include "fichiers.h"
 
 Tptpartie partie_init()
 {
@@ -626,14 +627,9 @@ void jeu(Tptpartie partie)
         {
             resultat_jouer = -1;
 
-            //S'il n'est pas possible de jouer une carte, on force l'utilisateur à en jeter une.
-            if(les_coups_possibles -> taille == 0)
-                choix_carte = PASSER_SON_TOUR;
-
             while(resultat_jouer != 1)
             {
-                if(les_coups_possibles -> taille > 0)
-                    menu_demander_choix_carte(&choix_carte);
+                menu_demander_choix_carte(&choix_carte, les_coups_possibles -> taille);
 
                 if(choix_carte != ARRETER_PARTIE && choix_carte != ENREGISTRER)
                 {
@@ -670,7 +666,7 @@ void jeu(Tptpartie partie)
                         resultat_jouer_passer_tour = -1;
                         while(resultat_jouer_passer_tour != 1)
                         {
-                            menu_demander_choix_carte_jeter(&choix_jeter, les_coups_possibles -> taille);
+                            menu_demander_choix_carte_jeter(&choix_jeter);
                             if(choix_jeter != ANNULER_PASSER_SON_TOUR)
                             {
                                 resultat_jouer_passer_tour = jouer(partie, choix_jeter, 1, raison_refus, raison_refus2);
@@ -822,6 +818,10 @@ void jeu(Tptpartie partie)
     if(choix_carte == ENREGISTRER)
     {
         menu_enregistrer_partie(nomFichier);
+        if(enregistrer_partie(nomFichier, partie))
+            printf("La partie a été sauvegardée avec succès !\n");
+        else
+            printf("Une erreur est survenue lors de l'enregistrement de la partie.\n");
     }
     else if(choix_carte == ARRETER_PARTIE)
     {

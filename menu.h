@@ -20,8 +20,8 @@ void menu_principal(int* choix);
 
 void menu_difficulte_ordinateur(int* choix, int num_joueur);
 
-void menu_demander_choix_carte(int* choix_carte);
-void menu_demander_choix_carte_jeter(int* choix_carte, int nb_coups_possibles);
+void menu_demander_choix_carte(int* choix_carte, int nb_coups_possibles);
+void menu_demander_choix_carte_jeter(int* choix_carte);
 void menu_demander_coup_fourre(Tptpartie partie, int obstacle, int botte, char* raison_refus, char* raison_refus2);
 
 void menu_quitter_etes_vous_sur(int* choix);
