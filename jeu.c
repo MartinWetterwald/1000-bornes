@@ -21,6 +21,15 @@
 #include "jeu.h"
 #include "ia.h"
 
+Tptpartie partie_init()
+{
+    Tptpartie partie = malloc(sizeof(Tpartie));
+    partie -> deck = NULL;
+    partie -> joueur_selectionne = NULL;
+    partie -> autre_joueur = NULL;
+    return partie;
+}
+
 Tjoueur* qui_commence(Tjoueur* joueur1, Tjoueur* joueur2)
 {
     Tjoueur* joueur_qui_commence = NULL;
@@ -37,8 +46,11 @@ Tjoueur* qui_commence(Tjoueur* joueur1, Tjoueur* joueur2)
 }
 
 //Fonction appelée en cas de nouvelle partie
-void jeu_init(Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
+void jeu_init(Tptpartie partie, Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2)
 {
+    Tptjoueur joueur_selectionne;
+    Tptjoueur autre_joueur;
+
     if(!joueur1 -> est_ordinateur)
         menu_demander_nom_joueur(joueur1 -> nom, 1);
 
@@ -50,14 +62,18 @@ void jeu_init(Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2, Tptjoueur* joueur
     printf("\nLe jeu a été mélangé et les cartes ont été distribuées. ");
 
     //On choisit aléatoirement lequel des deux joueurs va commencer.
-    *joueur_selectionne = qui_commence(joueur1, joueur2);
+    joueur_selectionne = qui_commence(joueur1, joueur2);
 
-    if(*joueur_selectionne == joueur1)
-        *autre_joueur = joueur2;
+    if(joueur_selectionne == joueur1)
+        autre_joueur = joueur2;
     else
-        *autre_joueur = joueur1;
+        autre_joueur = joueur1;
 
-    printf("Le tirage au sort a décidé que '%s' commence la partie.\n", (*joueur_selectionne) -> nom);
+    partie -> deck = deck;
+    partie -> joueur_selectionne = joueur_selectionne;
+    partie -> autre_joueur = autre_joueur;
+
+    printf("Le tirage au sort a décidé que '%s' commence la partie.\n", partie -> joueur_selectionne -> nom);
     demander_appuyez_sur_une_touche_pour_continuer();
 }
 
@@ -92,12 +108,12 @@ Tjoueur* detecter_gagnant(Tjoueur* joueur1, Tjoueur* joueur2)
         return NULL;
 }
 
-int partie_terminee(Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2)
+int partie_terminee(Tptpartie partie)
 {
     return (
-            deck -> taille == 0 ||
-            joueur1 -> cumul_bornes >= BORNES_MAX ||
-            joueur2 -> cumul_bornes >= BORNES_MAX
+            partie -> deck -> taille == 0 ||
+            partie -> joueur_selectionne -> cumul_bornes >= BORNES_MAX ||
+            partie -> autre_joueur -> cumul_bornes >= BORNES_MAX
             );
 }
 
@@ -539,9 +555,9 @@ void consequences_coup(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* au
 
 //Cette fonction est la fonction globale qui gère une partie (reprise en cours ou nouvellement commencée).
 //Grâce aux paramètres joueur_selectionne et autre_joueur, on sait à qui c'est de jouer.
-void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
+void jeu(Tptpartie partie)
 {
-    int partie_est_terminee = partie_terminee(deck, *joueur_selectionne, *autre_joueur);
+    int partie_est_terminee = partie_terminee(partie);
     int choix_carte = -1, choix_jeter = -1;
     int resultat_jouer = -1, resultat_jouer_passer_tour = -1;
 
@@ -558,11 +574,11 @@ void jeu(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur)
     {
         choix_carte = -1;
         choix_jeter = -1;
-        printf("\nIl reste %d cartes dans le deck principal.\n", deck -> taille);
+        printf("\nIl reste %d cartes dans le deck principal.\n", partie -> deck -> taille);
 
-        printf("\nC'est à '%s' de jouer.\n", (*joueur_selectionne) -> nom);
+        printf("\nC'est à '%s' de jouer.\n", partie -> joueur_selectionne -> nom);
 
-        if(deck -> taille > 0)
+        if(partie -> deck -> taille > 0)
         {
             //On fait piocher une carte au joueur
             carte_piochee = cartes_changer_deck(deck, deck -> premier, (*joueur_selectionne) -> deck);
