@@ -13,27 +13,27 @@
 typedef struct _maillon {
     int valeur;
     struct _maillon* suivant;
-} Tmaillon;
+} Tmaillon, *Tptmaillon;
 
 typedef struct _liste {
-    Tmaillon* premier;
-    Tmaillon* dernier;
+    Tptmaillon premier;
+    Tptmaillon dernier;
     int taille;
 } Tliste, *Tptliste;
 
-Tliste* liste_init();
-Tmaillon* maillon_nouveau(int val);
-Tmaillon* liste_maillon_inserer_tete(Tliste* maListe, int val);
-int liste_maillon_supprimer(Tliste* maListe, Tmaillon* aSupprimer);
-void liste_remplir_fictif(Tliste* maListe, int max);
-void liste_afficher(Tliste* maListe);
-int liste_compter_valeur(Tliste* maListe, int val);
-Tmaillon* liste_maillon_pos2point(Tliste* maListe, int num);
-Tmaillon* liste_rechercher_maillon(Tliste* maListe, int val);
-int liste_maillon_substituer(Tliste* maListe, Tmaillon* maillon1, Tmaillon* maillon2);
-void liste_melanger(Tliste* maListe, int min, int max);
-int liste_maillon_valeur_aleatoire(Tliste* maListe);
-void liste_vider(Tliste* maListe);
-void liste_detruire(Tptliste* maListe);
+Tptliste liste_init();
+Tptmaillon maillon_nouveau(int val);
+Tptmaillon liste_maillon_inserer_tete(Tptliste maListe, int val);
+int liste_maillon_supprimer(Tptliste maListe, Tptmaillon aSupprimer);
+void liste_remplir_fictif(Tptliste maListe, int max);
+void liste_afficher(Tptliste maListe);
+int liste_compter_valeur(Tptliste maListe, int val);
+Tptmaillon liste_maillon_pos2point(Tptliste maListe, int num);
+Tptmaillon liste_rechercher_maillon(Tptliste maListe, int val);
+int liste_maillon_substituer(Tptliste maListe, Tptmaillon maillon1, Tptmaillon maillon2);
+void liste_melanger(Tptliste maListe, int min, int max);
+int liste_maillon_valeur_aleatoire(Tptliste maListe);
+void liste_vider(Tptliste maListe);
+void liste_detruire(Tptliste maListe);
 
 #endif // LISTE_H_INCLUDED

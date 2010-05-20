@@ -15,12 +15,13 @@
 #include "constantes.h"
 #include "divers.h"
 #include "joueur.h"
+#include "menu.h"
 
 //Cette fonction initialise un joueur vide.
-Tjoueur* joueur_init(int est_ordinateur, int difficulte, int num_joueur)
+Tptjoueur joueur_init(int est_ordinateur, int difficulte, int num_joueur)
 {
     char nom_ordinateur[NOM_TAILLE_MAX];
-    Tjoueur* monJoueur = malloc(sizeof(Tjoueur));
+    Tptjoueur monJoueur = malloc(sizeof(Tjoueur));
 
     sprintf(nom_ordinateur, "Ordinateur %d", num_joueur);
 
@@ -57,9 +58,9 @@ Tjoueur* joueur_init(int est_ordinateur, int difficulte, int num_joueur)
     return monJoueur;
 }
 
-Tcarte* joueur_possede_carte(Tjoueur* monJoueur, int carte_type)
+Tptcarte joueur_possede_carte(Tptjoueur monJoueur, int carte_type)
 {
-    Tcarte* carte = NULL;
+    Tptcarte carte = NULL;
 
     //Vérifier que ce type de carte existe
     if(cartes_verifier_validite(carte_type))
@@ -109,7 +110,7 @@ void choisir_difficulte_ordinateur(int* jouer_contre_ordinateur, int* difficulte
 }
 
 //Cette fonction affiche toutes les infos sur un joueur (pour débugage uniquement).
-void joueur_afficher(Tjoueur* monJoueur)
+void joueur_afficher(Tptjoueur monJoueur)
 {
     //S'il y a quelque chose à faire
     if(monJoueur != NULL)
@@ -172,7 +173,7 @@ void joueur_afficher(Tjoueur* monJoueur)
 }
 
 //Cette fonction affiche les infos utiles sur un joueur.
-void joueur_afficher_infos_utiles(Tjoueur* monJoueur)
+void joueur_afficher_infos_utiles(Tptjoueur monJoueur)
 {
     //S'il y a quelque chose à faire
     if(monJoueur != NULL)
@@ -212,7 +213,7 @@ void joueur_afficher_infos_utiles(Tjoueur* monJoueur)
 }
 
 /* Cette fonction comptabilise les points qu'a effectués un joueur */
-int joueur_compter_les_points(Tjoueur* joueur, int cumul_bornes_autre_joueur)
+int joueur_compter_les_points(Tptjoueur joueur, int cumul_bornes_autre_joueur)
 {
     int points = 0;
 
@@ -274,13 +275,12 @@ int joueur_compter_les_points(Tjoueur* joueur, int cumul_bornes_autre_joueur)
 }
 
 //Cette fonction libère la mémoire attribuée pour le stockage du joueur.
-void joueur_detruire(Tptjoueur* joueur)
+void joueur_detruire(Tptjoueur joueur)
 {
     //Si on a quelque chose à faire
-    if(*joueur != NULL)
+    if(joueur != NULL)
     {
-        deck_detruire(&((*joueur) -> deck)); //On fournit l'adresse du deck qui se trouve dans ((pointeur de joueur) pointé deck)
-        free(*joueur);
-        *joueur = NULL;
+        deck_detruire(joueur -> deck); //On fournit l'adresse du deck qui se trouve dans ((pointeur de joueur) pointé deck)
+        free(joueur);
     }
 }

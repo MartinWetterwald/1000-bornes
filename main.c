@@ -20,10 +20,10 @@
 int main()
 {
     srand(time(NULL));
-    Tdeck* deckPrincipal = liste_init(); //Ceci crée un deck de cartes vides, deck qui sera le tas principal où piocher des cartes.
+    Tptdeck deckPrincipal = liste_init(); //Ceci crée un deck de cartes vides, deck qui sera le tas principal où piocher des cartes.
     Tptpartie partie = partie_init();
-    Tjoueur* joueur1 = NULL;
-    Tjoueur* joueur2 = NULL;
+    Tptjoueur joueur1 = NULL;
+    Tptjoueur joueur2 = NULL;
 
     int menu1_choix = -1, jouer_contre_ordinateur = -1, difficulte_ordinateur1 = -1, difficulte_ordinateur2 = -1;
     char nomFichier[TAILLE_MAX_NOM_FICHIER];

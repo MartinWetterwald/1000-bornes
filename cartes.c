@@ -19,7 +19,7 @@
 #include "cartes.h"
 
 //Ajout d'un certain type de carte dans un deck
-void cartes_deck_add(Tdeck* deck, int carte_type, int carte_nb)
+void cartes_deck_add(Tptdeck deck, int carte_type, int carte_nb)
 {
     int i;
     for(i = 1; i <= carte_nb; i++)
@@ -27,7 +27,7 @@ void cartes_deck_add(Tdeck* deck, int carte_type, int carte_nb)
 }
 
 //Initialisation du deck du jeu + mélangeage (106 cartes).
-void cartes_deck_init(Tdeck* deck)
+void cartes_deck_init(Tptdeck deck)
 {
     /* Insertion des obstacles */
     cartes_deck_add(deck, PANNE_ESSENCE,        NB_PANNE_ESSENCE);
@@ -66,7 +66,7 @@ void cartes_deck_init(Tdeck* deck)
 /* Cette fonction compte combien un deck contient chaque type de cartes */
 void cartes_deck_compter_sorte
 (
-    Tdeck* deck,
+    Tptdeck deck,
     int* nb_panne_essence, int* nb_creve, int* nb_accident, int* nb_limite_vitesse, int* nb_stop,
     int* nb_essence, int* nb_roue_de_secours, int* nb_reparations, int* nb_fin_limite_vitesse, int* nb_roulez,
     int* nb_citerne, int* nb_increvable, int* nb_as_du_volant, int* nb_prioritaire,
@@ -110,7 +110,7 @@ void cartes_deck_compter_sorte
 }
 
 /* Cette fonction prend en entrée un deck de cartes et l'affiche de façon détaillée*/
-void cartes_deck_afficher(Tdeck* deck)
+void cartes_deck_afficher(Tptdeck deck)
 {
     int nb_panne_essence, nb_creve, nb_accident, nb_limite_vitesse, nb_stop;
     int nb_essence, nb_roue_de_secours, nb_reparations, nb_fin_limite_vitesse, nb_roulez;
@@ -191,9 +191,9 @@ void cartes_deck_afficher(Tdeck* deck)
 
 /* Cette fonction change une carte de deck :
 elle ajoute la carte au deck cible et l'enlève du deck source */
-Tcarte* cartes_changer_deck(Tdeck* deck_source, Tcarte* carte_source, Tdeck* deck_cible)
+Tptcarte cartes_changer_deck(Tptdeck deck_source, Tptcarte carte_source, Tptdeck deck_cible)
 {
-    Tcarte* nouvelle_carte = NULL;
+    Tptcarte nouvelle_carte = NULL;
     //S'il y a quelque chose à faire
     if(deck_source != NULL && deck_source -> premier != NULL && deck_cible != NULL && carte_source != NULL)
     {
@@ -295,7 +295,7 @@ void cartes_type2francais(int val)
 }
 
 /* Cette fonction distribue les cartes en début de partie */
-void cartes_distribuer(Tdeck* deck, Tdeck* deck_joueur1, Tdeck* deck_joueur2, int nb)
+void cartes_distribuer(Tptdeck deck, Tptdeck deck_joueur1, Tptdeck deck_joueur2, int nb)
 {
     int i;
     //Si on a quelque chose à faire
@@ -325,17 +325,17 @@ int cartes_verifier_validite(int carte)
         return 0;
 }
 
-int carte_aleatoire(Tdeck* deck)
+int carte_aleatoire(Tptdeck deck)
 {
     return liste_maillon_valeur_aleatoire(deck);
 }
 
-void deck_vider(Tdeck* deck)
+void deck_vider(Tptdeck deck)
 {
     liste_vider(deck);
 }
 
-void deck_detruire(Tptdeck* deck)
+void deck_detruire(Tptdeck deck)
 {
     liste_detruire(deck);
 }

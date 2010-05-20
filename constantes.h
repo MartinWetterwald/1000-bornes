@@ -93,11 +93,13 @@
 #define BORNES200           200
 
 //Autres choix possibles (qui ne sont pas des cartes)
-#define ARRETER_PARTIE              0
 #define PASSER_SON_TOUR             6
 #define ENREGISTRER                 7
 #define ANNULER_PASSER_SON_TOUR     8
+#define ARRETER_PARTIE              9
 
+#define CONFIRMER_QUITTER_PARTIE 1
+#define INFIRMER_QUITTER_PARTIE 2
 
 /* Nombre de chacune de ces cartes dans le jeu */
 //Obstacles

@@ -21,7 +21,7 @@ Si l'IA veut JETER une carte, il faut mettre la valeur PASSER_SON_TOUR dans choi
 le numéro de la carte à jeter dans choix_jeter.
 */
 
-void ia_archi_debutant(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter)
+void ia_archi_debutant(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* choix_jeter)
 {
     char raison_refus[TAILLE_MAX_REFUS], raison_refus2[TAILLE_MAX_REFUS];
 
@@ -44,9 +44,9 @@ void ia_archi_debutant(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, i
     }
 }
 
-void ia_debutant(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter)
+void ia_debutant(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* choix_jeter)
 {
-    Tdeck* coupsPossibles = lister_coups_possibles(&ordinateur, &humain);
+    Tptdeck coupsPossibles = lister_coups_possibles(ordinateur, humain);
 
     //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
     if( (coupsPossibles -> taille) == 0)
@@ -67,7 +67,7 @@ void ia_debutant(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
     }
 }
 
-void ia_course(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter)
+void ia_course(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* choix_jeter)
 {
     int nb_panne_essence, nb_creve, nb_accident, nb_limite_vitesse, nb_stop;
     int nb_essence, nb_roue_de_secours, nb_reparations, nb_fin_limite_vitesse, nb_roulez;
@@ -83,7 +83,7 @@ void ia_course(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choi
 
     int nb_possible_obstacles, nb_possible_parades, nb_possible_bottes, nb_possible_bornes;
 
-    Tdeck* coupsPossibles = lister_coups_possibles(&ordinateur, &humain);
+    Tptdeck coupsPossibles = lister_coups_possibles(ordinateur, humain);
 
     /* Comptabilisation du nombre de chaque type de cartes que possède l'ordinateur */
     cartes_deck_compter_sorte
@@ -203,7 +203,7 @@ void ia_course(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choi
     }
 }
 
-void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter)
+void ia_agressif(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* choix_jeter)
 {
     int nb_panne_essence, nb_creve, nb_accident, nb_limite_vitesse, nb_stop;
     int nb_essence, nb_roue_de_secours, nb_reparations, nb_fin_limite_vitesse, nb_roulez;
@@ -219,7 +219,7 @@ void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
 
     int nb_possible_obstacles, nb_possible_parades, nb_possible_bottes, nb_possible_bornes;
 
-    Tdeck* coupsPossibles = lister_coups_possibles(&ordinateur, &humain);
+    Tptdeck coupsPossibles = lister_coups_possibles(ordinateur, humain);
 
     /* Comptabilisation du nombre de chaque type de cartes que possède l'ordinateur */
     cartes_deck_compter_sorte
@@ -331,7 +331,7 @@ void ia_agressif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
     }
 }
 
-void ia_defensif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter)
+void ia_defensif(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* choix_jeter)
 {
     int nb_panne_essence, nb_creve, nb_accident, nb_limite_vitesse, nb_stop;
     int nb_essence, nb_roue_de_secours, nb_reparations, nb_fin_limite_vitesse, nb_roulez;
@@ -347,7 +347,7 @@ void ia_defensif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
 
     int nb_possible_obstacles, nb_possible_parades, nb_possible_bottes, nb_possible_bornes;
 
-    Tdeck* coupsPossibles = lister_coups_possibles(&ordinateur, &humain);
+    Tptdeck coupsPossibles = lister_coups_possibles(ordinateur, humain);
 
     /* Comptabilisation du nombre de chaque type de cartes que possède l'ordinateur */
     cartes_deck_compter_sorte
@@ -444,7 +444,7 @@ void ia_defensif(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* ch
     }
 }
 
-void ia_expert(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choix_jeter)
+void ia_expert(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* choix_jeter)
 {
     int nb_panne_essence, nb_creve, nb_accident, nb_limite_vitesse, nb_stop;
     int nb_essence, nb_roue_de_secours, nb_reparations, nb_fin_limite_vitesse, nb_roulez;
@@ -460,7 +460,7 @@ void ia_expert(Tjoueur* ordinateur, Tjoueur* humain, int* choix_carte, int* choi
 
     int nb_possible_obstacles, nb_possible_parades, nb_possible_bottes, nb_possible_bornes;
 
-    Tdeck* coupsPossibles = lister_coups_possibles(&ordinateur, &humain);
+    Tptdeck coupsPossibles = lister_coups_possibles(ordinateur, humain);
 
     /* Comptabilisation du nombre de chaque type de cartes que possède l'ordinateur */
     cartes_deck_compter_sorte

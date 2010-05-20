@@ -18,12 +18,12 @@
 #include "joueur.h"
 
 /* Cette fonction permet d'enregistrer une partie pour pouvoir la reprendre plus tard. */
-int enregistrer_partie(const char* nomFichier, Tdeck* deckPrincipal, Tdeck* deckJoueur1, Tdeck* deckJoueur2)
+int enregistrer_partie(const char* nomFichier, Tptdeck deckPrincipal, Tptdeck deckJoueur1, Tptdeck deckJoueur2)
 {
     FILE* fichier = NULL;
     fichier = fopen(nomFichier, "w+");
 
-    Tcarte* parcours;
+    Tptcarte parcours;
 
     if(fichier != NULL && deckPrincipal != NULL && deckPrincipal -> premier != NULL && deckJoueur1 != NULL && deckJoueur1 -> premier != NULL && deckJoueur2 != NULL && deckJoueur2 -> premier != NULL)
     {
@@ -61,7 +61,7 @@ int enregistrer_partie(const char* nomFichier, Tdeck* deckPrincipal, Tdeck* deck
 }
 
 /* Lecture d'un deck dans un fichier et remplissage de la liste chainée. */
-int charger_deck(FILE* fichier, Tdeck* deck)
+int charger_deck(FILE* fichier, Tptdeck deck)
 {
     const char delimiters[] = " \n";
     char ligne[TAILLE_MAX_LIGNE] = "";
@@ -95,7 +95,7 @@ int charger_deck(FILE* fichier, Tdeck* deck)
 }
 
 /* Lecture d'un joueur et remplissage de la structure */
-int charger_joueur(FILE* fichier, Tjoueur* monJoueur)
+int charger_joueur(FILE* fichier, Tptjoueur monJoueur)
 {
     const char delimiters[] = "\n";
     char ligne[TAILLE_MAX_LIGNE] = "";
@@ -146,7 +146,7 @@ int charger_joueur(FILE* fichier, Tjoueur* monJoueur)
 
 
 //Cette fonction charge une partie à partir d'un fichier.
-int charger_partie(const char* nomFichier, Tdeck* deckPrincipal, Tdeck* deckJoueur1, Tdeck* deckJoueur2)
+int charger_partie(const char* nomFichier, Tptdeck deckPrincipal, Tptdeck deckJoueur1, Tptdeck deckJoueur2)
 {
     int success = 1;
     FILE* fichier = NULL;

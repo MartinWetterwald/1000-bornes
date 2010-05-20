@@ -16,9 +16,9 @@
 #include "liste.h"
 
 //Fonction de création d'une liste chainée.
-Tliste* liste_init()
+Tptliste liste_init()
 {
-    Tliste* maListe = malloc(sizeof(Tliste));
+    Tptliste maListe = malloc(sizeof(Tliste));
     maListe -> premier = NULL;
     maListe -> dernier = NULL;
     maListe -> taille = 0;
@@ -26,9 +26,9 @@ Tliste* liste_init()
 }
 
 //Fonction de création d'un nouveau maillon
-Tmaillon* maillon_nouveau(int val)
+Tptmaillon maillon_nouveau(int val)
 {
-    Tmaillon* nouveau;
+    Tptmaillon nouveau;
     nouveau = malloc(sizeof(Tmaillon));
     nouveau -> suivant = NULL;
     nouveau -> valeur = val;
@@ -36,9 +36,9 @@ Tmaillon* maillon_nouveau(int val)
 }
 
 //Fonction qui permet d'insérer un maillon en tête de liste chainée.
-Tmaillon* liste_maillon_inserer_tete(Tliste* maListe, int val)
+Tptmaillon liste_maillon_inserer_tete(Tptliste maListe, int val)
 {
-    Tmaillon* nouveau = maillon_nouveau(val);
+    Tptmaillon nouveau = maillon_nouveau(val);
     nouveau -> suivant = maListe -> premier;
 
     maListe -> premier = nouveau;
@@ -52,10 +52,10 @@ Tmaillon* liste_maillon_inserer_tete(Tliste* maListe, int val)
 }
 
 //Fonction qui permet de supprimer un maillon donné
-int liste_maillon_supprimer(Tliste* maListe, Tmaillon* aSupprimer)
+int liste_maillon_supprimer(Tptliste maListe, Tptmaillon aSupprimer)
 {
-    Tmaillon* precedent;
-    Tmaillon* parcours;
+    Tptmaillon precedent;
+    Tptmaillon parcours;
     int success = 0;
 
     //Y a-t-il quelque chose à faire ?
@@ -115,7 +115,7 @@ int liste_maillon_supprimer(Tliste* maListe, Tmaillon* aSupprimer)
 }
 
 //Fonction servant à des fins de test : elle remplit une liste chainée avec des nombres de 1 à max.
-void liste_remplir_fictif(Tliste* maListe, int max)
+void liste_remplir_fictif(Tptliste maListe, int max)
 {
     int i;
     for(i = max; i >= 1; i--)
@@ -125,10 +125,10 @@ void liste_remplir_fictif(Tliste* maListe, int max)
 }
 
 //Fonction qui affiche tous les entiers stockés dans la liste chainée
-void liste_afficher(Tliste* maListe)
+void liste_afficher(Tptliste maListe)
 {
     //On initialise un pointeur parcours.
-    Tmaillon* parcours = maListe->premier;
+    Tptmaillon parcours = maListe->premier;
 
     printf("\n\nVoici le contenu de la liste chainée qui contient %d éléments :\n", maListe -> taille);
     while(parcours != NULL)
@@ -140,9 +140,9 @@ void liste_afficher(Tliste* maListe)
 }
 
 //Cette fonction recherche une valeur dans la liste chainée, et retourne combien de fois elle a été trouvée
-int liste_compter_valeur(Tliste* maListe, int val)
+int liste_compter_valeur(Tptliste maListe, int val)
 {
-    Tmaillon* parcours;
+    Tptmaillon parcours;
     int i = 0;
 
     //S'il y a quelque chose à faire
@@ -162,10 +162,10 @@ int liste_compter_valeur(Tliste* maListe, int val)
 }
 
 //Fonction qui prend pour paramètre la position d'un maillon dans une liste chainée, et qui renvoie un pointeur vers ce maillon.
-Tmaillon* liste_maillon_pos2point(Tliste* maListe, int num)
+Tptmaillon liste_maillon_pos2point(Tptliste maListe, int num)
 {
     int i = 1;
-    Tmaillon* parcours;
+    Tptmaillon parcours;
     if(maListe != NULL && maListe -> premier != NULL)
     {
         if(num >= 1 && num <= maListe -> taille)
@@ -187,9 +187,9 @@ Tmaillon* liste_maillon_pos2point(Tliste* maListe, int num)
     return NULL;
 }
 
-Tmaillon* liste_rechercher_maillon(Tliste* maListe, int val)
+Tptmaillon liste_rechercher_maillon(Tptliste maListe, int val)
 {
-    Tmaillon* parcours;
+    Tptmaillon parcours;
     if(maListe != NULL && maListe -> premier != NULL)
     {
         parcours = maListe -> premier;
@@ -202,17 +202,17 @@ Tmaillon* liste_rechercher_maillon(Tliste* maListe, int val)
     return NULL;
 }
 
-int liste_maillon_substituer(Tliste* maListe, Tmaillon* maillon1, Tmaillon* maillon2)
+int liste_maillon_substituer(Tptliste maListe, Tptmaillon maillon1, Tptmaillon maillon2)
 {
     int success = 0;
     int i = 1, j = 1;
     int maillon1_premier = 0, maillon2_premier = 0;
-    Tmaillon* precedent1 = maListe -> premier;
-    Tmaillon* precedent2 = maListe -> premier;
-    Tmaillon* parcours1 = maListe -> premier;
-    Tmaillon* parcours2 = maListe -> premier;
-    Tmaillon* fin = NULL;
-    Tmaillon* temp = NULL;
+    Tptmaillon precedent1 = maListe -> premier;
+    Tptmaillon precedent2 = maListe -> premier;
+    Tptmaillon parcours1 = maListe -> premier;
+    Tptmaillon parcours2 = maListe -> premier;
+    Tptmaillon fin = NULL;
+    Tptmaillon temp = NULL;
 
     //Si on a quelque chose à faire
     if(maListe != NULL && maListe -> premier != NULL && maillon1 != NULL && maillon2 != NULL && maillon1 != maillon2)
@@ -303,13 +303,13 @@ int liste_maillon_substituer(Tliste* maListe, Tmaillon* maillon1, Tmaillon* mail
 }
 
 //Fonction qui mélange une liste chainée.
-void liste_melanger(Tliste* maListe, int min, int max)
+void liste_melanger(Tptliste maListe, int min, int max)
 {
     int nombre_substitutions;
     int i = 1;
     int maillon1_num, maillon2_num;
-    Tmaillon* maillon1;
-    Tmaillon* maillon2;
+    Tptmaillon maillon1;
+    Tptmaillon maillon2;
 
     //A-t-on besoin de faire quelque chose ?
     if(maListe != NULL && maListe -> premier != NULL)
@@ -340,10 +340,10 @@ void liste_melanger(Tliste* maListe, int min, int max)
 }
 
 /* Cette fonction tire au sort un maillon dans une liste chainée et sort sa valeur. */
-int liste_maillon_valeur_aleatoire(Tliste* maListe)
+int liste_maillon_valeur_aleatoire(Tptliste maListe)
 {
     int maillon_num = 0;
-    Tmaillon* maillon = NULL;
+    Tptmaillon maillon = NULL;
     if(maListe != NULL && (maListe -> taille) > 0)
     {
         maillon_num = (rand() % ((maListe -> taille - 1) + 1)) + 1;
@@ -356,9 +356,9 @@ int liste_maillon_valeur_aleatoire(Tliste* maListe)
     return -1;
 }
 
-void liste_vider(Tliste* maListe)
+void liste_vider(Tptliste maListe)
 {
-    Tmaillon* parcours = NULL;
+    Tptmaillon parcours = NULL;
 
     //Si on a quelque chose à faire
     if(maListe != NULL)
@@ -375,13 +375,12 @@ void liste_vider(Tliste* maListe)
     }
 }
 
-void liste_detruire(Tptliste* maListe)
+void liste_detruire(Tptliste maListe)
 {
     //Si on a quelque chose à faire
-    if(*maListe != NULL)
+    if(maListe != NULL)
     {
-        liste_vider(*maListe);
-        free(*maListe);
-        *maListe = NULL;
+        liste_vider(maListe);
+        free(maListe);
     }
 }

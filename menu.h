@@ -12,7 +12,7 @@
 
 /* Gestion des dépendances :
 Le menu requiert la couche joueur. */
-#include "joueur.h"
+#include "jeu.h"
 
 void afficher_logo();
 
@@ -22,7 +22,7 @@ void menu_difficulte_ordinateur(int* choix, int num_joueur);
 
 void menu_demander_choix_carte(int* choix_carte);
 void menu_demander_choix_carte_jeter(int* choix_carte, int nb_coups_possibles);
-void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur, int obstacle, int botte, char* raison_refus, char* raison_refus2);
+void menu_demander_coup_fourre(Tptpartie partie, int obstacle, int botte, char* raison_refus, char* raison_refus2);
 
 void menu_quitter_etes_vous_sur(int* choix);
 void menu_demander_ordinateur(int* choix);

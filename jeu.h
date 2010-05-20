@@ -22,16 +22,17 @@ typedef struct Tpartie
 } Tpartie, *Tptpartie;
 
 Tptpartie partie_init();
-Tjoueur* qui_commence(Tjoueur* joueur1, Tjoueur* joueur2);
-void jeu_init(Tptpartie partie, Tdeck* deck, Tjoueur* joueur1, Tjoueur* joueur2);
-void switch_tour(Tptjoueur** joueur_selectionne, Tptjoueur** autre_joueur);
-Tjoueur* detecter_gagnant(Tjoueur* joueur1, Tjoueur* joueur2);
+Tptjoueur qui_commence(Tptjoueur joueur1, Tptjoueur joueur2);
+void jeu_init(Tptpartie partie, Tptdeck deck, Tptjoueur joueur1, Tptjoueur joueur2);
+void switch_tour(Tptpartie partie);
+Tptjoueur detecter_gagnant(Tptjoueur joueur1, Tptjoueur joueur2);
 int partie_terminee(Tptpartie);
-int coup_autorise(char* raison_refus, char* raison_refus2, Tjoueur* joueur_selectionne, Tjoueur* autre_joueur, int carte_type);
-Tdeck* lister_coups_possibles(Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur);
-void coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur, int obstacle, int botte, char* raison_refus, char* raison_refus2);
-int jouer(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur,  int carte_type, int passe_son_tour, char* raison_refus, char* raison_refus2);
-void consequences_coup(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur, int carte_type);
+int coup_autorise(char* raison_refus, char* raison_refus2, Tptjoueur joueur_selectionne, Tptjoueur autre_joueur, int carte_type);
+Tptdeck lister_coups_possibles(Tptjoueur joueur_selectionne, Tptjoueur autre_joueur);
+void coup_fourre(Tptpartie partie, int obstacle, int botte, char* raison_refus, char* raison_refus2);
+int jouer(Tptpartie partie,  int carte_type, int passe_son_tour, char* raison_refus, char* raison_refus2);
+void consequences_coup(Tptpartie partie, int carte_type);
 void jeu(Tptpartie partie);
+void partie_vider(Tptpartie partie);
 
 #endif // JEU_H_INCLUDED

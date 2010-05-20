@@ -104,8 +104,8 @@ void menu_principal(int* choix)
 void menu_quitter_etes_vous_sur(int* choix)
 {
     printf("Vous êtes sur le point de quitter. Êtes-vous sûr ?\n");
-    printf("1) Non\n");
-    printf("2) Oui\n");
+    printf("%d) Non\n", INFIRMER_QUITTER_PARTIE);
+    printf("%d) Oui\n", CONFIRMER_QUITTER_PARTIE);
     printf("Votre choix : ");
 
     *choix = lireLong();
@@ -168,12 +168,12 @@ void menu_demander_choix_carte_jeter(int* choix_carte, int nb_coups_possibles)
     *choix_carte = lireLong();
 }
 
-void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjoueur* autre_joueur, int obstacle, int botte, char* raison_refus, char* raison_refus2)
+void menu_demander_coup_fourre(Tptpartie partie, int obstacle, int botte, char* raison_refus, char* raison_refus2)
 {
     int choix_coup_fourre = 0;
     int tirage_au_sort = 0;
 
-    if((*autre_joueur) -> est_ordinateur)
+    if(partie -> autre_joueur -> est_ordinateur)
     {
         //Le mode archi-débutant ne voit jamais les coups fourrés.
         //Le mode débutant a 20% de chances de les voir.
@@ -184,7 +184,7 @@ void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjo
 
         tirage_au_sort = (rand() % 101) + 100; //On tire au sort un nombre entre 0 et 100
 
-        switch((*autre_joueur) -> difficulte_ordinateur)
+        switch(partie -> autre_joueur -> difficulte_ordinateur)
         {
             case ARCHI_DEBUTANT:
                 //Le mode archi-débutant ne voit jamais les coups fourrés.
@@ -193,30 +193,30 @@ void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjo
             case DEBUTANT:
                 //Le mode débutant a 20% de chances de les voir.
                 if(tirage_au_sort <= 20)
-                    coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+                    coup_fourre(partie, obstacle, botte, raison_refus, raison_refus2);
             break;
 
             case COURSE:
                 //Le mode course a 40% de chances de les voir.
                 if(tirage_au_sort <= 40)
-                    coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+                    coup_fourre(partie, obstacle, botte, raison_refus, raison_refus2);
             break;
 
             case AGRESSIF:
                 //Le mode agressif a 60% de chances de les voir.
                 if(tirage_au_sort <= 60)
-                    coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+                    coup_fourre(partie, obstacle, botte, raison_refus, raison_refus2);
             break;
 
             case DEFENSIF:
                 //Le mode défensif a 80% de chances de les voir.
                 if(tirage_au_sort <= 80)
-                    coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+                    coup_fourre(partie, obstacle, botte, raison_refus, raison_refus2);
             break;
 
             case EXPERT:
                 //Le mode expert a 100% de chances de les voir.
-                coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+                coup_fourre(partie, obstacle, botte, raison_refus, raison_refus2);
             break;
 
             default:
@@ -229,14 +229,14 @@ void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjo
         //Si c'est un humain, on n'a pas trop le choix, on lui demande s'il veut dire « coup fourré » ou pas.
         //Tout le monde répondra toujours « oui » à cette question, mais bon...
 
-        printf("\n'%s', votre adversaire '%s' vient de jouer une carte '", (*autre_joueur) -> nom, (*joueur_selectionne) -> nom);
+        printf("\n'%s', votre adversaire '%s' vient de jouer une carte '", partie -> autre_joueur -> nom, partie -> joueur_selectionne -> nom);
         cartes_type2francais(obstacle);
         printf("' mais vous avez dans votre jeu la carte 'botte' '");
         cartes_type2francais(botte);
         printf("'.\n");
 
         printf("Vous avez la possibilité de déclarer « coup fourré », ");
-        printf("ainsi l'attaque de votre adversaire '%s' sera annulée et votre carte botte sera activée.\n", (*joueur_selectionne) -> nom);
+        printf("ainsi l'attaque de votre adversaire '%s' sera annulée et votre carte botte sera activée.\n", partie -> joueur_selectionne -> nom);
         printf("Vous aurez donc cinq cartes dans votre main, piocherez deux fois et ce sera toujours à vous de jouer.\n");
         printf("Ceci est intéressant car vous gagnez %d points supplémentaires par coup fourré en fin de partie.", POINTS_PAR_COUP_FOURRE);
 
@@ -251,7 +251,7 @@ void menu_demander_coup_fourre(Tdeck* deck, Tptjoueur* joueur_selectionne, Tptjo
         }
 
         if(choix_coup_fourre == 1)
-            coup_fourre(deck, joueur_selectionne, autre_joueur, obstacle, botte, raison_refus, raison_refus2);
+            coup_fourre(partie, obstacle, botte, raison_refus, raison_refus2);
     }
 }
 
