@@ -17,6 +17,8 @@ La couche « fichiers » requiert la couche « jeu » */
 int enregistrer_deck(FILE* fichier, Tptdeck deck);
 int enregistrer_joueur(FILE* fichier, Tptjoueur joueur);
 int enregistrer_partie(const char* nomFichier, Tptpartie partie);
-int charger_partie(const char* nomFichier, Tptdeck deckPrincipal, Tptdeck deckJoueur1, Tptdeck deckJoueur2);
+int charger_deck(FILE* fichier, Tptdeck deck);
+int charger_joueur(FILE* fichier, Tptjoueur joueur);
+int charger_partie(const char* nomFichier, Tptpartie partie);
 
 #endif // FICHIERS_H_INCLUDED

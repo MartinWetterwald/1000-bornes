@@ -817,6 +817,11 @@ void jeu(Tptpartie partie)
     //On souhaite enregistrer la partie pour la reprendre plus tard
     if(choix_carte == ENREGISTRER)
     {
+        //Le joueur vient de piocher une carte et en a sept. On annule sa pioche et on replace la carte dans le dessus du deck.
+        //Lorsqu'il reprendra la partie plus tard, il repiochera cette carte puisqu'elle sera restée au début du deck. :)
+
+        cartes_changer_deck(partie -> joueur_selectionne -> deck, carte_piochee, partie -> deck);
+
         menu_enregistrer_partie(nomFichier);
         if(enregistrer_partie(nomFichier, partie))
             printf("La partie a été sauvegardée avec succès !\n");

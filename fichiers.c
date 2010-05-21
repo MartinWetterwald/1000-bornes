@@ -27,7 +27,7 @@ int enregistrer_deck(FILE* fichier, Tptdeck deck)
             fprintf(fichier, "%d ", carte -> valeur);
             carte = carte -> suivant;
         }
-        fprintf(fichier, "\n\n");
+        fprintf(fichier, "\n");
         return 1;
     }
     else
@@ -114,23 +114,6 @@ int enregistrer_partie(const char* nomFichier, Tptpartie partie)
     return success;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Lecture d'un deck dans un fichier et remplissage de la liste chainée. */
 int charger_deck(FILE* fichier, Tptdeck deck)
 {
@@ -166,42 +149,42 @@ int charger_deck(FILE* fichier, Tptdeck deck)
 }
 
 /* Lecture d'un joueur et remplissage de la structure */
-int charger_joueur(FILE* fichier, Tptjoueur monJoueur)
+int charger_joueur(FILE* fichier, Tptjoueur joueur)
 {
+    int success = 1;
     const char delimiters[] = "\n";
-    char ligne[TAILLE_MAX_LIGNE] = "";
-    char* item = NULL;
-    int success = 1, i = 0;
 
-    if(fichier != NULL)
+    if(fichier != NULL && joueur != NULL)
     {
-        fgets(ligne, TAILLE_MAX_LIGNE, fichier);
+        //On charge le nom du joueur
+        fgets(joueur -> nom, NOM_TAILLE_MAX, fichier); //On récupère le nom brut
+        strcpy(joueur -> nom, strtok(joueur -> nom, delimiters)); //On vire le \n de la fin du nom du joueur
 
-        item = strtok(ligne, delimiters);
-        while(item != NULL && success)
-        {
-            printf("%s\n", item);
-            /*
-            i++;
-            //est_ordinateur
-            if(i == 1)
+        //On charge les autres infos du joueur
+        fscanf(fichier, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+            &joueur -> est_ordinateur,
+            &joueur -> difficulte_ordinateur,
 
+            &joueur -> cumul_bornes,
+            &joueur -> nb_bottes_jouees,
+            &joueur -> nb_coups_fourres_joues,
+            &joueur -> nb_200bornes_jouees,
+            &joueur -> couronnement,
 
-            //nom
+            &joueur -> est_creve,
+            &joueur -> a_accident,
+            &joueur -> en_panne_dessence,
+            &joueur -> est_limite_par_vitesse,
+            &joueur -> est_arrete,
 
-            //on s'occupe du deck plus tard
+            &joueur -> increvable,
+            &joueur -> citerne,
+            &joueur -> as_du_volant,
+            &joueur -> prioritaire
+        );
 
-            //est_creve
-
-            //a_accident
-
-            //en_panne_dessence
-
-            //est_limite_par_vitesse
-
-            //est_arrete*/
-            item = strtok(NULL, delimiters);
-        }
+            //On charge son deck de cartes
+            charger_deck(fichier, joueur -> deck);
     }
     else
         success = 0;
@@ -209,68 +192,57 @@ int charger_joueur(FILE* fichier, Tptjoueur monJoueur)
     return success;
 }
 
-
-
-
-
-
-
-
 //Cette fonction charge une partie à partir d'un fichier.
-int charger_partie(const char* nomFichier, Tptdeck deckPrincipal, Tptdeck deckJoueur1, Tptdeck deckJoueur2)
+int charger_partie(const char* nomFichier, Tptpartie partie)
 {
     int success = 1;
     FILE* fichier = NULL;
     fichier = fopen(nomFichier, "r");
 
-    if(fichier != NULL && deckPrincipal != NULL && deckJoueur1 != NULL && deckJoueur2 != NULL)
+    /* On crée deux joueurs vides. J'ai mis « Humain » ici, mais ça n'a pas d'importance,
+    le vrai type de joueur écrasera ces préréglages-ci. */
+    partie -> joueur_selectionne = joueur_init(HUMAIN, PAS_DE_DIFFICULTE, 1);
+    partie -> autre_joueur = joueur_init(HUMAIN, PAS_DE_DIFFICULTE, 2);
+
+    if(fichier != NULL && partie != NULL)
     {
         /* Lecture et chargement du deck principal */
-        success = (success && charger_deck(fichier, deckPrincipal));
+        success = success && charger_deck(fichier, partie -> deck);
 
         if(success)
         {
-            /* Lecture et chargement du deck du joueur 1 */
-            success = (success && charger_deck(fichier, deckJoueur1));
+            /* Lecture et chargement du joueur 1 */
+            success = success && charger_joueur(fichier, partie -> joueur_selectionne);
 
             if(success)
             {
-                /* Lecture et chargement du deck du joueur 2 */
-                success = (success && charger_deck(fichier, deckJoueur2));
+                /* Lecture et chargement du joueur 2 */
+                success = success && charger_joueur(fichier, partie -> autre_joueur);
             }
         }
-        fclose(fichier);
+
     }
     else
         success = 0;
 
+    fclose(fichier);
+
     if(success)
     {
-        //On vérifie que les joueurs ont strictement 6 ou 7 cartes chacun. Sinon erreur.
-        if(!(
-            deckJoueur1 -> taille >= CARTES_MAIN && deckJoueur1 -> taille <= CARTES_MAIN_MAX &&
-            deckJoueur2 -> taille >= CARTES_MAIN && deckJoueur2 -> taille <= CARTES_MAIN_MAX
-        ))
+        //On vérifie que les joueurs ont strictement 6 cartes chacun. Sinon erreur.
+        if(partie -> joueur_selectionne -> deck -> taille != CARTES_MAIN || partie -> autre_joueur -> deck -> taille != CARTES_MAIN)
             success = 0;
-        //De plus il est impossible que les deux joueurs aient autant de cartes.
-        else if(deckJoueur1 -> taille == deckJoueur2 -> taille)
-            success = 0;
-        //Il n'y a pas d'erreur, on va maintenant déterminer quel est le joueur qui doit jouer.
         else
         {
-            /*if(deckJoueur1 > deckJoueur2)
-            else*/
+            //Il n'y a pas d'erreur, on lance la partie !
+            printf("Partie chargée avec succès !\n\n");
+            jeu(partie);
         }
     }
 
-
-    //En cas d'échec, on vide les deux decks.
-    if(!success)
-    {
-        liste_vider(deckPrincipal);
-        liste_vider(deckJoueur1);
-        liste_vider(deckJoueur2);
-    }
+    //En cas d'échec, on vide tout.
+    //if(!success)
+        //partie_vider(partie);
 
     return success;
 }

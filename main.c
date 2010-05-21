@@ -15,7 +15,7 @@
 #include "divers.h"
 #include "menu.h"
 #include "jeu.h"
-
+#include "fichiers.h"
 
 int main()
 {
@@ -87,29 +87,12 @@ int main()
             /* Menu principal - choix2 = Charger partie */
             case 2:
                 menu_charger_partie(nomFichier);
-                /*if(!charger_partie(nomFichier, deckPrincipal, deckJoueur1, deckJoueur2))
+                if(!charger_partie(nomFichier, partie))
                 {
                     printf("\nLe chargement de la partie a échoué. Les causes possibles sont :\n");
                     printf("- fichier inaccessible (vérifier que '%s' existe bien et que le programme a les droits d'accès à ce fichier) ;\n", nomFichier);
                     printf("- fichier corrompu car modifié par l'utilisateur manuellement.\n\n");
                 }
-                else
-                {
-                    printf("\nPartie chargée avec succès !\n");
-
-                    printf("\nContenu du deck principal :\n");
-                    cartes_deck_afficher(deckPrincipal);
-
-                    printf("\nContenu du deck du joueur 1 :\n");
-                    cartes_deck_afficher(deckJoueur1);
-
-                    printf("\nContenu du deck joueur 2 :\n");
-                    cartes_deck_afficher(deckJoueur2);
-
-                    //Ne pas oublier de vider les decks en fin de partie sinon les cartes s'accumulent !
-
-                    printf("\n\nPARTIE TERMINÉE !\n");
-                }*/
             break;
 
             /* Menu principal - choix0 = Quitter le programme */
@@ -121,11 +104,6 @@ int main()
                 printf("\nChoix incorrect. Recommencez.\n");
         }
     }
-
-    /*if(enregistrer_partie(nomFichier, deckJoueur1, deckJoueur2))
-        printf("La partie a été enregistrée avec succès !\n");
-    else
-        printf("Une erreur est survenue lors de l'enregistrement de la partie.\n");*/
 
     return 0;
 }
