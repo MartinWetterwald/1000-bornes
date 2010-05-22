@@ -16,20 +16,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include "divers.h"
-
-/* Fonction qui convertit un char en entier */
-/*int char2int(char* chaine)
-{
-    int nombre = 0;
-
-    for (; *chaine; chaine++)
-    {
-       nombre *= 10;
-       nombre += *chaine - '0';
-    }
-    return nombre;
-}*/
 
 /* Fonctions de saisie sécurisée, pour remplacer le scanf */
 /* Source : http://www.siteduzero.com/tutoriel-3-14185-la-saisie-de-texte-securisee.html */
@@ -84,4 +72,47 @@ long lireLong()
         // Si problème de lecture, renvoyer -1
         return -1;
     }
+}
+
+//Les deux fonctions suivantes proviennent du site http://www.cppfrance.com/codes/COULEUR-CONSOLE_40135.aspx
+/* Fonction permettant d'écrire du texte en couleur dans la console à la fois sous Linux et Windows */
+void printfEx(COULEUR couleur, const char *str, ...)
+{
+    #ifndef LINUX
+        HANDLE hCmd = NULL;
+        CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+        COORD pt;
+    #endif
+        char buf[1024] = "";
+        va_list ap;
+
+        if (!str || *str == '\0')
+            return;
+
+    #ifndef LINUX
+        hCmd = GetStdHandle(STD_OUTPUT_HANDLE);
+        GetConsoleScreenBufferInfo(hCmd, &consoleInfo);
+        SetConsoleTextAttribute(hCmd, (short) (couleur | FOREGROUND_INTENSITY));
+    #endif
+
+    va_start(ap, str);
+    vsprintf(buf, str, ap);
+    va_end(ap);
+
+    #ifndef LINUX
+        printf(buf);
+        SetConsoleTextAttribute(hCmd, consoleInfo.wAttributes);
+    #else
+        printf("\033[3%dm %s \033[m", couleur, buf);
+    #endif
+}
+
+/* Fonction permettant de changer le titre de la console à la fois sous Linux et Windows */
+void console_titre(const char *titre)
+{
+    #ifndef LINUX
+        SetConsoleTitle(titre);
+    #else
+        printf("\033]0;%s\007", titre);
+    #endif
 }

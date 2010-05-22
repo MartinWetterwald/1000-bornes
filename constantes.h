@@ -12,7 +12,9 @@
 #ifndef CONSTANTES_H_INCLUDED
 #define CONSTANTES_H_INCLUDED
 
-#define DEBUG_IA   1
+#define LINUX //À commenter si on compile pour Windows
+
+#define DEBUG_IA   0
 
 /* Jeu */
 #define BORNES_MAX 1000

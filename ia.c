@@ -120,34 +120,34 @@ void ia_course(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* ch
             if(DEBUG_IA) printf("[IA COURSE] Je suis obligé de jeter une carte 'borne' car je n'ai que ce type de cartes dans ma main.\n");
             if(nb_bornes25 > 0)
             {
-                printf("[IA COURSE] Je jette une carte '25 bornes', c'est la carte borne la moins avantageuse.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je jette une carte '25 bornes', c'est la carte borne la moins avantageuse.\n");
                 *choix_jeter = BORNES25;
             }
             else if (nb_bornes50 > 0)
             {
-                printf("[IA COURSE] Je n'ai pas de carte '25 bornes', je jette une carte 50 bornes, la deuxième la moins avantageuse.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je n'ai pas de carte '25 bornes', je jette une carte 50 bornes, la deuxième la moins avantageuse.\n");
                 *choix_jeter = BORNES50;
             }
             else if (nb_bornes75 > 0)
             {
-                printf("[IA COURSE] Je n'ai pas de carte '25 bornes' ni '50 bornes', je jette une carte 75 bornes, la troisième la moins avantageuse.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je n'ai pas de carte '25 bornes' ni '50 bornes', je jette une carte 75 bornes, la troisième la moins avantageuse.\n");
                 *choix_jeter = BORNES75;
             }
             else if (nb_bornes100 > 0)
             {
-                printf("[IA COURSE] Je n'ai pas de carte '25 bornes' ni '50 bornes' ni '75 bornes', je jette une carte 100 bornes, la quatrième la moins avantageuse.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je n'ai pas de carte '25 bornes' ni '50 bornes' ni '75 bornes', je jette une carte 100 bornes, la quatrième la moins avantageuse.\n");
                 *choix_jeter = BORNES100;
             }
             else if (nb_bornes200 > 0)
             {
-                printf("[IA COURSE] Je n'ai pas de carte '25 bornes' ni '50 bornes' ni '75 bornes' ni '100 bornes', c'est avec regret que je jette une carte 200 bornes, la plus avantageuse de toutes.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je n'ai pas de carte '25 bornes' ni '50 bornes' ni '75 bornes' ni '100 bornes', c'est avec regret que je jette une carte 200 bornes, la plus avantageuse de toutes.\n");
                 *choix_jeter = BORNES200;
             }
         }
         //Si l'IA course n'est pas obligée de jeter une carte 'borne', elle va jeter un autre type de carte.
         else
         {
-            printf("[IA COURSE] Je ne suis pas obligé de jeter une carte 'borne', je vais donc en jeter une autre, peu importe laquelle !\n");
+            if(DEBUG_IA) printf("[IA COURSE] Je ne suis pas obligé de jeter une carte 'borne', je vais donc en jeter une autre, peu importe laquelle !\n");
             *choix_jeter = carte_aleatoire(ordinateur -> deck);
             while(  *choix_jeter == BORNES25 || *choix_jeter == BORNES50 || *choix_jeter == BORNES75 ||
                     *choix_jeter == BORNES100 || *choix_jeter == BORNES200
@@ -159,7 +159,7 @@ void ia_course(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* ch
     //Si l'ordinateur peut jouer une carte, on lui en fait jouer une.
     else
     {
-        printf("[IA COURSE] Je peux jouer une carte. Je vais bien évidemment saisir cette opportunité !\n");
+        if(DEBUG_IA) printf("[IA COURSE] Je peux jouer une carte. Je vais bien évidemment saisir cette opportunité !\n");
         *choix_jeter = -1;
         //Faire des calculs pour choisir la carte à jouer parmi les cartes de la liste chainée 'coupsPossibles'.
 
@@ -167,37 +167,37 @@ void ia_course(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* ch
         //qu'une 100 bornes, une 100 bornes qu'une 75, etc.
         if (nb_possible_bornes > 0)
         {
-            printf("[IA COURSE] Je peux jouer une carte 'borne' ! :D\n");
+            if(DEBUG_IA) printf("[IA COURSE] Je peux jouer une carte 'borne' ! :D\n");
             if(nb_possible_bornes200 > 0)
             {
-                printf("[IA COURSE] Je joue une carte '200 bornes' car c'est la plus avantageuse !\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je joue une carte '200 bornes' car c'est la plus avantageuse !\n");
                 *choix_carte = BORNES200;
             }
             else if (nb_possible_bornes100 > 0)
             {
-                printf("[IA COURSE] Je n'ai pas de carte '200 bornes', je vais donc jouer une carte '100 bornes' car c'est la deuxième la plus avantageuse.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je n'ai pas de carte '200 bornes', je vais donc jouer une carte '100 bornes' car c'est la deuxième la plus avantageuse.\n");
                 *choix_carte = BORNES100;
             }
             else if (nb_possible_bornes75 > 0)
             {
-                printf("[IA COURSE] Je n'ai pas de carte '200 bornes' ni '100 bornes', je vais donc jouer une carte '75 bornes' car c'est la troisième la plus avantageuse.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je n'ai pas de carte '200 bornes' ni '100 bornes', je vais donc jouer une carte '75 bornes' car c'est la troisième la plus avantageuse.\n");
                 *choix_carte = BORNES75;
             }
             else if (nb_possible_bornes50 > 0)
             {
-                printf("[IA COURSE] Je n'ai pas de carte '200 bornes' ni '100 bornes' ni '75 bornes', je vais donc jouer une carte '50 bornes' car c'est la quatrième la plus avantageuse.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je n'ai pas de carte '200 bornes' ni '100 bornes' ni '75 bornes', je vais donc jouer une carte '50 bornes' car c'est la quatrième la plus avantageuse.\n");
                 *choix_carte = BORNES50;
             }
             else if (nb_possible_bornes25 > 0)
             {
-                printf("[IA COURSE] Je n'ai pas de carte '200 bornes' ni '100 bornes' ni '75 bornes' ni '50 bornes', c'est donc avec regret que je vais jouer une carte '25 bornes', la moins avantageuse.\n");
+                if(DEBUG_IA) printf("[IA COURSE] Je n'ai pas de carte '200 bornes' ni '100 bornes' ni '75 bornes' ni '50 bornes', c'est donc avec regret que je vais jouer une carte '25 bornes', la moins avantageuse.\n");
                 *choix_carte = BORNES25;
             }
         }
         //On ne peut pas jouer de carte borne, on en choisit donc une au hasard.
         else
         {
-            printf("[IA COURSE] Je ne peux pas jouer de carte 'borne'. Je vais donc jouer n'importe quoi...\n");
+            if(DEBUG_IA) printf("[IA COURSE] Je ne peux pas jouer de carte 'borne'. Je vais donc jouer n'importe quoi...\n");
             *choix_carte = carte_aleatoire(coupsPossibles);
         }
     }

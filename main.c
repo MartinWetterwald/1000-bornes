@@ -27,6 +27,8 @@ int main()
     int menu1_choix = -1, jouer_contre_ordinateur = -1, difficulte_ordinateur1 = -1, difficulte_ordinateur2 = -1;
     char nomFichier[TAILLE_MAX_NOM_FICHIER];
 
+    console_titre("1000 bornes par Martin's Prince & NA2S");
+
     afficher_logo();
 
     //Menu principal
