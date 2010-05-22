@@ -92,17 +92,20 @@ int enregistrer_partie(const char* nomFichier, Tptpartie partie)
             partie -> autre_joueur -> deck != NULL
     )
     {
-        /* Parcours du deck principal et écriture dans le fichier */
+        /* Sauvegarde du deck principal */
         success = success && enregistrer_deck(fichier, partie -> deck);
+
+        /* Sauvegarde de la poubelle */
+        success = success && enregistrer_deck(fichier, partie -> poubelle);
 
         if(success)
         {
-            /* Écriture des infos du joueur1 */
+            /* Sauvegarde du joueur1 */
             success = success && enregistrer_joueur(fichier, partie -> joueur_selectionne);
 
             if(success)
             {
-                /* Écriture des infos du joueur2 */
+                /* Sauvegarde du joueur2 */
                 success = success && enregistrer_joueur(fichier, partie -> autre_joueur);
             }
         }
@@ -114,7 +117,8 @@ int enregistrer_partie(const char* nomFichier, Tptpartie partie)
     return success;
 }
 
-/* Lecture d'un deck dans un fichier et remplissage de la liste chainée. */
+/* Lecture d'un deck dans un fichier et remplissage de la liste chainée.
+*  Pour réinsérer les cartes dans le bon ordre, on va cette fois utiliser cartes_deck_add_queue. */
 int charger_deck(FILE* fichier, Tptdeck deck)
 {
     const char delimiters[] = " \n";
@@ -133,9 +137,9 @@ int charger_deck(FILE* fichier, Tptdeck deck)
                 //Conversion du numéro de la carte en entier
                 carte_num = strtol(carte, NULL, 10);
 
-                //Vérification de la validité du numéro
+                //Vérification de la validité du numéro et insertion
                 if(cartes_verifier_validite(carte_num))
-                    cartes_deck_add(deck, carte_num, 1);
+                    cartes_deck_add_queue(deck, carte_num, 1);
                 else
                     success = 0;
 
@@ -199,6 +203,30 @@ int charger_partie(const char* nomFichier, Tptpartie partie)
     FILE* fichier = NULL;
     fichier = fopen(nomFichier, "r");
 
+    int nb_panne_essence_deck, nb_creve_deck, nb_accident_deck, nb_limite_vitesse_deck, nb_stop_deck;
+    int nb_essence_deck, nb_roue_de_secours_deck, nb_reparations_deck, nb_fin_limite_vitesse_deck, nb_roulez_deck;
+    int nb_citerne_deck, nb_increvable_deck, nb_as_du_volant_deck, nb_prioritaire_deck;
+    int nb_bornes25_deck, nb_bornes50_deck, nb_bornes75_deck, nb_bornes100_deck, nb_bornes200_deck;
+    int nb_obstacles_deck, nb_parades_deck, nb_bottes_deck, nb_bornes_deck;
+
+    int nb_panne_essence_poubelle, nb_creve_poubelle, nb_accident_poubelle, nb_limite_vitesse_poubelle, nb_stop_poubelle;
+    int nb_essence_poubelle, nb_roue_de_secours_poubelle, nb_reparations_poubelle, nb_fin_limite_vitesse_poubelle, nb_roulez_poubelle;
+    int nb_citerne_poubelle, nb_increvable_poubelle, nb_as_du_volant_poubelle, nb_prioritaire_poubelle;
+    int nb_bornes25_poubelle, nb_bornes50_poubelle, nb_bornes75_poubelle, nb_bornes100_poubelle, nb_bornes200_poubelle;
+    int nb_obstacles_poubelle, nb_parades_poubelle, nb_bottes_poubelle, nb_bornes_poubelle;
+
+    int nb_panne_essence_joueur1, nb_creve_joueur1, nb_accident_joueur1, nb_limite_vitesse_joueur1, nb_stop_joueur1;
+    int nb_essence_joueur1, nb_roue_de_secours_joueur1, nb_reparations_joueur1, nb_fin_limite_vitesse_joueur1, nb_roulez_joueur1;
+    int nb_citerne_joueur1, nb_increvable_joueur1, nb_as_du_volant_joueur1, nb_prioritaire_joueur1;
+    int nb_bornes25_joueur1, nb_bornes50_joueur1, nb_bornes75_joueur1, nb_bornes100_joueur1, nb_bornes200_joueur1;
+    int nb_obstacles_joueur1, nb_parades_joueur1, nb_bottes_joueur1, nb_bornes_joueur1;
+
+    int nb_panne_essence_joueur2, nb_creve_joueur2, nb_accident_joueur2, nb_limite_vitesse_joueur2, nb_stop_joueur2;
+    int nb_essence_joueur2, nb_roue_de_secours_joueur2, nb_reparations_joueur2, nb_fin_limite_vitesse_joueur2, nb_roulez_joueur2;
+    int nb_citerne_joueur2, nb_increvable_joueur2, nb_as_du_volant_joueur2, nb_prioritaire_joueur2;
+    int nb_bornes25_joueur2, nb_bornes50_joueur2, nb_bornes75_joueur2, nb_bornes100_joueur2, nb_bornes200_joueur2;
+    int nb_obstacles_joueur2, nb_parades_joueur2, nb_bottes_joueur2, nb_bornes_joueur2;
+
     /* On crée deux joueurs vides. J'ai mis « Humain » ici, mais ça n'a pas d'importance,
     le vrai type de joueur écrasera ces préréglages-ci. */
     partie -> joueur_selectionne = joueur_init(HUMAIN, PAS_DE_DIFFICULTE, 1);
@@ -206,21 +234,26 @@ int charger_partie(const char* nomFichier, Tptpartie partie)
 
     if(fichier != NULL && partie != NULL)
     {
-        /* Lecture et chargement du deck principal */
+        /* Chargement du deck principal */
         success = success && charger_deck(fichier, partie -> deck);
 
         if(success)
         {
-            /* Lecture et chargement du joueur 1 */
-            success = success && charger_joueur(fichier, partie -> joueur_selectionne);
+            /* Chargement de la poubelle */
+            success = success && charger_deck(fichier, partie -> poubelle);
 
             if(success)
             {
-                /* Lecture et chargement du joueur 2 */
-                success = success && charger_joueur(fichier, partie -> autre_joueur);
+                /* Chargement du joueur 1 */
+                success = success && charger_joueur(fichier, partie -> joueur_selectionne);
+
+                if(success)
+                {
+                    /* Chargement du joueur 2 */
+                    success = success && charger_joueur(fichier, partie -> autre_joueur);
+                }
             }
         }
-
     }
     else
         success = 0;
@@ -229,8 +262,94 @@ int charger_partie(const char* nomFichier, Tptpartie partie)
 
     if(success)
     {
-        //On vérifie que les joueurs ont strictement 6 cartes chacun. Sinon erreur.
-        if(partie -> joueur_selectionne -> deck -> taille != CARTES_MAIN || partie -> autre_joueur -> deck -> taille != CARTES_MAIN)
+        //On vérifie qu'il n'y a eu aucun trafic et qu'il y a le bon nombre de cartes au total.
+        //C'est d'ailleurs uniquement à cela que sert la sauvegarde de la poubelle.
+
+        /* On commence par comptabiliser chaque type de cartes dans chacun des quatre decks. */
+
+        /* Deck principal */
+        cartes_deck_compter_sorte
+        (
+            partie -> deck,
+            &nb_panne_essence_deck, &nb_creve_deck, &nb_accident_deck, &nb_limite_vitesse_deck, &nb_stop_deck,
+            &nb_essence_deck, &nb_roue_de_secours_deck, &nb_reparations_deck, &nb_fin_limite_vitesse_deck, &nb_roulez_deck,
+            &nb_citerne_deck, &nb_increvable_deck, &nb_as_du_volant_deck, &nb_prioritaire_deck,
+            &nb_bornes25_deck, &nb_bornes50_deck, &nb_bornes75_deck, &nb_bornes100_deck, &nb_bornes200_deck,
+            &nb_obstacles_deck, &nb_parades_deck, &nb_bottes_deck, &nb_bornes_deck
+        );
+
+        /* Poubelle */
+        cartes_deck_compter_sorte
+        (
+            partie -> poubelle,
+            &nb_panne_essence_poubelle, &nb_creve_poubelle, &nb_accident_poubelle, &nb_limite_vitesse_poubelle, &nb_stop_poubelle,
+            &nb_essence_poubelle, &nb_roue_de_secours_poubelle, &nb_reparations_poubelle, &nb_fin_limite_vitesse_poubelle, &nb_roulez_poubelle,
+            &nb_citerne_poubelle, &nb_increvable_poubelle, &nb_as_du_volant_poubelle, &nb_prioritaire_poubelle,
+            &nb_bornes25_poubelle, &nb_bornes50_poubelle, &nb_bornes75_poubelle, &nb_bornes100_poubelle, &nb_bornes200_poubelle,
+            &nb_obstacles_poubelle, &nb_parades_poubelle, &nb_bottes_poubelle, &nb_bornes_poubelle
+        );
+
+        /* Joueur 1 */
+        cartes_deck_compter_sorte
+        (
+            partie -> joueur_selectionne -> deck,
+            &nb_panne_essence_joueur1, &nb_creve_joueur1, &nb_accident_joueur1, &nb_limite_vitesse_joueur1, &nb_stop_joueur1,
+            &nb_essence_joueur1, &nb_roue_de_secours_joueur1, &nb_reparations_joueur1, &nb_fin_limite_vitesse_joueur1, &nb_roulez_joueur1,
+            &nb_citerne_joueur1, &nb_increvable_joueur1, &nb_as_du_volant_joueur1, &nb_prioritaire_joueur1,
+            &nb_bornes25_joueur1, &nb_bornes50_joueur1, &nb_bornes75_joueur1, &nb_bornes100_joueur1, &nb_bornes200_joueur1,
+            &nb_obstacles_joueur1, &nb_parades_joueur1, &nb_bottes_joueur1, &nb_bornes_joueur1
+        );
+
+        /* Joueur 2 */
+        cartes_deck_compter_sorte
+        (
+            partie -> autre_joueur -> deck,
+            &nb_panne_essence_joueur2, &nb_creve_joueur2, &nb_accident_joueur2, &nb_limite_vitesse_joueur2, &nb_stop_joueur2,
+            &nb_essence_joueur2, &nb_roue_de_secours_joueur2, &nb_reparations_joueur2, &nb_fin_limite_vitesse_joueur2, &nb_roulez_joueur2,
+            &nb_citerne_joueur2, &nb_increvable_joueur2, &nb_as_du_volant_joueur2, &nb_prioritaire_joueur2,
+            &nb_bornes25_joueur2, &nb_bornes50_joueur2, &nb_bornes75_joueur2, &nb_bornes100_joueur2, &nb_bornes200_joueur2,
+            &nb_obstacles_joueur2, &nb_parades_joueur2, &nb_bottes_joueur2, &nb_bornes_joueur2
+        );
+
+        //On fait les vérifications !
+        if(
+                partie -> joueur_selectionne -> deck -> taille != CARTES_MAIN ||
+                partie -> autre_joueur -> deck -> taille != CARTES_MAIN ||
+                partie -> deck -> taille + partie -> poubelle -> taille + partie -> joueur_selectionne -> deck -> taille + partie -> autre_joueur -> deck -> taille != CARTES_TOTAL ||
+
+                //Obstacles
+                nb_panne_essence_deck       + nb_panne_essence_poubelle         + nb_panne_essence_joueur1          + nb_panne_essence_joueur2          != NB_PANNE_ESSENCE     ||
+                nb_creve_deck               + nb_creve_poubelle                 + nb_creve_joueur1                  + nb_creve_joueur2                  != NB_CREVE             ||
+                nb_accident_deck            + nb_accident_poubelle              + nb_accident_joueur1               + nb_accident_joueur2               != NB_ACCIDENT          ||
+                nb_limite_vitesse_deck      + nb_limite_vitesse_poubelle        + nb_limite_vitesse_joueur1         + nb_limite_vitesse_joueur2         != NB_LIMITE_VITESSE    ||
+                nb_stop_deck                + nb_stop_poubelle                  + nb_stop_joueur1                   + nb_stop_joueur2                   != NB_STOP              ||
+
+                //Parades
+                nb_essence_deck             + nb_essence_poubelle               + nb_essence_joueur1                + nb_essence_joueur2                != NB_ESSENCE           ||
+                nb_roue_de_secours_deck     + nb_roue_de_secours_poubelle       + nb_roue_de_secours_joueur1        + nb_roue_de_secours_joueur2        != NB_ROUE_DE_SECOURS   ||
+                nb_reparations_deck         + nb_reparations_poubelle           + nb_reparations_joueur1            + nb_reparations_joueur2            != NB_REPARATIONS       ||
+                nb_fin_limite_vitesse_deck  + nb_fin_limite_vitesse_poubelle    + nb_fin_limite_vitesse_joueur1     + nb_fin_limite_vitesse_joueur2     != NB_FIN_LIMITE_VITESSE||
+                nb_roulez_deck              + nb_roulez_poubelle                + nb_roulez_joueur1                 + nb_roulez_joueur2                 != NB_ROULEZ            ||
+
+                //Bottes
+                nb_citerne_deck             + nb_citerne_poubelle               + nb_citerne_joueur1                + nb_citerne_joueur2                != NB_CITERNE           ||
+                nb_increvable_deck          + nb_increvable_poubelle            + nb_increvable_joueur1             + nb_increvable_joueur2             != NB_INCREVABLE        ||
+                nb_as_du_volant_deck        + nb_as_du_volant_poubelle          + nb_as_du_volant_joueur1           + nb_as_du_volant_joueur2           != NB_AS_DU_VOLANT      ||
+                nb_prioritaire_deck         + nb_prioritaire_poubelle           + nb_prioritaire_joueur1            + nb_prioritaire_joueur2            != NB_PRIORITAIRE       ||
+
+                //Bornes
+                nb_bornes25_deck            + nb_bornes25_poubelle              + nb_bornes25_joueur1               + nb_bornes25_joueur2               != NB_BORNES25          ||
+                nb_bornes50_deck            + nb_bornes50_poubelle              + nb_bornes50_joueur1               + nb_bornes50_joueur2               != NB_BORNES50          ||
+                nb_bornes75_deck            + nb_bornes75_poubelle              + nb_bornes75_joueur1               + nb_bornes75_joueur2               != NB_BORNES75          ||
+                nb_bornes100_deck           + nb_bornes100_poubelle             + nb_bornes100_joueur1              + nb_bornes100_joueur2              != NB_BORNES100         ||
+                nb_bornes200_deck           + nb_bornes200_poubelle             + nb_bornes200_joueur1              + nb_bornes200_joueur2              != NB_BORNES200         ||
+
+                //Totaux
+                nb_obstacles_deck           + nb_obstacles_poubelle             + nb_obstacles_joueur1              + nb_obstacles_joueur2              != NB_OBSTACLES         ||
+                nb_parades_deck             + nb_parades_poubelle               + nb_parades_joueur1                + nb_parades_joueur2                != NB_PARADES           ||
+                nb_bottes_deck              + nb_bottes_poubelle                + nb_bottes_joueur1                 + nb_bottes_joueur2                 != NB_BOTTES            ||
+                nb_bornes_deck              + nb_bornes_poubelle                + nb_bornes_joueur1                 + nb_bornes_joueur2                 != NB_BORNES
+        )
             success = 0;
         else
         {
@@ -241,8 +360,8 @@ int charger_partie(const char* nomFichier, Tptpartie partie)
     }
 
     //En cas d'échec, on vide tout.
-    //if(!success)
-        //partie_vider(partie);
+    if(!success)
+        partie_vider(partie);
 
     return success;
 }

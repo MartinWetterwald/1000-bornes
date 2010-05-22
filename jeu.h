@@ -17,6 +17,7 @@ La couche « jeu » requiert la couche inférieure : joueur */
 typedef struct Tpartie
 {
     Tptdeck deck;
+    Tptdeck poubelle;
     Tptjoueur joueur_selectionne;
     Tptjoueur autre_joueur;
 } Tpartie, *Tptpartie;

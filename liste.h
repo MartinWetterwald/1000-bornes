@@ -24,6 +24,7 @@ typedef struct _liste {
 Tptliste liste_init();
 Tptmaillon maillon_nouveau(int val);
 Tptmaillon liste_maillon_inserer_tete(Tptliste maListe, int val);
+Tptmaillon liste_maillon_inserer_queue(Tptliste maListe, int val);
 int liste_maillon_supprimer(Tptliste maListe, Tptmaillon aSupprimer);
 void liste_remplir_fictif(Tptliste maListe, int max);
 void liste_afficher(Tptliste maListe);

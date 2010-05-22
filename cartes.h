@@ -24,7 +24,8 @@ typedef Tptliste Tptdeck;
 typedef Tmaillon Tcarte;
 typedef Tptmaillon Tptcarte;
 
-void cartes_deck_add(Tptdeck deck, int carte_type, int carte_nb);
+void cartes_deck_add_tete(Tptdeck deck, int carte_type, int carte_nb);
+void cartes_deck_add_queue(Tptdeck deck, int carte_type, int carte_nb);
 void cartes_deck_init(Tptdeck deck);
 void cartes_deck_compter_sorte
 (

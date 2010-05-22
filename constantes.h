@@ -108,6 +108,7 @@
 #define NB_ACCIDENT            3
 #define NB_LIMITE_VITESSE      4
 #define NB_STOP                5
+#define NB_OBSTACLES (NB_PANNE_ESSENCE + NB_CREVE + NB_ACCIDENT + NB_LIMITE_VITESSE + NB_STOP)
 
 //Parades
 #define NB_ESSENCE             6
@@ -115,13 +116,13 @@
 #define NB_REPARATIONS         6
 #define NB_FIN_LIMITE_VITESSE  6
 #define NB_ROULEZ              14
+#define NB_PARADES (NB_ESSENCE + NB_ROUE_DE_SECOURS + NB_REPARATIONS + NB_FIN_LIMITE_VITESSE + NB_ROULEZ)
 
 //Bottes
 #define NB_CITERNE             1
 #define NB_INCREVABLE          1
 #define NB_AS_DU_VOLANT        1
 #define NB_PRIORITAIRE         1
-
 #define NB_BOTTES (NB_CITERNE + NB_INCREVABLE + NB_AS_DU_VOLANT + NB_PRIORITAIRE)
 
 //Bornes
@@ -130,7 +131,7 @@
 #define NB_BORNES75            10
 #define NB_BORNES100           12
 #define NB_BORNES200           4
-
+#define NB_BORNES (NB_BORNES25 + NB_BORNES50 + NB_BORNES75 + NB_BORNES100 + NB_BORNES200)
 
 
 #endif // CONSTANTES_H_INCLUDED

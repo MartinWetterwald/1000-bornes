@@ -26,6 +26,7 @@ Tptpartie partie_init()
 {
     Tptpartie partie = malloc(sizeof(Tpartie));
     partie -> deck = liste_init(); //Ceci crée un deck de cartes vides, deck qui sera le tas principal où piocher des cartes.
+    partie -> poubelle = liste_init(); //Ceci crée le deck vide de la poubelle.
     partie -> joueur_selectionne = NULL;
     partie -> autre_joueur = NULL;
     return partie;
@@ -416,8 +417,8 @@ int jouer(Tptpartie partie,  int carte_type, int passe_son_tour, char* raison_re
     {
         if(passe_son_tour)
         {
-            //Supprimer la carte du deck
-            liste_maillon_supprimer(partie -> joueur_selectionne -> deck, carte_a_jouer);
+            //On enlève la carte du deck du joueur pour la mettre à la poubelle
+            cartes_changer_deck(partie -> joueur_selectionne -> deck, carte_a_jouer, partie -> poubelle);
             return 1;
         }
         else
@@ -428,8 +429,8 @@ int jouer(Tptpartie partie,  int carte_type, int passe_son_tour, char* raison_re
                 //Appliquer les conséquences de la carte jouée
                 consequences_coup(partie, carte_type);
 
-                //Supprimer la carte du deck
-                liste_maillon_supprimer(partie -> joueur_selectionne -> deck, carte_a_jouer);
+                //On enlève la carte du deck du joueur pour la mettre à la poubelle
+                cartes_changer_deck(partie -> joueur_selectionne -> deck, carte_a_jouer, partie -> poubelle);
 
                 return 1;
             }
@@ -850,6 +851,8 @@ void jeu(Tptpartie partie)
 void partie_vider(Tptpartie partie)
 {
     deck_vider(partie -> deck);
+    deck_vider(partie -> poubelle);
+
     joueur_detruire(partie -> joueur_selectionne);
     joueur_detruire(partie -> autre_joueur);
 

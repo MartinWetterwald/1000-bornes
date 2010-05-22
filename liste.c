@@ -51,6 +51,23 @@ Tptmaillon liste_maillon_inserer_tete(Tptliste maListe, int val)
     return nouveau;
 }
 
+//Fonction qui permet d'insérer un maillon en queue de liste chainée.
+Tptmaillon liste_maillon_inserer_queue(Tptliste maListe, int val)
+{
+    Tptmaillon nouveau = maillon_nouveau(val);
+
+    maListe -> taille++;
+
+    if(maListe -> taille == 1)
+        maListe -> premier = nouveau;
+    else
+        maListe -> dernier -> suivant = nouveau;
+
+    maListe -> dernier = nouveau;
+
+    return nouveau;
+}
+
 //Fonction qui permet de supprimer un maillon donné
 int liste_maillon_supprimer(Tptliste maListe, Tptmaillon aSupprimer)
 {

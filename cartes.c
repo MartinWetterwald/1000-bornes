@@ -18,46 +18,54 @@
 #include "divers.h"
 #include "cartes.h"
 
-//Ajout d'un certain type de carte dans un deck
-void cartes_deck_add(Tptdeck deck, int carte_type, int carte_nb)
+//Ajout d'un certain type de carte sur le dessus d'un deck
+void cartes_deck_add_tete(Tptdeck deck, int carte_type, int carte_nb)
 {
     int i;
     for(i = 1; i <= carte_nb; i++)
         liste_maillon_inserer_tete(deck, carte_type);
 }
 
+//Ajout d'un certain type de carte sous le dessous d'un deck
+void cartes_deck_add_queue(Tptdeck deck, int carte_type, int carte_nb)
+{
+    int i;
+    for(i = 1; i <= carte_nb; i++)
+        liste_maillon_inserer_queue(deck, carte_type);
+}
+
 //Initialisation du deck du jeu + mélangeage (106 cartes).
 void cartes_deck_init(Tptdeck deck)
 {
     /* Insertion des obstacles */
-    cartes_deck_add(deck, PANNE_ESSENCE,        NB_PANNE_ESSENCE);
-    cartes_deck_add(deck, CREVE,                NB_CREVE);
-    cartes_deck_add(deck, ACCIDENT,             NB_ACCIDENT);
-    cartes_deck_add(deck, LIMITE_VITESSE,       NB_LIMITE_VITESSE);
-    cartes_deck_add(deck, STOP,                 NB_STOP);
+    cartes_deck_add_tete(deck, PANNE_ESSENCE,        NB_PANNE_ESSENCE);
+    cartes_deck_add_tete(deck, CREVE,                NB_CREVE);
+    cartes_deck_add_tete(deck, ACCIDENT,             NB_ACCIDENT);
+    cartes_deck_add_tete(deck, LIMITE_VITESSE,       NB_LIMITE_VITESSE);
+    cartes_deck_add_tete(deck, STOP,                 NB_STOP);
 
 
     /* Insertion des parades */
-    cartes_deck_add(deck, ESSENCE,              NB_ESSENCE);
-    cartes_deck_add(deck, ROUE_DE_SECOURS,      NB_ROUE_DE_SECOURS);
-    cartes_deck_add(deck, REPARATIONS,          NB_REPARATIONS);
-    cartes_deck_add(deck, FIN_LIMITE_VITESSE,   NB_FIN_LIMITE_VITESSE);
-    cartes_deck_add(deck, ROULEZ,               NB_ROULEZ);
+    cartes_deck_add_tete(deck, ESSENCE,              NB_ESSENCE);
+    cartes_deck_add_tete(deck, ROUE_DE_SECOURS,      NB_ROUE_DE_SECOURS);
+    cartes_deck_add_tete(deck, REPARATIONS,          NB_REPARATIONS);
+    cartes_deck_add_tete(deck, FIN_LIMITE_VITESSE,   NB_FIN_LIMITE_VITESSE);
+    cartes_deck_add_tete(deck, ROULEZ,               NB_ROULEZ);
 
 
     /* Insertion des bottes */
-    cartes_deck_add(deck, CITERNE,              NB_CITERNE);
-    cartes_deck_add(deck, INCREVABLE,           NB_INCREVABLE);
-    cartes_deck_add(deck, AS_DU_VOLANT,         NB_AS_DU_VOLANT);
-    cartes_deck_add(deck, PRIORITAIRE,          NB_PRIORITAIRE);
+    cartes_deck_add_tete(deck, CITERNE,              NB_CITERNE);
+    cartes_deck_add_tete(deck, INCREVABLE,           NB_INCREVABLE);
+    cartes_deck_add_tete(deck, AS_DU_VOLANT,         NB_AS_DU_VOLANT);
+    cartes_deck_add_tete(deck, PRIORITAIRE,          NB_PRIORITAIRE);
 
 
     /* Insertion des bornes */
-    cartes_deck_add(deck, BORNES25, NB_BORNES25);
-    cartes_deck_add(deck, BORNES50, NB_BORNES50);
-    cartes_deck_add(deck, BORNES75, NB_BORNES75);
-    cartes_deck_add(deck, BORNES100, NB_BORNES100);
-    cartes_deck_add(deck, BORNES200, NB_BORNES200);
+    cartes_deck_add_tete(deck, BORNES25, NB_BORNES25);
+    cartes_deck_add_tete(deck, BORNES50, NB_BORNES50);
+    cartes_deck_add_tete(deck, BORNES75, NB_BORNES75);
+    cartes_deck_add_tete(deck, BORNES100, NB_BORNES100);
+    cartes_deck_add_tete(deck, BORNES200, NB_BORNES200);
 
     /* On mélange les cartes ! */
     liste_melanger(deck, MELANGER_MIN, MELANGER_MAX);

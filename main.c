@@ -77,7 +77,7 @@ int main()
                     }
                 }
 
-                if(jouer_contre_ordinateur != ARRETER_PARTIE && difficulte_ordinateur1 != ARRETER_PARTIE && difficulte_ordinateur2 != ARRETER_PARTIE)
+                if(jouer_contre_ordinateur != 0 && difficulte_ordinateur1 != 0 && difficulte_ordinateur2 != 0)
                 {
                     jeu_init(partie, joueur1, joueur2);
                     jeu(partie);
