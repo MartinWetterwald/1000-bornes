@@ -49,7 +49,7 @@ void ia_debutant(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* 
     Tptdeck coupsPossibles = lister_coups_possibles(ordinateur, humain);
 
     //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
-    if( (coupsPossibles -> taille) == 0)
+    if(coupsPossibles -> taille == 0)
     {
         if(DEBUG_IA) printf("[IA DÉBUTANT] Je suis obligé de passer mon tour car je ne peux rien jouer.\n");
         if(DEBUG_IA) printf("[IA DÉBUTANT] Je vais choisir aléatoirement une carte à jeter.\n");
@@ -108,14 +108,14 @@ void ia_course(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* ch
     );
 
     //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
-    if( (coupsPossibles -> taille) == 0)
+    if(coupsPossibles -> taille == 0)
     {
         if(DEBUG_IA) printf("[IA COURSE] Je suis obligé de passer mon tour car je ne peux rien jouer.\n");
         *choix_carte = PASSER_SON_TOUR;
 
         //Si l'IA course est obligée de jeter une carte borne car elle n'a que ça dans son jeu, on va établir une priorité.
         //On préfèrera jeter une carte 25 bornes qu'une 50 bornes, une 50 bornes qu'une 75 bornes, etc.
-        if ((ordinateur -> deck) -> taille == nb_bornes)
+        if(ordinateur -> deck -> taille == nb_bornes)
         {
             if(DEBUG_IA) printf("[IA COURSE] Je suis obligé de jeter une carte 'borne' car je n'ai que ce type de cartes dans ma main.\n");
             if(nb_bornes25 > 0)
@@ -149,9 +149,7 @@ void ia_course(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* ch
         {
             if(DEBUG_IA) printf("[IA COURSE] Je ne suis pas obligé de jeter une carte 'borne', je vais donc en jeter une autre, peu importe laquelle !\n");
             *choix_jeter = carte_aleatoire(ordinateur -> deck);
-            while(  *choix_jeter == BORNES25 || *choix_jeter == BORNES50 || *choix_jeter == BORNES75 ||
-                    *choix_jeter == BORNES100 || *choix_jeter == BORNES200
-            )
+            while(*choix_jeter >= BORNES25 && *choix_jeter <= BORNES200)
                 *choix_jeter = carte_aleatoire(ordinateur -> deck);
         }
     }
@@ -165,7 +163,7 @@ void ia_course(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* ch
 
         //Si on peut jouer au moins une carte 'borne', on va la jouer, mais on va préférer jouer une carte 200 bornes
         //qu'une 100 bornes, une 100 bornes qu'une 75, etc.
-        if (nb_possible_bornes > 0)
+        if(nb_possible_bornes > 0)
         {
             if(DEBUG_IA) printf("[IA COURSE] Je peux jouer une carte 'borne' ! :D\n");
             if(nb_possible_bornes200 > 0)
@@ -253,7 +251,7 @@ void ia_agressif(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* 
 
         //Si l'IA est obligée de jeter une carte obstacle car elle n'a que des cartes obstacles dans sa main, on établit une priorité.
         //L'obstacle le moins intéressant est la limite de vitesse, suivi du feu rouge (stop). Les autres obstocles sont équivalents et sont à jeter en dernier recours.
-        if ((ordinateur -> deck) -> taille == nb_obstacles)
+        if (ordinateur -> deck -> taille == nb_obstacles)
         {
             if(DEBUG_IA) printf("[IA AGRESSIF] Je n'ai que des cartes obstacle dans ma main, je suis obligé d'en jeter une. :'(\n");
             if(nb_limite_vitesse > 0)
@@ -278,9 +276,7 @@ void ia_agressif(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* 
         {
             if(DEBUG_IA) printf("[IA AGRESSIF] Je ne suis pas obligé de jeter une carte obstacle. Je vais donc en jeter une autre, peu importe laquelle !\n");
             *choix_jeter = carte_aleatoire(ordinateur -> deck);
-            while(  *choix_jeter == PANNE_ESSENCE || *choix_jeter == CREVE || *choix_jeter == ACCIDENT ||
-                    *choix_jeter == LIMITE_VITESSE || *choix_jeter == STOP
-            )
+            while(*choix_jeter >= PANNE_ESSENCE && *choix_jeter <= STOP)
                 *choix_jeter = carte_aleatoire(ordinateur -> deck);
         }
     }
@@ -380,7 +376,7 @@ void ia_defensif(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* 
 
         //Si l'IA est obligée de jeter une carte 'botte' ou 'parade', elle le fait.
         //Le moins intéressant des deux est la parade. C'est donc la première chose à balancer.
-        if ((ordinateur -> deck) -> taille == nb_bottes + nb_parades)
+        if (ordinateur -> deck -> taille == nb_bottes + nb_parades)
         {
             if(DEBUG_IA) printf("[IA DÉFENSIF] Je n'ai que des cartes bottes/parades confondues dans ma main, je suis obligé d'en jeter une. :'(\n");
             if(nb_parades > 0)
@@ -485,7 +481,7 @@ void ia_expert(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* ch
     );
 
     //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
-    if( (coupsPossibles -> taille - nb_possible_bottes) == 0)
+    if(coupsPossibles -> taille - nb_possible_bottes == 0)
     {
         if(DEBUG_IA) printf("[IA EXPERT] Je suis obligé de passer mon tour car je ne peux rien jouer.\n");
         *choix_carte = PASSER_SON_TOUR;

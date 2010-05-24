@@ -7,7 +7,8 @@
 * DESCRIPTION : Fonctions appelées pendant une   *
 * partie. Par exemple on peut vérifier si la     *
 * partie est finie, faire jouer un humain, un    *
-* ordinateur (intelligence artificielle)...      *
+* ordinateur, vérifier si un coup est autorisé,  *
+* détecter le gagnant...                         *
 *                                                *
 *************************************************/
 
@@ -324,7 +325,7 @@ int coup_autorise(char* raison_refus, char* raison_refus2, Tptjoueur joueur_sele
         if(joueur_selectionne -> est_limite_par_vitesse && carte_type >= BORNES75)
         {
             sprintf(raison_refus, "Vous voulez jouer une carte de distance supérieure à 50 bornes pour avancer alors que votre vitesse est limitée à 50 bornes/h...\n");
-            sprintf(raison_refus2, "Vous devez d'abord jouer une carte 'Fin de limitation de vitesse' si vous voulez jouer des cartes de distance supérieures à 50 bornes. !\n");
+            sprintf(raison_refus2, "Vous devez d'abord jouer une carte 'Fin de limitation de vitesse' si vous voulez jouer des cartes de distance supérieure à 50 bornes. !\n");
             return 0;
         }
 
@@ -334,7 +335,7 @@ int coup_autorise(char* raison_refus, char* raison_refus2, Tptjoueur joueur_sele
             return 0;
         }
 
-        if( ((joueur_selectionne -> cumul_bornes) + carte_type) > BORNES_MAX )
+        if(joueur_selectionne -> cumul_bornes + carte_type > BORNES_MAX)
         {
             sprintf(raison_refus, "Vous n'avez pas le droit de parcourir plus que %d bornes, vous n'avez que le droit d'atteindre cette distance exactement...\n", BORNES_MAX);
             return 0;
@@ -366,7 +367,7 @@ Tptdeck lister_coups_possibles(Tptjoueur joueur_selectionne, Tptjoueur autre_jou
         {
             coup_est_autorise = coup_autorise(raison_refus, raison_refus2, joueur_selectionne, autre_joueur, carte_courante -> valeur);
             if(coup_est_autorise)
-                liste_maillon_inserer_tete(coupsPossibles, carte_courante -> valeur);
+                cartes_deck_add_tete(coupsPossibles, carte_courante -> valeur, 1);
 
             carte_courante = carte_courante -> suivant;
         }
@@ -402,11 +403,11 @@ void coup_fourre(Tptpartie partie, int obstacle, int botte, char* raison_refus, 
         printf("Erreur à la fonction jouer pour le coup fourré. :/\n");
 
     //On fait piocher une carte au joueur, pour qu'il ait à nouveau six cartes
-    if(partie -> joueur_selectionne -> deck  -> taille > 0)
+    if(partie -> joueur_selectionne -> deck -> taille > 0)
     {
         carte_piochee = cartes_changer_deck(partie -> deck, partie -> deck -> premier, partie -> joueur_selectionne -> deck);
 
-        printf("Votre adversaire '%s' vient de piocher une carte '", partie -> joueur_selectionne -> nom);
+        printf("'%s' vient de piocher une carte '", partie -> joueur_selectionne -> nom);
         cartes_type2francais(carte_piochee -> valeur); //On affiche le nom de la carte en français
         printf("'.\n\n");
     }
@@ -593,7 +594,7 @@ void jeu(Tptpartie partie)
             carte_piochee = cartes_changer_deck(partie -> deck, partie -> deck -> premier, partie -> joueur_selectionne -> deck);
 
             //On affiche la carte que le joueur vient de piocher que si ça n'est pas un ordinateur
-            if(!(partie -> joueur_selectionne -> est_ordinateur))
+            if(!partie -> joueur_selectionne -> est_ordinateur)
             {
                 printf("'%s' vient de piocher une carte '", partie -> joueur_selectionne -> nom);
                 cartes_type2francais(carte_piochee -> valeur); //On affiche le nom de la carte en français
@@ -607,7 +608,7 @@ void jeu(Tptpartie partie)
         }
 
         //On n'affiche les infos que si le joueur n'est pas un ordinateur.
-        if(!(partie -> joueur_selectionne -> est_ordinateur))
+        if(!partie -> joueur_selectionne -> est_ordinateur)
         {
             printf("\nÉTAT DE VOTRE ADVERSAIRE :");
             joueur_afficher_infos_utiles(partie -> autre_joueur);
@@ -633,7 +634,7 @@ void jeu(Tptpartie partie)
         }
 
         //Demande au joueur de choisir une carte à jouer (si c'est un humain seulement)
-        if(!(partie -> joueur_selectionne -> est_ordinateur))
+        if(!partie -> joueur_selectionne -> est_ordinateur)
         {
             resultat_jouer = -1;
 
@@ -693,7 +694,6 @@ void jeu(Tptpartie partie)
                         {
                             printf("'%s' passe son tour et jette une carte.\n", partie -> joueur_selectionne -> nom);
                             resultat_jouer = 1;
-                            //cartes_deck_afficher(partie -> joueur_selectionne -> deck);
                         }
                         else if(les_coups_possibles -> taille > 0)
                         {
