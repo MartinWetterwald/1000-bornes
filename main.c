@@ -45,6 +45,7 @@ int main()
                     menu_demander_ordinateur(&jouer_contre_ordinateur);
                     switch(jouer_contre_ordinateur)
                     {
+                        /* Humain VS Ordinateur */
                         case 1:
                             //On demande la difficulté de l'ordinateur
                             choisir_difficulte_ordinateur(&jouer_contre_ordinateur, &difficulte_ordinateur2, 2);
@@ -54,11 +55,13 @@ int main()
                             joueur2 = joueur_init(ORDINATEUR, difficulte_ordinateur2, 2);
                         break;
 
+                        /* Humain VS Humain */
                         case 2:
                             joueur1 = joueur_init(HUMAIN, PAS_DE_DIFFICULTE, 1);
                             joueur2 = joueur_init(HUMAIN, PAS_DE_DIFFICULTE, 2);
                         break;
 
+                        /* Ordinateur VS Ordinateur */
                         case 3:
                             /* On demande la difficulté de chaque ordinateur */
                             choisir_difficulte_ordinateur(&jouer_contre_ordinateur, &difficulte_ordinateur1, 1);

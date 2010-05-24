@@ -254,11 +254,10 @@ int charger_partie(const char* nomFichier, Tptpartie partie)
                 }
             }
         }
+        fclose(fichier);
     }
     else
         success = 0;
-
-    fclose(fichier);
 
     if(success)
     {

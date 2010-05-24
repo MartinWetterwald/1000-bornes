@@ -146,7 +146,7 @@ void cartes_deck_afficher(Tptdeck deck)
 
 
         /* Affichage des obstacles */
-        printf("- %d obstacles\n", nb_obstacles);
+        printfEx(COULEUR_OBSTACLES, "- %d obstacles\n", nb_obstacles);
         if(nb_panne_essence >= 1)
             printf("  -> %d x 'panne d'essence' (code %d)\n", nb_panne_essence, PANNE_ESSENCE);
         if(nb_creve >= 1)
@@ -159,7 +159,7 @@ void cartes_deck_afficher(Tptdeck deck)
             printf("  -> %d x 'stop' (code %d)\n", nb_stop, STOP);
 
         /* Affichage des parades */
-        printf("\n- %d parades\n", nb_parades);
+        printfEx(COULEUR_PARADES, "\n- %d parades\n", nb_parades);
         if(nb_essence >= 1)
             printf("  -> %d x 'essence' (code %d)\n", nb_essence, ESSENCE);
         if(nb_roue_de_secours >= 1)
@@ -172,7 +172,7 @@ void cartes_deck_afficher(Tptdeck deck)
             printf("  -> %d x 'roulez' (code %d)\n", nb_roulez, ROULEZ);
 
         /* Affichage des bottes */
-        printf("\n- %d bottes\n", nb_bottes);
+        printfEx(COULEUR_BOTTES, "\n- %d bottes\n", nb_bottes);
         if(nb_citerne >= 1)
             printf("  -> %d x 'citerne' (code %d)\n", nb_citerne, CITERNE);
         if(nb_increvable >= 1)
@@ -183,7 +183,7 @@ void cartes_deck_afficher(Tptdeck deck)
             printf("  -> %d x 'prioritaire' (code %d)\n", nb_prioritaire, PRIORITAIRE);
 
         /* Affichage des bornes */
-        printf("\n- %d bornes\n", nb_bornes);
+        printfEx(COULEUR_BORNES, "\n- %d bornes\n", nb_bornes);
         if(nb_bornes25 >= 1)
             printf("  -> %d x '25 bornes' (code %d)\n", nb_bornes25, BORNES25);
         if(nb_bornes50 >= 1)
@@ -219,86 +219,86 @@ void cartes_type2francais(int val)
     {
         //Obstacles
         case PANNE_ESSENCE:
-            printf("Panne d'essence");
+            printfEx(COULEUR_OBSTACLES, "Panne d'essence");
         break;
 
         case CREVE:
-            printf("Crevé");
+            printfEx(COULEUR_OBSTACLES, "Crevé");
         break;
 
         case ACCIDENT:
-            printf("Accident");
+            printfEx(COULEUR_OBSTACLES, "Accident");
         break;
 
         case LIMITE_VITESSE:
-            printf("Limite de vitesse");
+            printfEx(COULEUR_OBSTACLES, "Limite de vitesse");
         break;
 
         case STOP:
-            printf("Stop (feu rouge)");
+            printfEx(COULEUR_OBSTACLES, "Stop (feu rouge)");
         break;
 
         //Parades
         case ESSENCE:
-            printf("Essence");
+            printfEx(COULEUR_PARADES, "Essence");
         break;
 
         case ROUE_DE_SECOURS:
-            printf("Roue de secours");
+            printfEx(COULEUR_PARADES, "Roue de secours");
         break;
 
         case REPARATIONS:
-            printf("Réparations");
+            printfEx(COULEUR_PARADES, "Réparations");
         break;
 
         case FIN_LIMITE_VITESSE:
-            printf("Fin de limitation de vitesse");
+            printfEx(COULEUR_PARADES, "Fin de limitation de vitesse");
         break;
 
         case ROULEZ:
-            printf("Roulez (feu vert)");
+            printfEx(COULEUR_PARADES, "Roulez (feu vert)");
         break;
 
         //Bottes
         case CITERNE:
-            printf("Citerne");
+            printfEx(COULEUR_BOTTES, "Citerne");
         break;
 
         case INCREVABLE:
-            printf("Increvable");
+            printfEx(COULEUR_BOTTES, "Increvable");
         break;
 
         case AS_DU_VOLANT:
-            printf("As du volant");
+            printfEx(COULEUR_BOTTES, "As du volant");
         break;
 
         case PRIORITAIRE:
-            printf("Véhicule prioritaire");
+            printfEx(COULEUR_BOTTES, "Véhicule prioritaire");
         break;
 
         //Bornes
         case BORNES25:
-            printf("25 bornes");
+            printfEx(COULEUR_BORNES, "25 bornes");
         break;
 
         case BORNES50:
-            printf("50 bornes");
+            printfEx(COULEUR_BORNES, "50 bornes");
         break;
 
         case BORNES75:
-            printf("75 bornes");
+            printfEx(COULEUR_BORNES, "75 bornes");
         break;
 
         case BORNES100:
-            printf("100 bornes");
+            printfEx(COULEUR_BORNES, "100 bornes");
         break;
 
         case BORNES200:
-            printf("200 bornes");
+            printfEx(COULEUR_BORNES, "200 bornes");
         break;
 
         default:
-            printf("Il n'y a plus de carte dans le deck !");
+            printf("Cette carte n'existe pas.");
     }
 }
 

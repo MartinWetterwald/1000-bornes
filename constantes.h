@@ -14,7 +14,7 @@
 
 #define LINUX //À commenter si on compile pour Windows
 
-#define DEBUG_IA   0
+#define DEBUG_IA   1
 
 /* Jeu */
 #define BORNES_MAX 1000

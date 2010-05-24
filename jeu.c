@@ -75,7 +75,9 @@ void jeu_init(Tptpartie partie, Tptjoueur joueur1, Tptjoueur joueur2)
     partie -> joueur_selectionne = joueur_selectionne;
     partie -> autre_joueur = autre_joueur;
 
-    printf("Le tirage au sort a décidé que '%s' commence la partie.\n", partie -> joueur_selectionne -> nom);
+    printf("Le tirage au sort a décidé que ");
+    printfEx(COULEUR_PARADES, "'%s' commence la partie", partie -> joueur_selectionne -> nom);
+    printf(".\n");
     demander_appuyez_sur_une_touche_pour_continuer();
 }
 
@@ -391,19 +393,26 @@ void coup_fourre(Tptpartie partie, int obstacle, int botte, char* raison_refus, 
     cartes_type2francais(botte);
     printf("', il a donc cinq cartes et va en piocher deux.\n");
 
-    //On fait jouer à l'adversaire sa carte botte.
+    /* On inverse le tour. L'adversaire devient le joueur sélectionné maintenant
+    (ceci est obligatoire pour que l'appel à la fonction jouer fasse jouer le bon joueur).*/
+    switch_tour(partie);
+
+    //On fait jouer au joueur sa carte botte.
     if(jouer(partie, botte, 0, raison_refus, raison_refus2) != 1)
         printf("Erreur à la fonction jouer pour le coup fourré. :/\n");
 
-    //On fait piocher une carte à l'adversaire, pour qu'il ait à nouveau six cartes
-    if(partie -> autre_joueur -> deck  -> taille > 0)
+    //On fait piocher une carte au joueur, pour qu'il ait à nouveau six cartes
+    if(partie -> joueur_selectionne -> deck  -> taille > 0)
     {
-        carte_piochee = cartes_changer_deck(partie -> deck, partie -> deck -> premier, partie -> autre_joueur -> deck);
+        carte_piochee = cartes_changer_deck(partie -> deck, partie -> deck -> premier, partie -> joueur_selectionne -> deck);
 
-        printf("Votre adversaire '%s' vient de piocher une carte '", partie -> autre_joueur -> nom);
+        printf("Votre adversaire '%s' vient de piocher une carte '", partie -> joueur_selectionne -> nom);
         cartes_type2francais(carte_piochee -> valeur); //On affiche le nom de la carte en français
         printf("'.\n\n");
     }
+
+    //On réinverse les deux deux joueurs, car ils vont être réinversés par la fonction jeu après la fin de cette fonction !
+    switch_tour(partie);
 }
 
 //Cette fonction permet à un joueur de jouer une carte (un tour de jeu)
@@ -600,15 +609,16 @@ void jeu(Tptpartie partie)
         //On n'affiche les infos que si le joueur n'est pas un ordinateur.
         if(!(partie -> joueur_selectionne -> est_ordinateur))
         {
-            printf("\n\nÉTAT DE VOTRE ADVERSAIRE :");
+            printf("\nÉTAT DE VOTRE ADVERSAIRE :");
             joueur_afficher_infos_utiles(partie -> autre_joueur);
+            demander_appuyez_sur_une_touche_pour_continuer();
 
-            printf("\n\nVOTRE ÉTAT :");
+            printf("\nVOTRE ÉTAT :");
             joueur_afficher_infos_utiles(partie -> joueur_selectionne);
             demander_appuyez_sur_une_touche_pour_continuer();
 
             //Affiche la main du joueur
-            printf("\n\nVOTRE MAIN :\n");
+            printf("\nVOTRE MAIN :\n");
             printf("Vous avez %d cartes en main : \n", partie -> joueur_selectionne -> deck -> taille);
             cartes_deck_afficher(partie -> joueur_selectionne -> deck);
 
@@ -616,8 +626,7 @@ void jeu(Tptpartie partie)
             demander_appuyez_sur_une_touche_pour_continuer();
 
             les_coups_possibles = lister_coups_possibles(partie -> joueur_selectionne, partie -> autre_joueur);
-            printf("Voici les coups possibles pour ce tour : \n");
-            printf("Il y a %d coups possibles :\n", les_coups_possibles -> taille);
+            printf("\nIl y a %d COUPS POSSIBLES :\n", les_coups_possibles -> taille);
             cartes_deck_afficher(les_coups_possibles);
 
             printf("\n");
@@ -732,6 +741,12 @@ void jeu(Tptpartie partie)
                     exit(0);
             }
 
+            if(DEBUG_IA)
+            {
+                printf("Voici sa main : \n");
+                cartes_deck_afficher(partie -> joueur_selectionne -> deck);
+            }
+
             /* Le choix de la carte a été fait par l'ordinateur. On joue sa carte. */
             if(choix_carte == PASSER_SON_TOUR)
             {
@@ -807,7 +822,10 @@ void jeu(Tptpartie partie)
             /* Si le joueur vient de jouter une carte 'botte', il a le droit de rejouer
             Il ne faut donc pas switcher les joueurs dans ce cas */
             if(choix_carte >= CITERNE && choix_carte <= PRIORITAIRE)
-                printf("\n'%s' vient de jouer une carte 'botte', c'est donc encore une fois à lui de jouer !\n", partie -> joueur_selectionne -> nom);
+            {
+                printf("\n");
+                printfEx(COULEUR_BOTTES, "'%s' vient de jouer une carte 'botte', c'est donc encore une fois à lui de jouer !\n", partie -> joueur_selectionne -> nom);
+            }
             else
                 switch_tour(partie);
 

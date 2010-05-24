@@ -20,18 +20,6 @@
 
 void afficher_logo()
 {
-    /*printf("\n\n");
-    printf("            88     ,a8888a,        ,a8888a,        ,a8888a,     \n");
-    printf("          ,d88   ,8P\"'  `\"Y8,    ,8P\"'  `\"Y8,    ,8P\"'  `\"Y8,   \n");
-    printf("        888888  ,8P        Y8,  ,8P        Y8,  ,8P        Y8,  \n");
-    printf("            88  88          88  88          88  88          88  \n");
-    printf("            88  88          88  88          88  88          88  \n");
-    printf("            88  `8b        d8'  `8b        d8'  `8b        d8'  \n");
-    printf("            88   `8ba,  ,ad8'    `8ba,  ,ad8'    `8ba,  ,ad8'   \n");
-    printf("            88     \"Y8888P\"        \"Y8888P\"        \"Y8888P\"     \n");
-    printf("                                                                \n");
-    printf("\n");*/
-
     printf("                               #       .'+';`\n");
     printf("                                 ,',:::,,,,,...#\n");
     printf("                         ` #   #,::,,+:`` ,#:.....\n");
@@ -48,15 +36,15 @@ void afficher_logo()
     printf("                         '::::;::::::::,,,,,,,,,..........,,.',,,+\n");
     printf("                      ,,:::::::,,+:,:::::,,,,,,,,......:,..,,,,',,;\n");
     printf("                     .:::::::::,,,:::::::::,,,,,,,,,..,....,.,,,,,,. ;\n");
-    printf("                   '::::::::#+++++':,,::::,,,,,,,,,,+..+++++++,,:,;``;\n");
-    printf("                +::::::::,##::::'+#:::::::,,,,,,,,,,,+#:::,;+#,,::.``\n");
-    printf(" `,            #::::::::+#:;:;::,##:,:::::,,,,,,,,,##:;::::,+#:::,``#\n");
-    printf("    .     `     :,::::::#+;;.'``;:,#,::::::::,,,,,,#+;;;;+;::,#,:::,#+\n");
-    printf("     .  +  `     ..```..#+';'````::+#,:::::,,,,,,,,##;'+;``.::#+,::::,\n");
-    printf("               ',,,.....+''..+```;:##,::::::,:,,,,,+;'+'.';`':'#,'#,```\n");
-    printf("         ;`    ';;::::::+''..',``;;'#..........,,..+''#.;.``'::#``````:\n");
-    printf("     ,      . ,  ++++++''#'+#...`+;;++,,,,,,,.......#+'+.::;`;:##`````:\n");
-    printf("         .:`              @##++#,.+';;####     ##+++###+'+,.;..;: #',,,`\n");
+    printf("                   '::::::::");printfEx(JAUNE, "#+++++");   printf("':,,::::,,,,,,,,,,+..");printfEx(JAUNE, "+++++++");         printf(",,:,;``;\n");
+    printf("                +::::::::,");printfEx(JAUNE, "##::::'+#");  printf(":::::::,,,,,,,,,,,");   printfEx(JAUNE, "+#:::,;+#");       printf(",,::.``\n");
+    printf(" `,            #::::::::");printfEx(JAUNE, "+#:;:;::,##");  printf(":,:::::,,,,,,,,,");     printfEx(JAUNE, "##:;::::,+#");     printf(":::,``#\n");
+    printf("    .     `     :,::::::");printfEx(JAUNE, "#+;;.'``;:,#"); printf(",::::::::,,,,,,");      printfEx(JAUNE, "#+;;;;+;::,#");    printf(",:::,#+\n");
+    printf("     .  +  `     ..```..");printfEx(JAUNE, "#+';'````::+#");printf(",:::::,,,,,,,,");       printfEx(JAUNE, "##;'+;``.::#+");   printf(",::::,\n");
+    printf("               ',,,.....");printfEx(JAUNE, "+''..+```;:##");printf(",::::::,:,,,,,");       printfEx(JAUNE, "+;'+'.';`':'#");   printf(",'#,```\n");
+    printf("         ;`    ';;::::::");printfEx(JAUNE, "+''..',``;;'#");printf("..........,,..");       printfEx(JAUNE, "+''#.;.``'::#");   printf("``````:\n");
+    printf("     ,      . ,  ++++++''");printfEx(JAUNE, "#'+#...`+;;"); printf("++,,,,,,,.......");     printfEx(JAUNE, "#+'+.::;`;:##");   printf("`````:\n");
+    printf("         .:`              ");printfEx(JAUNE, "@##++#,.+");  printf("';;####     ##+++");    printfEx(JAUNE, "###+'+,.;..;:");   printf(" #',,,`\n");
     printf("                              +++++'';                   #+++#';;\n");
     printf("                             #+++''                     '''';;\n");
     printf("\n");
@@ -64,30 +52,19 @@ void afficher_logo()
     printf("          `;,`                                                        `:#:\n");
     printf("  ,.                                                                        \n");
 
-    /*printf("\n");
-    printf("88888888ba     ,ad8888ba,    88888888ba   888b      88  88888888888  ad88888ba   \n");
-    printf("88      \"8b   d8\"'    `\"8b   88      \"8b  8888b     88  88          d8\"     \"8b  \n");
-    printf("88      ,8P  d8'        `8b  88      ,8P  88 `8b    88  88          Y8,          \n");
-    printf("88aaaaaa8P'  88          88  88aaaaaa8P'  88  `8b   88  88aaaaa     `Y8aaaaa,    \n");
-    printf("88\"\"\"\"\"\"8b,  88          88  88\"\"\"\"88'    88   `8b  88  88\"\"\"\"\"       `\"\"\"\"\"8b,  \n");
-    printf("88      `8b  Y8,        ,8P  88    `8b    88    `8b 88  88                  `8b  \n");
-    printf("88      a8P   Y8a.    .a8P   88     `8b   88     `8888  88          Y8a     a8P  \n");
-    printf("88888888P\"     `\"Y8888Y\"'    88      `8b  88      `888  88888888888  \"Y88888P\"   \n");*/
-
     printf("\n");
-    printf("   _   __     __     __       ___    _____  ___    _   _  ___    ___   \n");
-    printf(" /' )/' _`\\ /' _`\\ /' _`\\    (  _`\\ (  _  )|  _`\\ ( ) ( )(  _`\\ (  _`\\ \n");
-    printf("(_, || ( ) || ( ) || ( ) |   | (_) )| ( ) || (_) )| `\\| || (_(_)| (_(_)\n");
-    printf("  | || | | || | | || | | |   |  _ <'| | | || ,  / | , ` ||  _)_ `\\__ \\ \n");
-    printf("  | || (_) || (_) || (_) |   | (_) )| (_) || |\\ \\ | |`\\ || (_( )( )_) |\n");
-    printf("  (_)`\\___/'`\\___/'`\\___/'   (____/'(_____)(_) (_)(_) (_)(____/'`\\____)\n");
+    printfEx(JAUNE, "    _   __     __     __       ___    _____  ___    _   _  ___    ___   \n");
+    printfEx(JAUNE, " /' )/' _`\\ /' _`\\ /' _`\\    (  _`\\ (  _  )|  _`\\ ( ) ( )(  _`\\ (  _`\\ \n");
+    printfEx(JAUNE, "(_, || ( ) || ( ) || ( ) |   | (_) )| ( ) || (_) )| `\\| || (_(_)| (_(_)\n");
+    printfEx(JAUNE, "  | || | | || | | || | | |   |  _ <'| | | || ,  / | , ` ||  _)_ `\\__ \\ \n");
+    printfEx(JAUNE, "  | || (_) || (_) || (_) |   | (_) )| (_) || |\\ \\ | |`\\ || (_( )( )_) |\n");
+    printfEx(JAUNE, "  (_)`\\___/'`\\___/'`\\___/'   (____/'(_____)(_) (_)(_) (_)(____/'`\\____)\n");
 
-    //sleep(4);
+    sleep(3);
 
     printf("\n\nBienvenue sur le jeux des 1000 bornes !\n");
     printf("Developped & Designed by NA2S & Martin's Prince\n\n");
 }
-
 
 void menu_principal(int* choix)
 {
@@ -99,17 +76,6 @@ void menu_principal(int* choix)
 
     *choix = lireLong();
     printf("\n\n\n");
-}
-
-void menu_quitter_etes_vous_sur(int* choix)
-{
-    printf("Vous êtes sur le point de quitter. Êtes-vous sûr ?\n");
-    printf("%d) Non\n", INFIRMER_QUITTER_PARTIE);
-    printf("%d) Oui\n", CONFIRMER_QUITTER_PARTIE);
-    printf("Votre choix : ");
-
-    *choix = lireLong();
-    printf("\n");
 }
 
 void menu_demander_ordinateur(int* choix)
@@ -137,6 +103,7 @@ void demander_appuyez_sur_une_touche_pour_continuer()
     char kikoo[NOM_TAILLE_MAX];
     printf("Appuyez sur 'entrée' pour continuer...\n");
     lire(kikoo, NOM_TAILLE_MAX);
+    printf("----------------------------------------------\n");
 }
 
 void menu_demander_choix_carte(int* choix_carte, int nb_coups_possibles)
@@ -144,9 +111,9 @@ void menu_demander_choix_carte(int* choix_carte, int nb_coups_possibles)
     if(nb_coups_possibles > 0)
         printf("Entrez le code de la carte à jouer.\n");
     else
-        printf("Vous ne pouvez jouer aucun coup et êtes obligé de passer votre tour.\n");
+        printf("Vous ne pouvez jouer aucun coup et êtes obligé de passer votre tour (code %d).\n", PASSER_SON_TOUR);
     printf("Si vous ne souhaitez (ou ne pouvez) pas jouer de carte, vous pouvez :\n");
-    printf("- ne rien jouer et simplement passer votre tour (code %d) ;\n", PASSER_SON_TOUR);
+    printf("- jeter une carte et passer votre tour (code %d) ;\n", PASSER_SON_TOUR);
     printf("- arrêter la partie sans enregistrer (code %d) ;\n", ARRETER_PARTIE);
     printf("- arrêter la partie et l'enregister (code %d).\n", ENREGISTRER);
 

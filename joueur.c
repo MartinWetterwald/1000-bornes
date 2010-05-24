@@ -178,37 +178,54 @@ void joueur_afficher_infos_utiles(Tptjoueur monJoueur)
     //S'il y a quelque chose à faire
     if(monJoueur != NULL)
     {
-        printf("\n'%s' a parcouru %d bornes.\n", monJoueur -> nom, monJoueur -> cumul_bornes);
+        printf("\n");
+        printfEx(COULEUR_BORNES, "'%s' a parcouru %d bornes.", monJoueur -> nom, monJoueur -> cumul_bornes);
+        printf("\n");
 
         printf("\nLes immunités de '%s' (cartes 'botte' activées) sont : \n", monJoueur -> nom);
-        if(monJoueur -> increvable)
-            printf("- Il est increvable.\n");
-
-        if(monJoueur -> citerne)
-            printf("- C'est un camion citerne (il ne peut plus avoir de panne d'essence).\n");
-
-        if(monJoueur -> as_du_volant)
-            printf("- C'est un as du volant (il ne peut plus avoir d'accident).\n");
-
-        if(monJoueur -> prioritaire)
-            printf("- C'est un véhicule prioritaire (il ne peut pas être arrêté et sa vitesse ne peut pas être limitée).\n");
+        if(monJoueur -> increvable || monJoueur -> citerne || monJoueur -> as_du_volant || monJoueur -> prioritaire)
+        {
+            if(monJoueur -> increvable)
+            {
+                printfEx(COULEUR_BOTTES, "- Il est increvable");            printf(" (on ne peut pas lui crever les pneus).\n");
+            }
+            if(monJoueur -> citerne)
+            {
+                printfEx(COULEUR_BOTTES, "- C'est un camion citerne");      printf(" (il ne peut plus avoir de panne d'essence).\n");
+            }
+            if(monJoueur -> as_du_volant)
+            {
+                printfEx(COULEUR_BOTTES, "- C'est un as du volant");        printf(" (il ne peut plus avoir d'accident).\n");
+            }
+            if(monJoueur -> prioritaire)
+            {
+                printfEx(COULEUR_BOTTES, "- C'est un véhicule prioritaire");printf(" (il ne peut pas être arrêté et sa vitesse ne peut pas être limitée).\n");
+            }
+        }
+        else
+            printf("Il n'a aucune carte botte d'activée.\n");
 
 
         printf("\n\nLes handicaps de '%s' sont : \n", monJoueur -> nom);
-        if(monJoueur -> est_creve)
-            printf("- Il a les pneus crevés.\n");
+        if(monJoueur -> est_creve || monJoueur -> a_accident || monJoueur -> en_panne_dessence || monJoueur -> est_limite_par_vitesse || monJoueur -> est_arrete)
+        {
+            if(monJoueur -> est_creve)
+                printfEx(COULEUR_OBSTACLES, "- Il a les pneus crevés.\n");
 
-        if(monJoueur -> a_accident)
-            printf("- Il a un accident.\n");
+            if(monJoueur -> a_accident)
+                printfEx(COULEUR_OBSTACLES, "- Il a un accident.\n");
 
-        if(monJoueur -> en_panne_dessence)
-            printf("- Il n'a plus d'essence.\n");
+            if(monJoueur -> en_panne_dessence)
+                printfEx(COULEUR_OBSTACLES, "- Il n'a plus d'essence.\n");
 
-        if(monJoueur -> est_limite_par_vitesse)
-            printf("- Sa vitesse est limitée.\n");
+            if(monJoueur -> est_limite_par_vitesse)
+                printfEx(COULEUR_OBSTACLES, "- Sa vitesse est limitée.\n");
 
-        if(monJoueur -> est_arrete)
-            printf("- Il est à l'arrêt.\n");
+            if(monJoueur -> est_arrete)
+                printfEx(COULEUR_OBSTACLES, "- Il est à l'arrêt.\n");
+        }
+        else
+            printf("Il n'a aucun handicap.\n");
     }
 }
 

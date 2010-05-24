@@ -484,22 +484,29 @@ void ia_expert(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* ch
         &nb_possible_obstacles, &nb_possible_parades, &nb_possible_bottes, &nb_possible_bornes
     );
 
-    printf("Cette IA n'est pas encore implémentée.\n");
-    *choix_carte = ARRETER_PARTIE;
-
     //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
-    if( (coupsPossibles -> taille) == 0)
+    if( (coupsPossibles -> taille - nb_possible_bottes) == 0)
     {
+        if(DEBUG_IA) printf("[IA EXPERT] Je suis obligé de passer mon tour car je ne peux rien jouer.\n");
         *choix_carte = PASSER_SON_TOUR;
-        //Sélection parmi ordinateur -> deck
-        //*choix_jeter = ????;
+
+        //L'IA expert ne jette jamais de carte 'botte'.
+        if(DEBUG_IA) printf("[IA EXPERT] Je vais jeter une autre carte qu'une carte 'botte', peu importe laquelle !\n");
+            *choix_jeter = carte_aleatoire(ordinateur -> deck);
+        while(*choix_jeter >= CITERNE && *choix_jeter <= PRIORITAIRE)
+            *choix_jeter = carte_aleatoire(ordinateur -> deck);
     }
 
     //Si l'ordinateur peut jouer une carte, on lui en fait jouer une.
     else
     {
-        *choix_jeter = -1;
-        //Sélection parmi coupsPossibles
-        //*choix_jouer = ????;
+        if(DEBUG_IA) printf("[IA EXPERT] Je peux jouer une carte. Je vais bien évidemment saisir cette opportunité !\n");
+            *choix_jeter = -1;
+
+        //On tire une carte au sort mais on ne jouera jamais de carte 'botte'.
+        if(DEBUG_IA) printf("[IA EXPERT] Je joue autre chose qu'une carte 'botte'.\n");
+            *choix_carte = carte_aleatoire(coupsPossibles);
+        while(*choix_carte >= CITERNE && *choix_carte <= PRIORITAIRE)
+            *choix_carte = carte_aleatoire(coupsPossibles);
     }
 }
