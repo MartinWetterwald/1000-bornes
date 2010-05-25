@@ -1,5 +1,5 @@
 *.depend
 *.layout
-bin/*
+build/*
 *.workspace
-obj/*
+*.backup
