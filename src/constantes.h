@@ -1,13 +1,18 @@
-/*************************************************
-*              JEU DES 1000 BORNES               *
-*                                                *
-* Réalisé par Nacim Messadi et Martin Wetterwald *
-*                                                *
-*               FICHIER : constantes.h           *
-* DESCRIPTION : Définit en un seul endroit       *
-* toutes les constantes du jeu.                  *
-*                                                *
-*************************************************/
+/*******************************************************
+*              JEU DES 1000 BORNES                     *
+*                                                      *
+* Réalisé par Nacim Messadi et Martin Wetterwald       *
+*                                                      *
+*               FICHIER : constantes.h                 *
+* DESCRIPTION : Définit en un seul endroit             *
+* toutes les constantes du jeu.                        *
+*                                                      *
+* Ce code est mis à disposition selon les termes       *
+* de la licence Creative Commons BY-NC-SA.             *
+* Le texte complet de la licence est disponible        *
+* à l'adresse :                                        *
+* http://creativecommons.org/licenses/by-nc-sa/2.0/fr/ *
+*******************************************************/
 
 #ifndef CONSTANTES_H_INCLUDED
 #define CONSTANTES_H_INCLUDED

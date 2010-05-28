@@ -1,16 +1,21 @@
-/*************************************************
-*              JEU DES 1000 BORNES               *
-*                                                *
-* Réalisé par Nacim Messadi et Martin Wetterwald *
-*                                                *
-*               FICHIER : cartes.c               *
-* DESCRIPTION : Ceci correspond à la couche      *
-* « carte » du programme. Toutes les fonctions   *
-* définies ici permettent d'effectuer un certain *
-* nombre d'opérations sur des cartes et des      *
-* decks de cartes.                               *
-*                                                *
-*************************************************/
+/*******************************************************
+*              JEU DES 1000 BORNES                     *
+*                                                      *
+* Réalisé par Nacim Messadi et Martin Wetterwald       *
+*                                                      *
+*               FICHIER : cartes.c                     *
+* DESCRIPTION : Ceci correspond à la couche            *
+* « carte » du programme. Toutes les fonctions         *
+* définies ici permettent d'effectuer un certain       *
+* nombre d'opérations sur des cartes et des            *
+* decks de cartes.                                     *
+*                                                      *
+* Ce code est mis à disposition selon les termes       *
+* de la licence Creative Commons BY-NC-SA.             *
+* Le texte complet de la licence est disponible        *
+* à l'adresse :                                        *
+* http://creativecommons.org/licenses/by-nc-sa/2.0/fr/ *
+*******************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,13 +1,18 @@
-/*************************************************
-*              JEU DES 1000 BORNES               *
-*                                                *
-* Réalisé par Nacim Messadi et Martin Wetterwald *
-*                                                *
-*               FICHIER : menu.c                 *
-* DESCRIPTION : Fonctions gérant l'affichage des *
-* différents menus (interface).                  *
-*                                                *
-*************************************************/
+/*******************************************************
+*              JEU DES 1000 BORNES                     *
+*                                                      *
+* Réalisé par Nacim Messadi et Martin Wetterwald       *
+*                                                      *
+*               FICHIER : menu.c                       *
+* DESCRIPTION : Fonctions gérant l'affichage des       *
+* différents menus (interface).                        *
+*                                                      *
+* Ce code est mis à disposition selon les termes       *
+* de la licence Creative Commons BY-NC-SA.             *
+* Le texte complet de la licence est disponible        *
+* à l'adresse :                                        *
+* http://creativecommons.org/licenses/by-nc-sa/2.0/fr/ *
+*******************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,10 +64,17 @@ void afficher_logo()
     printfEx(COULEUR_VOITURE_ROUES, "  | || (_) || (_) || (_) |   | (_) )| (_) || |\\ \\ | |`\\ || (_( )( )_) |\n");
     printfEx(COULEUR_VOITURE_ROUES, "  (_)`\\___/'`\\___/'`\\___/'   (____/'(_____)(_) (_)(_) (_)(____/'`\\____)\n");
 
-    sleep(3);
+    sleep(2);
 
     printf("\n\nBienvenue sur le jeux des 1000 bornes !\n");
     printf("Developped & Designed by NA2S & Martin's Prince\n\n");
+}
+
+void afficher_licence()
+{
+    printf("Le code source de cette application est mis à disposition selon les termes de la licence Creative Commons BY-NC-SA.\n");
+    printf("Le texte complet de la licence est disponible à l'adresse : http://creativecommons.org/licenses/by-nc-sa/2.0/fr/\n");
+    sleep(4);
 }
 
 void menu_principal(int* choix)

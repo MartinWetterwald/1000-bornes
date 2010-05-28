@@ -1,13 +1,18 @@
-/*************************************************
-*              JEU DES 1000 BORNES               *
-*                                                *
-* Réalisé par Nacim Messadi et Martin Wetterwald *
-*                                                *
-*               FICHIER : joueurs.c              *
-* DESCRIPTION : Fonctions gérant la couche       *
-* des joueurs.                                   *
-*                                                *
-*************************************************/
+/*******************************************************
+*              JEU DES 1000 BORNES                     *
+*                                                      *
+* Réalisé par Nacim Messadi et Martin Wetterwald       *
+*                                                      *
+*               FICHIER : joueurs.c                    *
+* DESCRIPTION : Fonctions gérant la couche             *
+* des joueurs.                                         *
+*                                                      *
+* Ce code est mis à disposition selon les termes       *
+* de la licence Creative Commons BY-NC-SA.             *
+* Le texte complet de la licence est disponible        *
+* à l'adresse :                                        *
+* http://creativecommons.org/licenses/by-nc-sa/2.0/fr/ *
+*******************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
