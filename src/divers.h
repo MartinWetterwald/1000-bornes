@@ -40,10 +40,12 @@
     } COULEUR;
 #endif
 
-#define COULEUR_OBSTACLES   ROUGE
-#define COULEUR_PARADES     VERT
-#define COULEUR_BOTTES      JAUNE
-#define COULEUR_BORNES      CYAN
+#define COULEUR_OBSTACLES       ROUGE
+#define COULEUR_PARADES         VERT
+#define COULEUR_BOTTES          JAUNE
+#define COULEUR_BORNES          CYAN
+#define COULEUR_VOITURE        BLEU
+#define COULEUR_VOITURE_ROUES   JAUNE
 
 
 void printfEx(COULEUR couleur, const char *str, ...);
