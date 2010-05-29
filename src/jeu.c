@@ -664,9 +664,8 @@ void jeu(Tptpartie partie)
                                     if(strlen(raison_refus2) > 0)
                                         printf("%s", raison_refus2);
                                 }
-
-                                sprintf(raison_refus, "");
-                                sprintf(raison_refus2, "");
+                                memset (raison_refus, 0, sizeof (raison_refus));
+                                memset (raison_refus2, 0, sizeof (raison_refus2));
 
                                 printf("\n\nVeuillez choisir une autre carte.\n\n");
                             break;

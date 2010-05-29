@@ -134,22 +134,25 @@ int charger_deck(FILE* fichier, Tptdeck deck)
 
     if(fichier != NULL)
     {
-        fgets(ligne, TAILLE_MAX_LIGNE, fichier);
-
-        carte = strtok(ligne, delimiters);
-        while(carte != NULL && success)
+        if(fgets(ligne, TAILLE_MAX_LIGNE, fichier) != NULL)
         {
-                //Conversion du numéro de la carte en entier
-                carte_num = strtol(carte, NULL, 10);
+            carte = strtok(ligne, delimiters);
+            while(carte != NULL && success)
+            {
+                    //Conversion du numéro de la carte en entier
+                    carte_num = strtol(carte, NULL, 10);
 
-                //Vérification de la validité du numéro et insertion
-                if(cartes_verifier_validite(carte_num))
-                    cartes_deck_add_queue(deck, carte_num, 1);
-                else
-                    success = 0;
+                    //Vérification de la validité du numéro et insertion
+                    if(cartes_verifier_validite(carte_num))
+                        cartes_deck_add_queue(deck, carte_num, 1);
+                    else
+                        success = 0;
 
-            carte = strtok(NULL, delimiters);
+                carte = strtok(NULL, delimiters);
+            }
         }
+        else
+            success = 0;
     }
     else
         success = 0;
@@ -166,34 +169,41 @@ int charger_joueur(FILE* fichier, Tptjoueur joueur)
     if(fichier != NULL && joueur != NULL)
     {
         //On charge le nom du joueur
-        fgets(joueur -> nom, NOM_TAILLE_MAX, fichier); //On récupère le nom brut
-        strcpy(joueur -> nom, strtok(joueur -> nom, delimiters)); //On vire le \n de la fin du nom du joueur
+        if(fgets(joueur -> nom, NOM_TAILLE_MAX, fichier) != NULL) //On récupère le nom brut
+        {
+            strcpy(joueur -> nom, strtok(joueur -> nom, delimiters)); //On vire le \n de la fin du nom du joueur
 
-        //On charge les autres infos du joueur
-        fscanf(fichier, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
-            &joueur -> est_ordinateur,
-            &joueur -> difficulte_ordinateur,
+            //On charge les autres infos du joueur
+            if(fscanf(fichier, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+                &joueur -> est_ordinateur,
+                &joueur -> difficulte_ordinateur,
 
-            &joueur -> cumul_bornes,
-            &joueur -> nb_bottes_jouees,
-            &joueur -> nb_coups_fourres_joues,
-            &joueur -> nb_200bornes_jouees,
-            &joueur -> couronnement,
+                &joueur -> cumul_bornes,
+                &joueur -> nb_bottes_jouees,
+                &joueur -> nb_coups_fourres_joues,
+                &joueur -> nb_200bornes_jouees,
+                &joueur -> couronnement,
 
-            &joueur -> est_creve,
-            &joueur -> a_accident,
-            &joueur -> en_panne_dessence,
-            &joueur -> est_limite_par_vitesse,
-            &joueur -> est_arrete,
+                &joueur -> est_creve,
+                &joueur -> a_accident,
+                &joueur -> en_panne_dessence,
+                &joueur -> est_limite_par_vitesse,
+                &joueur -> est_arrete,
 
-            &joueur -> increvable,
-            &joueur -> citerne,
-            &joueur -> as_du_volant,
-            &joueur -> prioritaire
-        );
-
-            //On charge son deck de cartes
-            charger_deck(fichier, joueur -> deck);
+                &joueur -> increvable,
+                &joueur -> citerne,
+                &joueur -> as_du_volant,
+                &joueur -> prioritaire
+            ))
+            {
+                //On charge son deck de cartes
+                charger_deck(fichier, joueur -> deck);
+            }
+            else
+                success = 0;
+        }
+        else
+            success = 0;
     }
     else
         success = 0;
