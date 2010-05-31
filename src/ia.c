@@ -447,67 +447,49 @@ void ia_defensif(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* 
 
 void ia_expert(Tptjoueur ordinateur, Tptjoueur humain, int* choix_carte, int* choix_jeter)
 {
-    int nb_panne_essence, nb_creve, nb_accident, nb_limite_vitesse, nb_stop;
-    int nb_essence, nb_roue_de_secours, nb_reparations, nb_fin_limite_vitesse, nb_roulez;
-    int nb_citerne, nb_increvable, nb_as_du_volant, nb_prioritaire;
-    int nb_bornes25, nb_bornes50, nb_bornes75, nb_bornes100, nb_bornes200;
+    int ordi_arrete, humain_arrete;
 
-    int nb_obstacles, nb_parades, nb_bottes, nb_bornes;
+    ordi_arrete = ordinateur -> est_creve || ordinateur -> a_accident || ordinateur -> en_panne_dessence || ordinateur -> est_arrete;
+    humain_arrete = humain -> est_creve || humain -> a_accident || humain -> en_panne_dessence || humain -> est_arrete;
 
-    int nb_possible_panne_essence, nb_possible_creve, nb_possible_accident, nb_possible_limite_vitesse, nb_possible_stop;
-    int nb_possible_essence, nb_possible_roue_de_secours, nb_possible_reparations, nb_possible_fin_limite_vitesse, nb_possible_roulez;
-    int nb_possible_citerne, nb_possible_increvable, nb_possible_as_du_volant, nb_possible_prioritaire;
-    int nb_possible_bornes25, nb_possible_bornes50, nb_possible_bornes75, nb_possible_bornes100, nb_possible_bornes200;
+    //L'IA expert fait appel aux autres IA selon les cas.
 
-    int nb_possible_obstacles, nb_possible_parades, nb_possible_bottes, nb_possible_bornes;
-
-    Tptdeck coupsPossibles = lister_coups_possibles(ordinateur, humain);
-
-    /* Comptabilisation du nombre de chaque type de cartes que possède l'ordinateur */
-    cartes_deck_compter_sorte
-    (
-        ordinateur -> deck,
-        &nb_panne_essence, &nb_creve, &nb_accident, &nb_limite_vitesse, &nb_stop,
-        &nb_essence, &nb_roue_de_secours, &nb_reparations, &nb_fin_limite_vitesse, &nb_roulez,
-        &nb_citerne, &nb_increvable, &nb_as_du_volant, &nb_prioritaire,
-        &nb_bornes25, &nb_bornes50, &nb_bornes75, &nb_bornes100, &nb_bornes200,
-        &nb_obstacles, &nb_parades, &nb_bottes, &nb_bornes
-    );
-
-    /* Comptabilisation du nombre de chaque type de cartes que peut jouer l'ordinateur*/
-    cartes_deck_compter_sorte
-    (
-        coupsPossibles,
-        &nb_possible_panne_essence, &nb_possible_creve, &nb_possible_accident, &nb_possible_limite_vitesse, &nb_possible_stop,
-        &nb_possible_essence, &nb_possible_roue_de_secours, &nb_possible_reparations, &nb_possible_fin_limite_vitesse, &nb_possible_roulez,
-        &nb_possible_citerne, &nb_possible_increvable, &nb_possible_as_du_volant, &nb_possible_prioritaire,
-        &nb_possible_bornes25, &nb_possible_bornes50, &nb_possible_bornes75, &nb_possible_bornes100, &nb_possible_bornes200,
-        &nb_possible_obstacles, &nb_possible_parades, &nb_possible_bottes, &nb_possible_bornes
-    );
-
-    //Si l'ordinateur ne peut pas jouer de carte, il faut lui en faire jeter une.
-    if(coupsPossibles -> taille - nb_possible_bottes == 0)
+    //Si les deux joueurs sont arrêtés, l'ordinateur va se défendre.
+    if(ordi_arrete && humain_arrete)
     {
-        if(DEBUG_IA) printf("[IA EXPERT] Je suis obligé de passer mon tour car je ne peux rien jouer.\n");
-        *choix_carte = PASSER_SON_TOUR;
-
-        //L'IA expert ne jette jamais de carte 'botte'.
-        if(DEBUG_IA) printf("[IA EXPERT] Je vais jeter une autre carte qu'une carte 'botte', peu importe laquelle !\n");
-            *choix_jeter = carte_aleatoire(ordinateur -> deck);
-        while(*choix_jeter >= CITERNE && *choix_jeter <= PRIORITAIRE)
-            *choix_jeter = carte_aleatoire(ordinateur -> deck);
+        if(DEBUG_IA) printf("[IA EXPERT] Nous sommes tous les deux arrêtés, je vais me défendre.\n");
+        ia_defensif(ordinateur, humain, choix_carte, choix_jeter);
     }
 
-    //Si l'ordinateur peut jouer une carte, on lui en fait jouer une.
-    else
+    //Si l'ordinateur est arrêté, mais que le joueur roule, il faut l'empêcher de rouler ! L'ordinateur va attaquer.
+    else if(ordi_arrete && !humain_arrete)
     {
-        if(DEBUG_IA) printf("[IA EXPERT] Je peux jouer une carte. Je vais bien évidemment saisir cette opportunité !\n");
-            *choix_jeter = -1;
+        if(DEBUG_IA) printf("[IA EXPERT] Je suis arrêté, mais pas mon adversaire. À l'abordaaaaaaaage ! :pirate:\n");
+        ia_agressif(ordinateur, humain, choix_carte, choix_jeter);
+    }
 
-        //On tire une carte au sort mais on ne jouera jamais de carte 'botte'.
-        if(DEBUG_IA) printf("[IA EXPERT] Je joue autre chose qu'une carte 'botte'.\n");
-            *choix_carte = carte_aleatoire(coupsPossibles);
-        while(*choix_carte >= CITERNE && *choix_carte <= PRIORITAIRE)
-            *choix_carte = carte_aleatoire(coupsPossibles);
+    //Si l'ordinateur roule, mais que l'adversaire est à l'arrêt, il faut en profiter pour parcourir des kilomètres.
+    else if(!ordi_arrete && humain_arrete)
+    {
+        if(DEBUG_IA) printf("[IA EXPERT] Je roule, mais mon adversaire est à l'arrêt. Vite, vite, je me mets en mode course !\n");
+        ia_course(ordinateur, humain, choix_carte, choix_jeter);
+    }
+
+    //Si l'ordinateur et le joueur roulent, cela dépend des cas :
+    else if(!ordi_arrete && !humain_arrete)
+    {
+        if(DEBUG_IA) printf("[IA EXPERT] Mon adversaire et moi-même roulons tous les deux. Analysons la situation...\n");
+        //Dans le cas où l'ordinateur serait en retard par rapport au joueur, il va l'attaquer.
+        if(ordinateur -> cumul_bornes <= humain -> cumul_bornes)
+        {
+            if(DEBUG_IA) printf("[IA EXPERT] Je suis en retard, je vais attaquer !\n");
+            ia_agressif(ordinateur, humain, choix_carte, choix_jeter);
+        }
+        //Sinon, s'il est plutôt en avance par rapport au joueur, il va mettre le turbo pour terminer la partie.
+        else
+        {
+            if(DEBUG_IA) printf("[IA EXPERT] Je suis en avance, j'appuie sur le champignon !\n");
+            ia_course(ordinateur, humain, choix_carte, choix_jeter);
+        }
     }
 }
