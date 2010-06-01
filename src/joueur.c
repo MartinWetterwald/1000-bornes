@@ -12,6 +12,7 @@
 * Le texte complet de la licence est disponible        *
 * à l'adresse :                                        *
 * http://creativecommons.org/licenses/by-nc-sa/2.0/fr/ *
+* Code source : http://github.com/djfox/1000-bornes    *
 *******************************************************/
 
 #include <stdio.h>

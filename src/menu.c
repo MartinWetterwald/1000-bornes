@@ -12,6 +12,7 @@
 * Le texte complet de la licence est disponible        *
 * à l'adresse :                                        *
 * http://creativecommons.org/licenses/by-nc-sa/2.0/fr/ *
+* Code source : http://github.com/djfox/1000-bornes    *
 *******************************************************/
 
 #include <stdio.h>
@@ -74,6 +75,7 @@ void afficher_licence()
 {
     printf("Le code source de cette application est mis à disposition selon les termes de la licence Creative Commons BY-NC-SA.\n");
     printf("Le texte complet de la licence est disponible à l'adresse : http://creativecommons.org/licenses/by-nc-sa/2.0/fr/\n");
+    printf("Vous pouvez télécharger le code source de cette application librement à l'adresse : http://github.com/djfox/1000-bornes\n");
     sleep(4);
 }
 
