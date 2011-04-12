@@ -40,7 +40,7 @@ Tptjoueur joueur_init(int est_ordinateur, int difficulte, int num_joueur)
         monJoueur -> difficulte_ordinateur = difficulte;
     }
 
-    monJoueur -> deck = liste_init(); //On crée un deck vide et on l'attribut au joueur.
+    monJoueur -> deck = liste_init(); //On crée un deck vide et on l'attribue au joueur.
 
     monJoueur -> cumul_bornes = 0;
     monJoueur -> nb_bottes_jouees = 0;
